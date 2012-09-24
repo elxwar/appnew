@@ -20,7 +20,7 @@ function modChrome_beezDivision($module, &$params, &$attribs)
 	if (!empty ($module->content)) { ?>
 <div class="moduletable<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
 <?php if ($module->showtitle) { ?> <h<?php echo $headerLevel; ?>><span
-	class="backh"><span class="backh2"><span class="backh3"><?php echo $module->title; ?></span></span></span></h<?php echo $headerLevel; ?>>
+	class="backh"><span class="backh2"><span class="backh3"><?php echo $module->title; ?></span></span></span></h><?php echo $headerLevel; ?>>
 <?php }; ?> <?php echo $module->content; ?></div>
 <?php };
 }
@@ -46,7 +46,7 @@ function modChrome_beezHide($module, &$params, &$attribs)
 	class="opencloselink" id="link_<?php echo $module->id?>"> <span
 	class="no"><img src="templates/beez_20/images/plus.png"
 	alt="<?php if ($state == 1) { echo JText::_('TPL_BEEZ2_ALTOPEN');} else {echo JText::_('TPL_BEEZ2_ALTCLOSE');} ?>" />
-</span></a></span></span></h<?php echo $headerLevel; ?>> <?php endif; ?>
+</span></a></span></span></h><?php echo $headerLevel; ?>> <?php endif; ?>
 <div class="module_content <?php if ($state==1){echo "open";} ?>"
 	id="module_<?php echo $module->id; ?>" tabindex="-1"><?php echo $module->content; ?></div>
 </div>

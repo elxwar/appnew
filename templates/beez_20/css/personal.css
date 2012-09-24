@@ -11,8 +11,8 @@
 	font-family: 'Titillium Maps';
 	src: url("../fonts/TitilliumMaps29L002.eot");
 	src: local('Titillium Maps'), local('TitilliumMaps'),
-		url("../fonts/TitilliumMaps29L002.otf") format("opentype"),
-		url("../fonts/TitilliumMaps29L002.woff") format("woff");
+url("../fonts/TitilliumMaps29L002.otf") format("opentype"),
+url("../fonts/TitilliumMaps29L002.woff") format("woff");
 }
 
 body
@@ -94,7 +94,7 @@ fieldset
 .logoheader
 {
 
-	background:  #0c1a3e  URL(../images/personal/personal2.png) no-repeat bottom right ;
+	background:  #0c1a3e  url(../images/personal/personal2.png) no-repeat bottom right                ;
 	color:#fff;
 	min-height:200px;
 	margin:0em 10px 0 10px !important;
@@ -146,7 +146,7 @@ h1#logo
    top:5em;
 
 	padding: 0px 0px 0px 0 ;
-	background:#e0e0e0  url(../images/personal/ecke.gif) top left repeat-x ;
+	background:#e0e0e0  url(../images/personal/ecke.gif) top left repeat-x                ;
 	border:0 ;
 	text-align:left;
 	left:0px;
@@ -464,7 +464,10 @@ ul.menu li a:link,
 ul.menu li a:visited
 {
 	color:#444;
-	background:url(../images/nature/karo.gif) 5px 12px no-repeat
+	background:url(../images/nature/karo.gif) 5px 12px no-repeat
+
+
+
 }
 
 ul.menu li.active a:link,
@@ -480,7 +483,7 @@ ul.menu li.active a:hover,
 ul.menu li.active a:active,
 ul.menu li.active a:focus
 {
-	background: #fff url(../images/nav_level_1.gif) repeat-x ;
+	background: #fff url(../images/nav_level_1.gif) repeat-x                ;
 	color:#095197;
 }
 
@@ -556,7 +559,7 @@ ul.menu li ul li ul li ul
 	border:solid 1px #eee !important;
 	padding-top:10px !important;
 	padding-bottom:10px !important;
-	background:#fff url(../images/nature/level4.png) repeat-x !important;
+	background:#fff url(../images/nature/level4.png) repeat-x                !important;
 }
 
 
@@ -772,7 +775,7 @@ a.readmore a:hover,
 a.readmore a:active,
 a.readmore a:focus
 {
-	background:#555 url(../images/nature/arrow2.gif) no-repeat left 6px !important;
+	background:#555 url(../images/nature/arrow2.gif) no-repeat left 6px                !important;
 	color:#fff;
 }
 
@@ -883,7 +886,7 @@ table.contenttoc
 .latestnews li a:link,
 .latestnews li a:visited
 {
-	background: url(../images/personal/arrow2_grey.png) 2px 7px  no-repeat ;
+	background: url(../images/personal/arrow2_grey.png) 2px 7px  no-repeat                ;
 }
 
 .mostread li a:hover,
@@ -893,7 +896,7 @@ table.contenttoc
 .mostread li a:focus,
 .latestnews li a:focus
 {
-	background:#555 url(../images/arrow_white_grey.png) 2px 7px  no-repeat !important;
+	background:#555 url(../images/arrow_white_grey.png) 2px 7px  no-repeat                !important;
 }
 
 /* ++++++++++++++  newsfeed  ++++++++++++++ */
@@ -1192,7 +1195,7 @@ tbody
 tr.odd,
 .cat-list-row1
 {
-	background:url(../images/news.gif)  repeat-x;
+	background:url(../images/news.gif) repeat-x;
 }
 
 table.newsfeeds td,
@@ -1438,7 +1441,7 @@ table.pagenav td
 
 
 {
-	background:#fff url(../images/content_bg.gif) repeat-x ;
+	background:#fff url(../images/content_bg.gif) repeat-x                ;
 	border:solid 1px #ccc;
 	padding:3px
 }
@@ -1495,7 +1498,7 @@ table.pagenav td
 	border:solid 0px;
 	padding:0px 10px !important;
 	margin:0;
-	background: url(../images/nav_level_1.gif) repeat-x ;
+	background: url(../images/nav_level_1.gif) repeat-x                ;
 }
 
 .panel .contact-form,
@@ -1516,7 +1519,7 @@ table.pagenav td
 div.current
 {
 
-	background: url(../images/nav_level_1.gif) repeat-x ;
+	background: url(../images/nav_level_1.gif) repeat-x                ;
 }
 
 /* image upload modal */

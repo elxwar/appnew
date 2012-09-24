@@ -173,7 +173,7 @@ a.readmore:link,a.readmore:visited,.readmore a:link,.readmore a:visited
 .readmore a:hover, .readmore a:active, .readmore a:focus,
 a.readmore a:hover, a.readmore a:active, a.readmore a:focus
 {
-	background: url(../images/nature/arrow2_rtl.gif) no-repeat right 6px #555 !important;
+	background: url(../images/nature/arrow2_rtl.gif) no-repeat right 6px #555                !important;
 }
 
 .mailto-close {

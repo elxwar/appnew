@@ -6,8 +6,8 @@
 	font-family: 'Titillium Maps';
 	src: url("../fonts/TitilliumMaps29L002.eot");
 	src: local('Titillium Maps'), local('TitilliumMaps'),
-		url("../fonts/TitilliumMaps29L002.otf") format("opentype"),
-		url("../fonts/TitilliumMaps29L002.woff") format("woff");
+url("../fonts/TitilliumMaps29L002.otf") format("opentype"),
+url("../fonts/TitilliumMaps29L002.woff") format("woff");
 }
 
 body {
@@ -20,7 +20,10 @@ body {
 	color: #333;
 	border: solid 0px;
 	padding-top: 7px;
-	background: #fff url(../images/personal/grey_bg.png) repeat-x
+	background: #fff url(../images/personal/grey_bg.png) repeat-x
+
+
+
 }
 
 a:link,a:visited {
@@ -70,7 +73,7 @@ fieldset {
 }
 
 .logoheader {
-	background: #171818 URL(../images/personal/personal2.png) no-repeat top
+	background: #171818 url(../images/personal/personal2.png) no-repeat top
 		left;
 	color: #fff;
 	min-height: 159px;
@@ -320,7 +323,10 @@ ul.menu li a {
 
 ul.menu li a:link,ul.menu li a:visited {
 	color: #444;
-	background: url(../images/nature/karo.gif) 5px 12px no-repeat
+	background: url(../images/nature/karo.gif) 5px 12px no-repeat
+
+
+
 }
 
 ul.menu li.active a:link,ul.menu li.active a:visited {
@@ -386,7 +392,7 @@ ul.menu li ul li ul li ul {
 	border: solid 1px #eee !important;
 	padding-top: 10px !important;
 	padding-bottom: 10px !important;
-	background: #fff url(../images/nature/level4.png) repeat-x !important;
+	background: #fff url(../images/nature/level4.png) repeat-x                !important;
 }
 
 ul.menu li.active  ul li.active  ul li.active  ul li  a:link,ul.menu li.active  ul li.active  ul li.active  ul li a:visited
@@ -511,7 +517,10 @@ ul#archive-items li {
 
 .readmore a:hover,.readmore a:active,.readmore a:focus,a.readmore a:hover,a.readmore a:active,a.readmore a:focus
 	{
-	background: #555 url(../images/nature/arrow2.gif) no-repeat left 6px
+	background: #555 url(../images/nature/arrow2.gif) no-repeat left 6px
+
+
+
 		!important;
 	color: #fff;
 }
@@ -607,7 +616,10 @@ table.contenttoc {
 
 .mostread li a:hover,.latestnews li a:hover,.mostread li a:active,.latestnews li a:active,.mostread li a:focus,.latestnews li a:focus
 	{
-	background: #555 url(../images/arrow_white_grey.png) 2px 7px no-repeat
+	background: #555 url(../images/arrow_white_grey.png) 2px 7px no-repeat
+
+
+
 		!important;
 }
 

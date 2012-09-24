@@ -225,7 +225,7 @@ a img.calendar {
 
 #system-message dd.error ul
 {
-	background:#fff url(../images/system/notice-alert.png) no-repeat ;
+	background:#fff url(../images/system/notice-alert.png) no-repeat                ;
 	padding-left:40px;
  	padding: 10px 10px 10px 40px;
     border-top: 2px solid #990000;
@@ -244,7 +244,7 @@ a img.calendar {
 
 #system-message dd.notice  ul
 {
-		background:#fff url(../images/system/notice-note.png) no-repeat ;
+		background:#fff url(../images/system/notice-note.png) no-repeat                ;
 		padding-left:40px;
 	    padding: 10px 10px 10px 40px;
 	    border-top: 2px solid #FAA528;

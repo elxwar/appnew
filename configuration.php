@@ -21,7 +21,7 @@ class JConfig {
 	public $secret = 'Oe1zFaqYusCsPGoe';
 	public $gzip = '0';
 	public $error_reporting = 'default';
-	public $helpurl = 'http://help.joomla.org/proxy/index.php?option=com_help&amp;keyref=Help{major}{minor}:{keyref}';
+	public $helpurl = 'http://help.joomla.org/proxy/index.php?option=com_help&keyref=Help{major}{minor}:{keyref}';
 	public $ftp_host = '127.0.0.1';
 	public $ftp_port = '21';
 	public $ftp_user = '';
@@ -55,6 +55,12 @@ class JConfig {
 	public $feed_limit = '10';
 	public $log_path = 'P:\\wamp\\www\\APP/logs';
 	public $tmp_path = 'P:\\wamp\\www\\APP/tmp';
-	public $lifetime = '15';
+	public $lifetime = '60';
 	public $session_handler = 'database';
+	public $MetaRights = '';
+	public $sitename_pagetitles = '0';
+	public $force_ssl = '0';
+	public $feed_email = 'author';
+	public $cookie_domain = '';
+	public $cookie_path = '';
 }
