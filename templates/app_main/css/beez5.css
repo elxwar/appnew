@@ -24,6 +24,7 @@ body {
   color: #333;
   border: solid 0px #ddd !important;
 
+
 }
 
 a:link,
@@ -34,8 +35,8 @@ a:visited {
 a:hover,
 a:active,
 a:focus {
-  background: #669933;
-  color: #FFF;
+  /*background: #669933;*/
+  /*color: #FFF;*/
 }
 
 input:focus {
@@ -58,8 +59,7 @@ fieldset {
 
 /* ##########################  logo  ########################### */
 #header {
-  margin-top: 100px;
-  background: #fff
+  background: #ffffff
 }
 
 #logo span {
@@ -82,9 +82,7 @@ fieldset {
 }
 
 #logo {
-  margin: 1.2em 20px 10px 20px;
   font-size: 3em;
-
 }
 
 #line {
@@ -112,6 +110,7 @@ fieldset {
 #top-menu ul {
   color: #ffffff;
   font-size: 15px;
+  font-weight: normal;
   /*max-width: 1030px;*/
   /*right: 15px;*/
 }
@@ -136,6 +135,7 @@ fieldset {
   padding: 3px 15px 10px 15px;
 }
 
+
 #top-menu-content ul.menu li a:hover,
 #top-menu-content ul.menu li a:active,
 #top-menu-content ul.menu li a:focus {
@@ -149,6 +149,11 @@ fieldset {
   /*background: #7ba428 !important*/
 }
 
+#social-links{font-size: 10px; line-height: 1.2em; color: #dddddd;}
+
+#social-links ul.menu li a:link, #social-links ul.menu li a:visited{
+  color: #dddddd;
+}
 /* ++++++++++++++  fontsize  ++++++++++++++ */
 
 #fontsize {
@@ -197,7 +202,7 @@ fieldset {
 
 #contentarea,
 #contentarea2 {
-  background: #fff url(../images/box1.png) repeat-x;
+  background: #ffffff;
 }
 
 /* ##########################  breadcrumbs  ########################### */
@@ -312,12 +317,12 @@ h3.js_heading a:focus {
 #nav form a:active,
 #nav form a:focus {
   color: #fff;
-  background: #669933;
+  /*background: #669933;*/
 }
 
 /* ++++++++++++++  first level  ++++++++++++++ */
 #nav .moduletable-example ul.menu {
-  background: #fff;
+  background: #ffffff;
   border: 0;
 }
 
@@ -332,13 +337,13 @@ ul.menu {
 }
 
 ul.menu li {
-  border-bottom: solid 1px #ddd;
+  border-bottom: 0;
 }
 
 ul.menu li a:link,
 ul.menu li a:visited {
-  color: #444;
-  background: url(../images/karo.gif) 5px 12px no-repeat
+  color: #9F0C15;
+  /*background: url(../images/karo.gif) 5px 12px no-repeat*/
 }
 
 ul.menu li.active a:link,
@@ -352,8 +357,9 @@ ul.menu li a:focus,
 ul.menu li.active a:hover,
 ul.menu li.active a:active,
 ul.menu li.active a:focus {
-  background: #fff url(../images/nav_level_1.gif) repeat-x;
-  color: #638420;
+  /*background: #fff url(../images/nav_level_1.gif) repeat-x;*/
+  /*color: #638420;*/
+  color: #9F0C15;
 }
 
 /* ++++++++++++++  second level  ++++++++++++++ */
@@ -386,7 +392,7 @@ ul.menu li.active ul li a:hover,
 ul.menu li.active ul li a:active,
 ul.menu li.active ul li a:focus {
   background: #666 !important;
-  color: #fff !important;
+  /*color: #fff !important;*/
 }
 
 /* ++++++++++++++  third level  ++++++++++++++ */
@@ -475,8 +481,8 @@ ul.menu li.active  ul li.active  ul li.active  ul li.active  ul li.active a:visi
 #main a:hover,
 #main a:active,
 #main a:focus {
-  background: #7BA428;
-  color: #fff;
+  /*background: #7BA428;*/
+  /*color: #fff;*/
 }
 
 #main th a:hover,

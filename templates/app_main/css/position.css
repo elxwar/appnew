@@ -41,6 +41,7 @@ body
   max-width:1050px;
   padding-top: 3px;
   text-align: right;
+  padding-right: 40px;
 }
 #header
 {
@@ -48,6 +49,7 @@ body
     position:relative;
     padding:0px;
     overflow:hidden;
+    min-width: 815px;
 }
 
 #back

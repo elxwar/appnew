@@ -48,6 +48,10 @@ em
 #all
 {
   font-size: 0.8em;
+  -moz-box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.1);;
+  -webkit-box-shadow:  0px 4px 4px 4px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.1);
+  box-shadow:  0px 4px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* ##########################  header content  ########################### */
@@ -86,8 +90,51 @@ em
 #header form .inputbox { margin: 2px 13px 2px 2px;}
 #header form .inputbox:focus { margin: 1px 11px 0 1px; }
 
+#logo {
+  margin: 18px 20px 10px 20px;
+  width: 450px;
+  float: left;
+}
+#social-links ul
+{
+  display:block;
+  margin:0px 20px 1px 20px;
+  list-style-type:none;
+  padding:32px 20px 3px 20px;
+  float: right;
+}
+#social-links ul li img, #social-links ul li span {display: inline-block;}
+#social-links ul li img{position: absolute;}
+#social-links ul li span{width: 60px; margin-top: 58px; text-align: center; vertical-align: top;}
+#social-links ul li a:link,
+#social-links ul li a:visited
+{
+  /*text-transform:uppercase;*/
+  /*padding:3px 20px 3px 20px;*/
+  display:inline;
+
+}
+
+#social-links ul.menu li
+{
+  display:inline ;
+  width: 60px;
+
+}
+
+
+
+#social-links ul li a:hover,
+#social-links ul li a:active,
+#social-links ul li a:focus
+{
+  font-weight:bold;
+  /*text-transform:uppercase;*/
+}
+
+
 #top-menu{
-  height: 66px;
+  height: 60px;
 }
 
 #top-menu-content ul
@@ -97,10 +144,10 @@ em
   margin:0px 0px 1px 0px;
   text-align:right;
   list-style-type:none;
-  padding:34px 0px 3px 0px;
+  padding:28px 0px 3px 0px;
   top:0;
   right:0px;
-  width:100%
+  width:100%;
 }
 
 #top-menu-content ul li a:link,
@@ -133,7 +180,8 @@ em
 #top-menu-content ul li a:focus
 {
   font-weight:bold;
-  text-transform:uppercase;
+  color: #9F0C15;
+  /*text-transform:uppercase;*/
 }
 
 #top-menu-content ul li.active a:link,
@@ -339,13 +387,14 @@ ul.menu li.active a:link,
 ul.menu li.active a:visited
 {
   font-weight:bold;
+  color: #9F0C15;
 }
 
 ul.menu li a:hover,
 ul.menu li a:active,
 ul li a:focus
 {
-
+  color: #9F0C15;
 }
 
 

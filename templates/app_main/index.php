@@ -101,17 +101,17 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 </head>
 
 <body>
-  <!--menu-->
-  <div id="top-menu">
-    <div id="top-menu-content">
-      <jdoc:include type="modules" name="position-1"/>
-    </div>
+<!--menu-->
+<div id="top-menu">
+  <div id="top-menu-content">
+    <jdoc:include type="modules" name="position-1"/>
   </div>
-  <div id="top-line">
-    <div id="top-line-content">
-      <?php echo htmlspecialchars($templateparams->get('sitedescription'));?>
-    </div>
+</div>
+<div id="top-line">
+  <div id="top-line-content">
+    <?php echo htmlspecialchars($templateparams->get('sitedescription'));?>
   </div>
+</div>
 <div id="all">
   <div id="back">
 
@@ -123,52 +123,46 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
           <img src="<?php echo $this->baseurl ?>/<?php echo htmlspecialchars($logo); ?>"
                alt="<?php echo htmlspecialchars($templateparams->get('sitetitle'));?>"/>
         </div>
+        <div id="social-links"><jdoc:include type="modules" name="fb-link"/></div>
       </div>
       <!-- end logoheader -->
 
-      <jdoc:include type="modules" name="position-1"/>
-      <div id="line">
-        <div id="fontsize"></div>
-        <h3 class="unseen"><?php echo JText::_('TPL_BEEZ5_SEARCH'); ?></h3>
-        <jdoc:include type="modules" name="position-0"/>
-      </div>
+      <!--      <jdoc:include type="modules" name="position-1"/>-->
+      <!--      <div id="line">-->
+      <!--        <div id="fontsize"></div>-->
+      <!--        <h3 class="unseen">--><?php //echo JText::_('TPL_BEEZ5_SEARCH'); ?><!--</h3>-->
+      <!--        <jdoc:include type="modules" name="position-0"/>-->
+      <!--      </div>-->
       <!-- end line -->
 
-      <div id="header-image">
-        <!--			<jdoc:include type="modules" name="position-15" />
-                <?php /*if ($this->countModules('position-15')==0): ?>
-                    <img src="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/images/fruits.jpg"  alt="<?php echo JText::_('TPL_BEEZ5_LOGO'); ?>" />
-                <?php endif;*/ ?>
-    -->
-      </div>
+      <!--      <div id="header-image">-->
+
+      <!--      </div>-->
 
     </header>
     <!-- end header -->
 
+
     <div id="<?php echo $showRightColumn ? 'contentarea2' : 'contentarea'; ?>">
       <div id="breadcrumbs">
 
-        <jdoc:include type="modules" name="position-2"/>
+        <jdoc:include type="modules" name="position-2" />
 
       </div>
 
-      <?php if ($navposition == 'left' and $showleft) : ?>
+      <?php if ($navposition=='left' and $showleft) : ?>
 
-      <?php if (!$this->params->get('html5', 0)): ?>
-							<div class="left1 <?php if ($showRightColumn == NULL) {
-                echo 'leftbigger';
-              } ?>" id="nav">
+      <?php if(!$this->params->get('html5', 0)): ?>
+							<div class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
 						<?php else: ?>
-							<nav class="left1 <?php if ($showRightColumn == NULL) {
-                echo 'leftbigger';
-              } ?>" id="nav">
+							<nav class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
 						<?php endif; ?>
 
-      <jdoc:include type="modules" name="position-7" style="beezDivision" headerLevel="3"/>
-      <jdoc:include type="modules" name="position-4" style="beezHide" headerLevel="3" state="0 "/>
-      <jdoc:include type="modules" name="position-5" style="beezTabs" headerLevel="2" id="3"/>
+      <jdoc:include type="modules" name="position-7" style="beezDivision" headerLevel="3" />
+      <jdoc:include type="modules" name="position-4" style="beezHide" headerLevel="3" state="0 " />
+      <jdoc:include type="modules" name="position-5" style="beezTabs" headerLevel="2"  id="3" />
 
-      <?php if (!$this->params->get('html5', 0)): ?>
+      <?php if(!$this->params->get('html5', 0)): ?>
 							</div><!-- end navi -->
         <?php else: ?>
         </nav>
@@ -176,26 +170,21 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
       <?php endif; ?>
 
-      <div id="<?php echo $showRightColumn ? 'wrapper' : 'wrapper2'; ?>" <?php if (isset($showno)) {
-        echo 'class="shownocolumns"';
-      }?>>
+      <div id="<?php echo $showRightColumn ? 'wrapper' : 'wrapper2'; ?>" <?php if (isset($showno)){echo 'class="shownocolumns"';}?>>
 
         <div id="main">
 
           <?php if ($this->countModules('position-12')): ?>
-          <div id="top">
-            <jdoc:include type="modules" name="position-12"/>
+          <div id="top"><jdoc:include type="modules" name="position-12"   />
           </div>
           <?php endif; ?>
 
-          <jdoc:include type="message"/>
-          <jdoc:include type="component"/>
+          <jdoc:include type="message" />
+          <jdoc:include type="component" />
 
-        </div>
-        <!-- end main -->
+        </div><!-- end main -->
 
-      </div>
-      <!-- end wrapper -->
+      </div><!-- end wrapper -->
 
       <?php if ($showRightColumn) : ?>
       <h2 class="unseen">
@@ -214,32 +203,28 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 				<?php endif; ?>
 
       <a id="additional"></a>
-      <jdoc:include type="modules" name="middle-top" style="beezDivision" headerLevel="3"/>
-      <jdoc:include type="modules" name="middle-middle" style="beezDivision" headerLevel="3"/>
-      <jdoc:include type="modules" name="middle-bottom" style="beezDivision" headerLevel="3"/>
+      <jdoc:include type="modules" name="position-6" style="beezDivision" headerLevel="3"/>
+      <jdoc:include type="modules" name="position-8" style="beezDivision" headerLevel="3"  />
+      <jdoc:include type="modules" name="position-3" style="beezDivision" headerLevel="3"  />
 
-      <?php if (!$templateparams->get('html5', 0)): ?>
+      <?php if(!$templateparams->get('html5', 0)): ?>
 					</div><!-- end right -->
         <?php else: ?>
         </aside>
         <?php endif; ?>
       <?php endif; ?>
 
-      <?php if ($navposition == 'center' and $showleft) : ?>
+      <?php if ($navposition=='center' and $showleft) : ?>
 
       <?php if (!$this->params->get('html5', 0)): ?>
-					<div class="left <?php if ($showRightColumn == NULL) {
-            echo 'leftbigger';
-          } ?>" id="nav">
+					<div class="left <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav" >
 				<?php else: ?>
-					<nav class="left <?php if ($showRightColumn == NULL) {
-            echo 'leftbigger';
-          } ?>" id="nav">
+					<nav class="left <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
 				<?php endif; ?>
 
-      <jdoc:include type="modules" name="position-7" style="beezDivision" headerLevel="3"/>
-      <jdoc:include type="modules" name="position-4" style="beezHide" headerLevel="3" state="0 "/>
-      <jdoc:include type="modules" name="position-5" style="beezTabs" headerLevel="2" id="3"/>
+      <jdoc:include type="modules" name="position-7"  style="beezDivision" headerLevel="3" />
+      <jdoc:include type="modules" name="position-4" style="beezHide" headerLevel="3" state="0 " />
+      <jdoc:include type="modules" name="position-5" style="beezTabs" headerLevel="2"  id="3" />
 
       <?php if (!$templateparams->get('html5', 0)): ?>
 					</div><!-- end navi -->
@@ -250,16 +235,142 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
       <div class="wrap"></div>
 
-    </div>
-    <!-- end contentarea -->
+    </div> <!-- end contentarea -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--    <div id="--><?php //echo $showRightColumn ? 'contentarea2' : 'contentarea'; ?><!--">-->
+<!--      <div id="breadcrumbs">-->
+<!---->
+<!--        <jdoc:include type="modules" name="position-2"/>-->
+<!---->
+<!--      </div>-->
+<!---->
+<!--      --><?php //if ($navposition == 'left' and $showleft) : ?>
+<!---->
+<!--      --><?php //if (!$this->params->get('html5', 0)): ?>
+<!--							<div class="left1 --><?php //if ($showRightColumn == NULL) {
+//                echo 'leftbigger';
+//              } ?><!--" id="nav">-->
+<!--						--><?php //else: ?>
+<!--							<nav class="left1 --><?php //if ($showRightColumn == NULL) {
+//                echo 'leftbigger';
+//              } ?><!--" id="nav">-->
+<!--						--><?php //endif; ?>
+<!---->
+<!--      <jdoc:include type="modules" name="position-7" style="beezDivision" headerLevel="3"/>-->
+<!--      <jdoc:include type="modules" name="position-4" style="beezHide" headerLevel="3" state="0 "/>-->
+<!--      <jdoc:include type="modules" name="position-5" style="beezTabs" headerLevel="2" id="3"/>-->
+<!---->
+<!--      --><?php //if (!$this->params->get('html5', 0)): ?>
+<!--							</div><!-- end navi -->-->
+<!--        --><?php //else: ?>
+<!--        </nav>-->
+<!--        --><?php //endif; ?>
+<!---->
+<!--      --><?php //endif; ?>
+<!---->
+<!--      <div id="--><?php //echo $showRightColumn ? 'wrapper' : 'wrapper2'; ?><!--" --><?php //if (isset($showno)) {
+//        echo 'class="shownocolumns"';
+//      }?><!-->-->
+<!---->
+<!--        <div id="main">-->
+<!--          or here?-->
+<!--          --><?php //if ($this->countModules('position-12')): ?>
+<!--          <div id="top">-->
+<!--            It should be here:-->
+<!--            <jdoc:include type="modules" name="position-12"/>-->
+<!--          </div>-->
+<!--          --><?php //endif; ?>
+<!---->
+<!--          <jdoc:include type="message"/>-->
+<!--          <jdoc:include type="component"/>-->
+<!---->
+<!--        </div>-->
+<!--        <!-- end main -->-->
+<!---->
+<!--      </div>-->
+<!--      <!-- end wrapper -->-->
+<!---->
+<!--      --><?php //if ($showRightColumn) : ?>
+<!--      <h2 class="unseen">-->
+<!--        --><?php //echo JText::_('TPL_BEEZ5_ADDITIONAL_INFORMATION'); ?>
+<!--      </h2>-->
+<!--      <div id="close">-->
+<!--        <a href="#" onclick="auf('right')">-->
+<!--							<span id="bild">-->
+<!--								--><?php //echo JText::_('TPL_BEEZ5_TEXTRIGHTCLOSE'); ?><!--</span></a>-->
+<!--      </div>-->
+<!---->
+<!--      --><?php //if (!$templateparams->get('html5', 0)): ?>
+<!--					<div id="right">-->
+<!--				--><?php //else: ?>
+<!--					<aside id="right">-->
+<!--				--><?php //endif; ?>
+<!---->
+<!--      <a id="additional"></a>-->
+<!--      <jdoc:include type="modules" name="middle-top" style="beezDivision" headerLevel="3"/>-->
+<!--      <jdoc:include type="modules" name="middle-middle" style="beezDivision" headerLevel="3"/>-->
+<!--      <jdoc:include type="modules" name="middle-bottom" style="beezDivision" headerLevel="3"/>-->
+<!---->
+<!--      --><?php //if (!$templateparams->get('html5', 0)): ?>
+<!--					</div><!-- end right -->-->
+<!--        --><?php //else: ?>
+<!--        </aside>-->
+<!--        --><?php //endif; ?>
+<!--      --><?php //endif; ?>
+<!---->
+<!--      --><?php //if ($navposition == 'center' and $showleft) : ?>
+<!---->
+<!--      --><?php //if (!$this->params->get('html5', 0)): ?>
+<!--					<div class="left --><?php //if ($showRightColumn == NULL) {
+//            echo 'leftbigger';
+//          } ?><!--" id="nav">-->
+<!--				--><?php //else: ?>
+<!--					<nav class="left --><?php //if ($showRightColumn == NULL) {
+//            echo 'leftbigger';
+//          } ?><!--" id="nav">-->
+<!--				--><?php //endif; ?>
+<!---->
+<!--      <jdoc:include type="modules" name="position-7" style="beezDivision" headerLevel="3"/>-->
+<!--      <jdoc:include type="modules" name="position-4" style="beezHide" headerLevel="3" state="0 "/>-->
+<!--      <jdoc:include type="modules" name="position-5" style="beezTabs" headerLevel="2" id="3"/>-->
+<!---->
+<!--      --><?php //if (!$templateparams->get('html5', 0)): ?>
+<!--					</div><!-- end navi -->-->
+<!--        --><?php //else: ?>
+<!--        </nav>-->
+<!--        --><?php //endif; ?>
+<!--      --><?php //endif; ?>
+<!---->
+<!--      <div class="wrap"></div>-->
+<!---->
+<!--    </div>-->
+<!--    <!-- end contentarea -->-->
 
   </div>
   <!-- back -->
-
-</div>
-<!-- all -->
-
-<div id="footer-outer">
 
   <?php if ($showbottom) : ?>
   <div id="footer-inner">
@@ -304,6 +415,14 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
     <?php endif; ?>
 
   </div>
+
+
+</div>
+<!-- all -->
+
+<div id="footer-outer">
+
+
 
 </div>
 <jdoc:include type="modules" name="debug"/>
