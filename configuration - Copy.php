@@ -21,7 +21,7 @@ class JConfig {
 	public $secret = 'Oe1zFaqYusCsPGoe';
 	public $gzip = '0';
 	public $error_reporting = 'default';
-	public $helpurl = 'http://help.joomla.org/proxy/index.php?option=com_help&keyref=Help{major}{minor}:{keyref}';
+	public $helpurl = 'http://help.joomla.org/proxy/index.php?option=com_help&amp;keyref=Help{major}{minor}:{keyref}';
 	public $ftp_host = '127.0.0.1';
 	public $ftp_port = '21';
 	public $ftp_user = '';
@@ -29,6 +29,7 @@ class JConfig {
 	public $ftp_root = '';
 	public $ftp_enable = '0';
 	public $offset = 'UTC';
+	public $offset_user = 'UTC';
 	public $mailer = 'mail';
 	public $mailfrom = 'ewaring@alliancepublishingpress.com';
 	public $fromname = 'Alliance Publishing Press';
@@ -53,16 +54,8 @@ class JConfig {
 	public $sef_suffix = '0';
 	public $unicodeslugs = '0';
 	public $feed_limit = '10';
-	public $log_path = 'P:\\wamp\\www\\APP/logs';
-	public $tmp_path = 'P:\\wamp\\www\\APP/tmp';
-//  public $log_path = '/home/sites/appress.co.uk/public_html/logs';
-//  public $tmp_path = '/home/sites/appress.co.uk/public_html/tmp';
-	public $lifetime = '60';
+	public $log_path = '/home/sites/appress.co.uk/public_html/logs';
+	public $tmp_path = '/home/sites/appress.co.uk/public_html/tmp';
+	public $lifetime = '15';
 	public $session_handler = 'database';
-	public $MetaRights = '';
-	public $sitename_pagetitles = '0';
-	public $force_ssl = '0';
-	public $feed_email = 'author';
-	public $cookie_domain = '';
-	public $cookie_path = '';
 }

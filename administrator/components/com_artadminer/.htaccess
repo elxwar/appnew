@@ -1,0 +1,4 @@
+#AuthUserFile 'P:\\wamp\\www\\APP/.htpasswd'
+#AuthType Basic
+#AuthName "My Files"
+#Require valid-user

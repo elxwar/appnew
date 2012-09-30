@@ -13,10 +13,12 @@ defined('_JEXEC') or die;
 $showRightColumn = ($this->countModules('middle-bottom') or $this->countModules('middle-top') or $this->countModules('middle-middle'));
 $showbottom = ($this->countModules('position-9') or $this->countModules('position-10') or $this->countModules('position-11'));
 $showleft = ($this->countModules('position-4') or $this->countModules('position-7') or $this->countModules('position-5'));
+$pageClass = strtolower(str_replace(" ","_",$this->title));
 
-if ($showRightColumn == 0 and $showleft == 0) {
+if ($pageClass == 'home'|| ($showRightColumn == 0 and $showleft == 0)) {
   $showno = 0;
 }
+
 
 JHtml::_('behavior.framework', true);
 
@@ -112,17 +114,24 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
         <?php echo htmlspecialchars($templateparams->get('sitedescription'));?>
       </div>
     </div>
-    <div id="all">
+
+    <div id="all" class = "<?php echo $pageClass ?>">
       <div id="back">
 
 
-        <header id="header">
+        <header id="header" class = "<?php echo $pageClass ?>">
 
           <div class="logoheader">
+
             <div id="logo">
-              <img src="<?php echo $this->baseurl ?>/<?php echo htmlspecialchars($logo); ?>"
-                   alt="<?php echo htmlspecialchars($templateparams->get('sitetitle'));?>"/>
+              <?php if ($pageClass != 'home'):  ?>
+                <img src="<?php echo $this->baseurl ?>/<?php echo htmlspecialchars($logo); ?>"
+                     alt="<?php echo htmlspecialchars($templateparams->get('sitetitle'));?>"/>
+              <?php else: ?>
+                <img src="images/APP_logo_white-with_horiz_text_transparent.png" alt="<?php echo htmlspecialchars($templateparams->get('sitetitle'));?>"/>
+              <?php endif; ?>
             </div>
+
             <div id="social-links"><jdoc:include type="modules" name="fb-link"/></div>
           </div>
           <!-- end logoheader -->
@@ -133,30 +142,32 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
         <!-- end header -->
 
 
-        <div id="<?php echo $showRightColumn ? 'contentarea2' : 'contentarea'; ?>">
-          <div id="breadcrumbs">
+        <div id="<?php echo $showRightColumn ? 'contentarea2' : 'contentarea'; ?>" class = "<?php echo $pageClass ?>">
+<!--          <div id="breadcrumbs">-->
+<!---->
+<!--            <jdoc:include type="modules" name="position-2" />-->
+<!---->
+<!--          </div>-->
 
-            <jdoc:include type="modules" name="position-2" />
 
-          </div>
+          <?php if ($pageClass != 'home'):  ?>
+            <?php if(!$this->params->get('html5', 0)): ?>
+                <div class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
+            <?php else: ?>
+                <nav class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
+            <?php endif; ?>
 
+              <jdoc:include type="modules" name="position-7" style="beezDivision" headerLevel="3" />
+              <!-- <jdoc:include type="modules" name="position-4" style="beezHide" headerLevel="3" state="0 " />
+              <jdoc:include type="modules" name="position-5" style="beezTabs" headerLevel="2"  id="3" /> -->
 
-
-          <?php if(!$this->params->get('html5', 0)): ?>
-    					<div class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
-    			<?php else: ?>
-    					<nav class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
-    		  <?php endif; ?>
-
-            <jdoc:include type="modules" name="position-7" style="beezDivision" headerLevel="3" />
-            <!-- <jdoc:include type="modules" name="position-4" style="beezHide" headerLevel="3" state="0 " />
-            <jdoc:include type="modules" name="position-5" style="beezTabs" headerLevel="2"  id="3" /> -->
-
-          <?php if(!$this->params->get('html5', 0)): ?>
-    				</div><!-- end navi -->
-          <?php else: ?>
-            </nav>
+            <?php if(!$this->params->get('html5', 0)): ?>
+              </div><!-- end navi -->
+            <?php else: ?>
+              </nav>
+            <?php endif; ?>
           <?php endif; ?>
+
 
 
 
@@ -164,13 +175,20 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
             <div id="main">
 
-              <?php if ($this->countModules('position-12')): ?>
-              <div id="top"><jdoc:include type="modules" name="position-12"   />
-              </div>
-              <?php endif; ?>
+              <?php if ($pageClass != 'home'):  ?>
+                <?php if ($this->countModules('position-12')): ?>
+                <div id="top"><jdoc:include type="modules" name="position-12"   />
+                </div>
+                <?php endif; ?>
 
-              <jdoc:include type="message" />
-              <jdoc:include type="component" />
+                <jdoc:include type="message" />
+                <jdoc:include type="component" />
+              <?php else: ?>
+                <div id = "home-columns">
+                  <div id="home-left"><jdoc:include type="modules" name="homepage-left" /> </div>
+                  <div id="home-right"><jdoc:include type="modules" name="homepage-right" /> </div>
+                </div>
+              <?php endif; ?>
 
             </div><!-- end main -->
 
@@ -268,5 +286,8 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
     </div>
     <jdoc:include type="modules" name="debug"/>
   </body>
-  ?php var_dump($this);?>
+  <?php if ($this->title != 'home'):  ?>
+    <?php echo $this->title; ?>
+  <?php endif; ?>
+  <?php var_dump($this); ?>
 </html>

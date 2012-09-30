@@ -249,7 +249,7 @@ h1#logo
 
 .shownocolumns
 {
-        width:98% !important;
+        width:100% !important;
 }
 
 #top
@@ -364,10 +364,10 @@ h1#logo
 
 #footer-inner
 {
-        max-width:1025px;
+        max-width:95%;
         margin:0 auto;
         font-size:0.8em;
-        padding:10px 15px 15px 10px;
+        padding:10px 10px 15px 10px;
 }
 
 img { border: 0 none; }
