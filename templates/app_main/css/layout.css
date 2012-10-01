@@ -2321,19 +2321,26 @@ div.feed {
 }
 
 .custom_home{
-  padding: 20px;
+  padding: 20px 40px;
+}
+#home-right .custom_home{
+  padding: 20px 90px;
 }
 
 #home-left, #home-right{
-  background-color:#9F0C15;
-  -moz-box-shadow: inset 0 10px 22px rgba(0,0,0,0.5);
-  -webkit-box-shadow: inset 0 10px 22px rgba(0,0,0,0.5);
-  -o-box-shadow: inset 0 10px 22px rgba(0,0,0,0.5);
-  box-shadow: inset 0 10px 22px rgba(0,0,0,0.5);
+  background-color:#963f40;
+  -moz-box-shadow: inset 0 10px 22px rgba(0,0,0,0.3);
+  -webkit-box-shadow: inset 0 10px 22px rgba(0,0,0,0.3);
+  -o-box-shadow: inset 0 10px 22px rgba(0,0,0,0.3);
+  box-shadow: inset 0 10px 22px rgba(0,0,0,0.3);
+  opacity:0.80;
+  filter:alpha(opacity=80); /* For IE8 and earlier */
   float: left;
   width: 49%;
-  height: 10em;
+  height: 9em;
   vertical-align: top;
+  margin-top: 0.1em;
+  padding-top: 0.5em;
 }
 
 #home-left{

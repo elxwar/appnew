@@ -1274,5 +1274,9 @@ div.sample-module {
 #home-left, #home-right{
   color: #ffffff;
   font-family: Georgia,Utopia,Palatino,'Palatino Linotype',Times, "Times New Roman",serif;
-  font-size: 2.5em;
+  font-size: 3em;
+  font-weight: lighter;
+}
+#home-left p, #home-right p{
+  line-height: 1.3em;
 }

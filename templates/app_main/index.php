@@ -51,6 +51,11 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
           type="text/css" media="Print"/>
     <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/beez5.css"
           type="text/css"/>
+    <link rel="stylesheet" media="only screen and (max-width: 1023px)" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/max1100.css"
+          type="text/css"/>
+
+<!-- other sizes: 1200, 1023, 900, @media handheld, only screen and (max-width: 767px) iphone: @media only screen and (-webkit-min-device-pixel-ratio: 2) -->
+
     <?php
     $files = JHtml::_('stylesheet', 'templates/' . $this->template . '/css/general.css', null, false, true);
     if ($files):
