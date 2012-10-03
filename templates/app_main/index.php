@@ -271,8 +271,8 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
           <jdoc:include type="modules" name="position-14"/>
           <p>
-            <?php echo JText::_('TPL_BEEZ5_POWERED_BY');?> <a href="http://www.joomla.org/">Joomla!&#174;</a>
-          </p>
+<!--             <?php echo JText::_('TPL_BEEZ5_POWERED_BY');?> <a href="http://www.joomla.org/">Joomla!&#174;</a>
+ -->          </p>
 
         <?php if (!$templateparams->get('html5', 0)): ?>
     			</div><!-- end footer -->

@@ -155,7 +155,7 @@ em
 {
   /*text-transform:uppercase;*/
   padding:3px 0px 3px 0px;
-  display:inline
+  display:inline;
 }
 
 #top-menu-content ul.menu li
@@ -1444,8 +1444,7 @@ legend.element-invisible
 /* #################### footer ############################ */
 #footer-sub
 {
-
-  padding:0px
+  padding:0px 20px;
 }
 #footer
 {

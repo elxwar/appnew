@@ -15,8 +15,8 @@
 }
 
 body {
-  background: #eee url(../images/header_outer.jpg) repeat-x;
-  color: #333;
+  background: #ffffff;
+  color: #333333;
   font-family: Arial,FreeSans,Helvetica,sans-serif;
 }
 
@@ -1055,10 +1055,9 @@ body.contentpane {
 
 #footer {
 
-  background: #333333 url(../images/tabs_back.png) repeat-x;
-  color: #fff;
-  border-top: solid 0px #ccc;
-
+  background: #7A7C82;
+  color: #ffffff;
+  /*border-top: solid 0px #ccc;*/
 }
 
 #footer-inner {
@@ -1279,4 +1278,8 @@ div.sample-module {
 }
 #home-left p, #home-right p{
   line-height: 1.3em;
+}
+
+#top-menu {
+  background-color: #7A7C82;
 }
