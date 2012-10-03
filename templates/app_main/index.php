@@ -162,7 +162,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
                 <nav class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
             <?php endif; ?>
 
-              <jdoc:include type="modules" name="position-7" style="beezDivision" headerLevel="3" />
+              <jdoc:include type="modules" name="main-left-menu" style="beezDivision" headerLevel="3" />
               <!-- <jdoc:include type="modules" name="position-4" style="beezHide" headerLevel="3" state="0 " />
               <jdoc:include type="modules" name="position-5" style="beezTabs" headerLevel="2"  id="3" /> -->
 

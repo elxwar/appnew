@@ -51,6 +51,11 @@
     <position>blog-link</position>
     <position>homepage-left</position>
     <position>homepage-right</position>
+    <position>main-left-menu</position>
+    <position>main-left-bottom</position>
+    <position>main-mid</position>
+    <position>main-right</position>
+
 	</positions>
 
 	<!-- 	For core templates, we also install/uninstall the language files in the core language folders.
