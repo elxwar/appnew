@@ -1,0 +1,17 @@
+div.controls input#jform_params_ftfamily, div.controls input#jform_params_ftsize  {
+    height: 15px;
+    position: relative;
+    right: 0;
+    top: 0;
+    width: 190px;
+	z-Index: 1000 !important;
+}
+
+div.controls div#jform_params_ftfamily_chzn, div.controls div#jform_params_ftsize_chzn {
+    left: -204px;
+    position: relative;
+    top: 9px;
+    width: 224px;
+    z-index: 1;
+}
+
