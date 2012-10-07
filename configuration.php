@@ -5,7 +5,7 @@ class JConfig {
 	public $display_offline_message = '1';
 	public $offline_image = '';
 	public $sitename = 'Alliance Publishing Press';
-	public $editor = 'tinymce';
+	public $editor = 'jce';
 	public $captcha = '0';
 	public $list_limit = '20';
 	public $access = '1';
@@ -55,8 +55,6 @@ class JConfig {
 	public $feed_limit = '10';
 	public $log_path = 'P:\\wamp\\www\\APP/logs';
 	public $tmp_path = 'P:\\wamp\\www\\APP/tmp';
-//  public $log_path = '/home/sites/appress.co.uk/public_html/logs';
-//  public $tmp_path = '/home/sites/appress.co.uk/public_html/tmp';
 	public $lifetime = '60';
 	public $session_handler = 'database';
 	public $MetaRights = '';

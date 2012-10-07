@@ -78,7 +78,7 @@ body
 
 #wrapper2
 {
-	width:72%;
+	width:65%;
 	float:left;
 	position:relative;
 	padding-bottom:20px
@@ -140,7 +140,17 @@ body
 
 .leftbigger
 {
-        width:25%
+        width:32%;
+        height: 800px;
+}
+
+
+.leftbigger .moduletable {
+    padding-left: 20px;
+}
+
+.leftbigger li {
+    padding-bottom: 8px;
 }
 
 

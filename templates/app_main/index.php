@@ -161,7 +161,6 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
             <?php else: ?>
                 <nav class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
             <?php endif; ?>
-
               <jdoc:include type="modules" name="main-left-menu" style="beezDivision" headerLevel="3" />
 
             <?php if(!$this->params->get('html5', 0)): ?>
@@ -181,12 +180,12 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
               <?php if ($pageClass != 'home'):  ?>
                 <?php if ($this->countModules('position-12')): ?>
-                <!-- <div id="top"><jdoc:include type="modules" name="position-12"   /> -->
+                <div id="top"><jdoc:include type="modules" name="position-12"   />
                 </div>
                 <?php endif; ?>
 
-                <!-- <jdoc:include type="message" /> -->
-                <!-- <jdoc:include type="component" /> -->
+                <jdoc:include type="message" />
+                <jdoc:include type="component" />
               <?php else: ?>
                 <div id = "home-columns">
                   <div id="home-left"><jdoc:include type="modules" name="homepage-left" /> </div>
@@ -288,7 +287,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
     <div id="footer-outer">
 
     </div>
-    <jdoc:include type="modules" name="debug"/>
+<!--     <jdoc:include type="modules" name="debug"/> -->
   </body>
 <!--   <?php if ($this->title != 'home'):  ?>
     <?php echo $this->title; ?>

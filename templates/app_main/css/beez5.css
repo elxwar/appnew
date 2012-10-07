@@ -16,12 +16,12 @@
 
 body {
   background: #ffffff;
-  color: #333333;
+  color: #272525;
   font-family: Arial,FreeSans,Helvetica,sans-serif;
 }
 
 #all {
-  color: #333;
+  color: #272525;
   border: solid 0px #ddd !important;
 }
 
@@ -31,7 +31,8 @@ body {
 
 a:link,
 a:visited {
-  color: #7BA428
+  color: #B03A32;
+  text-decoration: none;
 }
 
 a:hover,
@@ -58,6 +59,9 @@ fieldset {
   border-right: solid 0px;
 
 }
+
+/* Back to top link */
+div.itemBackToTop {display: none;}
 
 /* ##########################  logo  ########################### */
 #header {
@@ -151,10 +155,10 @@ fieldset {
   /*background: #7ba428 !important*/
 }
 
-#social-links{font-size: 10px; line-height: 1.2em; color: #dddddd;}
+#social-links{font-size: 10px; line-height: 1.2em; color: #aaaaaa;}
 
 #social-links ul.menu li a:link, #social-links ul.menu li a:visited{
-  color: #dddddd;
+  color: #aaaaaa;
 }
 /* ++++++++++++++  fontsize  ++++++++++++++ */
 
@@ -246,8 +250,9 @@ fieldset {
 }
 
 #nav h3 {
-  border-bottom: solid 1px #ddd;
-  color: #444;
+  color: #ffffff;
+  text-transform:uppercase;
+
 }
 
 h3.js_heading {
@@ -546,10 +551,11 @@ ul#archive-items li.row1 {
 /* ++++++++++++++++++++ headings +++++++++++++ */
 
 #main h1 {
-  color: #444;
+  color: #5C5A54;
   border-top: solid 0px #ddd;
-  border-bottom: solid 1px #ddd;
+  /*border-bottom: solid 1px #ddd;*/
   font-family: Georgia,Utopia,Palatino,'Palatino Linotype',Times, "Times New Roman",serif;
+
 
 }
 
@@ -1283,3 +1289,25 @@ div.sample-module {
 #top-menu {
   background-color: #7A7C82;
 }
+
+.leftbigger {
+  color: #ffffff;
+  background: #892d27; /* Old browsers */
+  background: -moz-linear-gradient(left,  #892d27 0%, #64231e 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,#892d27), color-stop(100%,#64231e)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left,  #892d27 0%,#64231e 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left,  #892d27 0%,#64231e 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(left,  #892d27 0%,#64231e 100%); /* IE10+ */
+  background: linear-gradient(to right,  #892d27 0%,#64231e 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#892d27', endColorstr='#64231e',GradientType=1 ); /* IE6-9 */
+}
+
+.leftbigger a:link, .leftbigger a:visited{
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 1.5em;
+  font-weight: lighter;
+  line-height: 1.5em;
+  letter-spacing: 0.06em;
+}
+
