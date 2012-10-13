@@ -40,6 +40,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
   <?php endif; ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->language; ?>"
       lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
+
   <head>
     <jdoc:include type="head"/>
     <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/system/css/system.css" type="text/css"/>
@@ -107,7 +108,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
   </head>
 
-    <body>
+    <body id= "<?php echo $pageClass ?>" >
     <!--menu-->
     <div id="top-menu">
       <div id="top-menu-content">
@@ -148,14 +149,8 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
 
         <div id="<?php echo $showRightColumn ? 'contentarea2' : 'contentarea'; ?>" class = "<?php echo $pageClass ?> <?php if ($pageClass != 'home') {echo 'showcolumns';} ?>">
-<!--          <div id="breadcrumbs">-->
-<!---->
-<!--            <jdoc:include type="modules" name="position-2" />-->
-<!---->
-<!--          </div>-->
 
-
-          <?php if ($pageClass != 'home'):  ?>
+          <?php if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people'):  ?>
             <?php if(!$this->params->get('html5', 0)): ?>
                 <div class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
             <?php else: ?>
@@ -179,10 +174,6 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
             <div id="main">
 
               <?php if ($pageClass != 'home'):  ?>
-                <?php if ($this->countModules('position-12')): ?>
-                <div id="top"><jdoc:include type="modules" name="position-12"   />
-                </div>
-                <?php endif; ?>
 
                 <jdoc:include type="message" />
                 <jdoc:include type="component" />
@@ -197,7 +188,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
           </div><!-- end wrapper -->
 
-          <?php if ($pageClass != 'home'):  ?>
+          <?php if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people'):  ?>
             <div class = 'main-left-bottom'>
               <jdoc:include type="modules" name="main-left-bottom" />
             </div>
@@ -293,10 +284,15 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
     <div id="footer-outer">
 
     </div>
- <!--    <jdoc:include type="modules" name="debug"/> -->
+    <!-- <jdoc:include type="modules" name="debug"/> -->
   </body>
- <!--  <?php if ($this->title != 'home'):  ?>
-    <?php echo $this->title; ?>
+
+
+
+  <?php if ($this->title != 'home'):  ?>
+    <?php echo $this->title; ?> <br />
   <?php endif; ?>
-  <?php var_dump($this); ?> -->
+  Page class: <?php echo $pageClass; ?>
+  <?php var_dump($this); ?>
+
 </html>

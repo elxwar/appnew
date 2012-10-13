@@ -1448,6 +1448,10 @@ legend.element-invisible
 #footer-sub
 {
   padding:0px 20px;
+  clear: both;
+  border-left: 20px solid #892d27;
+  padding-left: 0;
+  margin-left: 20px;
 }
 #footer
 {

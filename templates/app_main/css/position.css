@@ -12,29 +12,29 @@
  * details.
  */
 
-/* not ready */
+ /* not ready */
 
-*
-{
-        margin: 0;
-        padding: 0;
+ *
+ {
+  margin: 0;
+  padding: 0;
 }
 
 body
 {
-    font-size: 100.01%;
-    padding: 0px;
-    text-align: center;
-    position:relative;
+  font-size: 100.01%;
+  padding: 0px;
+  text-align: center;
+  position:relative;
 }
 
 /* ###################### general ###################### */
 #all
 {
-    margin: 0 auto;
-    max-width:1050px;
-    padding: 0px;
-    text-align: left;
+  margin: 0 auto;
+  max-width:1050px;
+  padding: 0px;
+  text-align: left;
 }
 #top-line-content, #top-menu-content{
   margin: 0 auto;
@@ -45,26 +45,28 @@ body
 }
 #header
 {
-    display:block ;
-    position:relative;
-    padding:0px;
-    overflow:hidden;
-    min-width: 815px;
+  display:block ;
+  position:relative;
+  padding:0px;
+  overflow:hidden;
+  min-width: 815px;
 }
 
 #back
 {
-        margin: 0;
-        padding:0px;
+  margin: 0;
+  padding:0px;
+  margin-bottom: 10px;
 }
 
 #contentarea,
 #contentarea2
 {
 	position:relative;
-    overflow:hidden;
-    padding:0px 20px ;
-    margin:0;
+  overflow:hidden;
+  padding:0px 20px ;
+  margin:0;
+  height:100%;
 
 }
 
@@ -79,21 +81,41 @@ body
 #wrapper2
 {
 	width:65%;
-	/*float:right;*/
-	/*position:absolute;*/
-	/*padding-bottom:20px;*/
-    /*left: 34%;*/
-
-    float:left;
-   	position:relative;
-   	padding-bottom:20px
+  float:left;
+  position:relative;
+  padding-bottom:20px
 }
 
 .showcolumns #wrapper2 {
-   	float:right;
-   	/*position:absolute;*/
-   	padding-bottom:20px;
-    /*left: 34.5%;*/
+  float:right;
+  padding-bottom:20px;
+}
+
+.our_services #contentarea, .app_people #contentarea {
+  margin-top: 10px;
+}
+
+.our_services #main, .app_people #main {
+  padding-top: 0;
+}
+
+.our_services #wrapper2, .app_people #wrapper2
+{
+  float: left;
+  width: 100%;
+}
+
+.our_services table, .app_people table {
+  border-collapse: separate;
+}
+
+.app_people #peeps {
+  margin-top: -24px;
+}
+
+.app_people #peeps td p, .app_people #peeps img{
+  margin: 0 20px;
+
 }
 
 
@@ -101,18 +123,18 @@ body
 {max-width:660px}
 #main
 {
-    padding: 10px 0px 20px 0px;
-    position: relative;
-    min-height:320px;
+  padding: 10px 0px 20px 0px;
+  position: relative;
+  min-height:320px;
 }
 
 #right
 {
-    float:left;
-    width: 20%;
-    margin:10px 0px 10px 2%;
-    padding:0px 0px 5px 0px;
-    position:relative;
+  float:left;
+  width: 20%;
+  margin:10px 0px 10px 2%;
+  padding:0px 0px 5px 0px;
+  position:relative;
 
 
 }
@@ -120,49 +142,52 @@ body
 .unseen,
 .hidelabeltxt
 {
-        display: inline;
-    height: 0px;
-    left: -3000px;
-    position: absolute;
-    top: -2000px;
-    width: 0px;
+  display: inline;
+  height: 0px;
+  left: -3000px;
+  position: absolute;
+  top: -2000px;
+  width: 0px;
 }
 
 /* ++++++++++++++  nav after content  ++++++++++++++ */
 .left
 {
-        padding-top:0px;
-        float:right;
-        margin:10px 0px 10px 0%;
-        width: 22%;
-        position:relative;
+  padding-top:0px;
+  float:right;
+  margin:10px 0px 10px 0%;
+  width: 22%;
+  position:relative;
 
 }
 
 /* ++++++++++++++  nav before content  ++++++++++++++ */
 .left1
 {
-    padding:0px 0 0 0px;
-    float: left;
-    margin:10px 3% 10px 0px;
-    width: 21%;
-        position:relative
+  padding:0px 0 0 0px;
+  float: left;
+  margin:10px 3% 10px 0px;
+  width: 21%;
+  position:relative
 }
 
 .leftbigger
 {
-        width:32%;
-        height: 75%;
-        min-height: 650px;
+  width:32%;
+  min-height: 650px;
+  height: auto !important;
+  height: 90%;
+  overflow: auto;
+  
 }
 
 
 .leftbigger .moduletable {
-    padding: 0 20px;
+  padding: 0 20px;
 }
 
 .leftbigger li {
-    padding-bottom: 8px;
+  padding-bottom: 8px;
 }
 
 
@@ -171,21 +196,21 @@ body
 
 .wrap
 {
-        border: 0;
-    clear: both;
-    float: none;
-    font-size: 1px;
-    height: 0;
-    line-height: 1px;
-    margin: 0;
-    padding: 0;
-    visibility: hidden;
+  border: 0;
+  clear: both;
+  float: none;
+  font-size: 1px;
+  height: 0;
+  line-height: 1px;
+  margin: 0;
+  padding: 0;
+  visibility: hidden;
 }
 
 h1#logo
 {
-        font-size:3.5em;
-        line-height:1.0em;
+  font-size:3.5em;
+  line-height:1.0em;
 }
 
 #logo
@@ -194,18 +219,18 @@ h1#logo
 
 #logo img
 {
-        display: block;
-        }
+  display: block;
+}
 
 
 
 .logoheader
 {
-        margin:0;
-        padding:0;
-        text-align:left;
-        font-weight:normal;
-        line-height:1.5em;
+  margin:0;
+  padding:0;
+  text-align:left;
+  font-weight:normal;
+  line-height:1.5em;
 
 
 }
@@ -219,22 +244,22 @@ h1#logo
 
 #close
 {
-        margin-right:0px;
-        font-size:0.85em;
-        text-transform:uppercase;
+  margin-right:0px;
+  font-size:0.85em;
+  text-transform:uppercase;
 }
 
 #close span
 {
-        position:absolute;
-        right: 20px;
-    z-index:10000;
-    top:5px;
-    width:7em;
-    font-weight:bold;
-    text-align:right;
-    line-height:1.5em;
-    padding:5px 2px 5px 5px
+  position:absolute;
+  right: 20px;
+  z-index:10000;
+  top:5px;
+  width:7em;
+  font-weight:bold;
+  text-align:right;
+  line-height:1.5em;
+  padding:5px 2px 5px 5px
 }
 
 
@@ -244,152 +269,152 @@ h1#logo
 
 .blog-featured
 {
-        padding: 0;
+  padding: 0;
 }
 
 .items-leading
 {
-        padding:0px 5px 10px 5px;
-        overflow:hidden;
-        margin-bottom:10px
+  padding:0px 5px 10px 5px;
+  overflow:hidden;
+  margin-bottom:10px
 }
 
 .row-separator
 {
-        display: block;
-        clear: both;
-        margin: 0;
-        border: 0px;
-        height:1px
+  display: block;
+  clear: both;
+  margin: 0;
+  border: 0px;
+  height:1px
 }
 
 .item-separator
 {
-        display: none;
-        margin: 0px;
+  display: none;
+  margin: 0px;
 }
 
 .shownocolumns
 {
-        width:100% !important;
+  width:100% !important;
 }
 
 #top
 {
-        margin:0 0 20px 0;
-        overflow:hidden
+  margin:0 0 20px 0;
+  overflow:hidden
 }
 
 /* ++++++++++++++  blog  ++++++++++++++ */
 
 .cols-1
 {
-        display: block;
-        float: none !important;
-        margin: 0 !important;
+  display: block;
+  float: none !important;
+  margin: 0 !important;
 }
 
 .cols-2 .column-1
 {
-        width:46%;
-        float:left;
+  width:46%;
+  float:left;
 }
 
 .cols-2 .column-2
 {
-        width:46%;
-        float:right;
-        margin:0
+  width:46%;
+  float:right;
+  margin:0
 }
 
 .cols-3 .column-1
 {
-        float:left;
-        width:29%;
-        padding:0px 5px;
-        margin-right:4%
+  float:left;
+  width:29%;
+  padding:0px 5px;
+  margin-right:4%
 
 }
 .cols-3 .column-2
 {
-        float:left;
-        width:29%;
-        margin-left:0;
-        padding:0px 5px
+  float:left;
+  width:29%;
+  margin-left:0;
+  padding:0px 5px
 }
 .cols-3 .column-3
 {
-        float:right;
-        width:29%;
-        padding:0px 5px
+  float:right;
+  width:29%;
+  padding:0px 5px
 }
 
 .items-row
 {
-        overflow:hidden;
-        margin-bottom:10px !important;
+  overflow:hidden;
+  margin-bottom:10px !important;
 }
 
 .column-1,
 .column-2,
 .column-3
 {
-        padding:10px 5px
+  padding:10px 5px
 }
 
 .column-2
 {
-        width:55%;
-        margin-left:40%;
+  width:55%;
+  margin-left:40%;
 }
 
 .column-3
 {
-        width:30%
+  width:30%
 }
 
 .blog-more
 {
-        padding:10px 5px
+  padding:10px 5px
 }
 
 /* ++++++++++++++  footer  ++++++++++++++ */
 
 #bottom
 {
-        overflow:hidden
+  overflow:hidden
 }
 
 .box
 {
-        width:27%;
-        float:left;
-        margin-right:10px;
-        min-height:100px;
-        position:relative
+  width:27%;
+  float:left;
+  margin-right:10px;
+  min-height:100px;
+  position:relative
 }
 
 .box1
 {
-        width:35%
+  width:35%
 }
 
 .box2
 {
-        width:32%
+  width:32%
 }
 
 .box3
 {
-        float:right
+  float:right
 }
 
 #footer-inner
 {
-        max-width:95%;
-        margin:0 auto;
-        font-size:0.8em;
-        padding:10px 10px 15px 10px;
+  max-width:95%;
+  margin:0 auto;
+  font-size:0.8em;
+  padding:10px 10px 15px 10px;
 }
 
 img { border: 0 none; }

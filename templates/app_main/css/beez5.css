@@ -1305,9 +1305,9 @@ div.sample-module {
   background-color: #7A7C82;
 }
 
-.leftbigger {
+.leftbigger, .our_services #wrapper2, .app_people #wrapper2 {
   color: #ffffff;
-  background: #892d27; /* Old browsers */
+  background: #892d27 url(../../../images/word-cloud-colour.png)  right top; /* Old browsers */
   background: -moz-linear-gradient(left,  #892d27 0%, #64231e 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, right top, color-stop(0%,#892d27), color-stop(100%,#64231e)); /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(left,  #892d27 0%,#64231e 100%); /* Chrome10+,Safari5.1+ */
@@ -1315,6 +1315,19 @@ div.sample-module {
   background: -ms-linear-gradient(left,  #892d27 0%,#64231e 100%); /* IE10+ */
   background: linear-gradient(to right,  #892d27 0%,#64231e 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#892d27', endColorstr='#64231e',GradientType=1 ); /* IE6-9 */
+  background: #892d27 url(../../../images/word-cloud-colour.png)  right top;
+}
+
+
+/*.our_services #wrapper2:after{
+  content: url(../../../images/red_cloth.png) ;
+}*/
+
+.our_services #wrapper2  h1, .app_people #wrapper2 h1 {
+  color: #ffffff;
+  padding-top: 7px;
+  margin-bottom: 0;
+
 }
 
 .leftbigger a:link, .leftbigger a:visited{
