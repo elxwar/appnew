@@ -42,7 +42,7 @@ if (count($messages))
 	<!-- <?php echo($app->scope . " " . $xml->version->data() . " " . $xml->license->data()); ?> -->
 	<?php echo($form_text); ?>
 </form>
-<a href="http://www.fox.ra.it/" title="Joomla contact form" target="_blank">powered by fox contact</a>
+<!-- <a href="http://www.fox.ra.it/" title="Joomla contact form" target="_blank">powered by fox contact</a> -->
 <?php } ?>
 
 </div>  <!-- class="foxcontainer + pageclass_sfx" -->

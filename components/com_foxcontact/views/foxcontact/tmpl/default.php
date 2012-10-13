@@ -57,7 +57,7 @@
 		<!-- <?php echo("com_" . $this->_name . " " . $xml->version->data() . " " . $xml->license->data()); ?> -->
 		<?php echo($this->FormText); ?>
 	</form>
-	<a href="http://www.fox.ra.it/" title="Joomla contact form" target="_blank">powered by fox contact</a>
+	<!-- <a href="http://www.fox.ra.it/" title="Joomla contact form" target="_blank">powered by fox contact</a> -->
 	<?php
 	}
 	echo('</div>');  // class="foxcontainer + pageclass_sfx"

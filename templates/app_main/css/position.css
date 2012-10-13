@@ -79,10 +79,21 @@ body
 #wrapper2
 {
 	width:65%;
-	float:left;
-	position:relative;
-	padding-bottom:20px
+	/*float:right;*/
+	/*position:absolute;*/
+	/*padding-bottom:20px;*/
+    /*left: 34%;*/
 
+    float:left;
+   	position:relative;
+   	padding-bottom:20px
+}
+
+.showcolumns #wrapper2 {
+   	float:right;
+   	position:absolute;
+   	padding-bottom:20px;
+    left: 34.5%;
 }
 
 
@@ -141,12 +152,12 @@ body
 .leftbigger
 {
         width:32%;
-        height: 800px;
+        height: 75%;
 }
 
 
 .leftbigger .moduletable {
-    padding-left: 20px;
+    padding: 0 20px;
 }
 
 .leftbigger li {

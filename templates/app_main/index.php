@@ -147,7 +147,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
         <!-- end header -->
 
 
-        <div id="<?php echo $showRightColumn ? 'contentarea2' : 'contentarea'; ?>" class = "<?php echo $pageClass ?>">
+        <div id="<?php echo $showRightColumn ? 'contentarea2' : 'contentarea'; ?>" class = "<?php echo $pageClass ?> <?php if ($pageClass != 'home') {echo 'showcolumns';} ?>">
 <!--          <div id="breadcrumbs">-->
 <!---->
 <!--            <jdoc:include type="modules" name="position-2" />-->
@@ -168,7 +168,9 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
             <?php else: ?>
               </nav>
             <?php endif; ?>
-            <jdoc:include type="modules" name="main-left-bottom" />
+            <div class = 'main-left-bottom'>
+                <jdoc:include type="modules" name="main-left-bottom" />
+            </div>
           <?php endif; ?>
 
 
@@ -287,9 +289,9 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
     <div id="footer-outer">
 
     </div>
-<!--     <jdoc:include type="modules" name="debug"/> -->
+ <!--    <jdoc:include type="modules" name="debug"/> -->
   </body>
-<!--   <?php if ($this->title != 'home'):  ?>
+ <!--  <?php if ($this->title != 'home'):  ?>
     <?php echo $this->title; ?>
   <?php endif; ?>
   <?php var_dump($this); ?> -->
