@@ -168,9 +168,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
             <?php else: ?>
               </nav>
             <?php endif; ?>
-            <div class = 'main-left-bottom'>
-                <jdoc:include type="modules" name="main-left-bottom" />
-            </div>
+
           <?php endif; ?>
 
 
@@ -198,6 +196,12 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
             </div><!-- end main -->
 
           </div><!-- end wrapper -->
+
+          <?php if ($pageClass != 'home'):  ?>
+            <div class = 'main-left-bottom'>
+              <jdoc:include type="modules" name="main-left-bottom" />
+            </div>
+          <?php endif; ?>
 
           <?php if ($showRightColumn) : ?>
             <h2 class="unseen">

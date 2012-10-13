@@ -2407,6 +2407,14 @@ div.feed {
   margin-bottom: 4px;
 }
 
+.foxcontainer h2 {
+  padding: 10px 0 3px 19px;
+}
+
+.foxform {
+  padding: 0 19px 10px 19px;
+}
+
 .foxform div {
   margin-bottom: 4px;
 }

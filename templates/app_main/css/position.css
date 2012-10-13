@@ -91,9 +91,9 @@ body
 
 .showcolumns #wrapper2 {
    	float:right;
-   	position:absolute;
+   	/*position:absolute;*/
    	padding-bottom:20px;
-    left: 34.5%;
+    /*left: 34.5%;*/
 }
 
 
@@ -153,6 +153,7 @@ body
 {
         width:32%;
         height: 75%;
+        min-height: 650px;
 }
 
 
