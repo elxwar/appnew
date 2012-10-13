@@ -289,10 +289,10 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
 
 
-  <?php if ($this->title != 'home'):  ?>
+<!--   <?php if ($this->title != 'home'):  ?>
     <?php echo $this->title; ?> <br />
   <?php endif; ?>
   Page class: <?php echo $pageClass; ?>
-  <?php var_dump($this); ?>
+  <?php var_dump($this); ?> -->
 
 </html>
