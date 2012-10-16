@@ -1456,18 +1456,43 @@ legend.element-invisible
 #footer
 {
   padding:15px 10px 15px 20px;
-  text-align:right;
+  text-align:left;
   margin:0 auto;
   display:block;
   max-width:1020px;
   overflow:hidden
 }
 
+#left-footer {
+  float: left;
+  margin-top: 73px
+}
+
+#footer span {
+  font-size: 0.7em;
+}
+
+
+
 #footer div
 {
-  float:left;
+  /*float:left;*/
   font-size:0.8em;
   line-height:1.7em;
+}
+
+#right-footer {
+  float: right;
+  text-align: right;
+  padding-right: 20px;
+}
+
+#right-footer a {
+  text-decoration: underline;
+}
+
+#right-footer img {
+  margin: 0 -7px 6px 0;
 }
 
 #footer-outer

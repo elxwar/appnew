@@ -264,10 +264,20 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
     			<footer id="footer">
     		<?php endif; ?>
 
-          <jdoc:include type="modules" name="position-14"/>
-          <p>
-<!--             <?php echo JText::_('TPL_BEEZ5_POWERED_BY');?> <a href="http://www.joomla.org/">Joomla!&#174;</a>
- -->          </p>
+        <div id='left-footer'>
+          <br /><br />
+          Alliance Publishing Press Ltd <br />
+          1 Golfside Close, Whetstone, London N20 0RD
+          <br />
+          <span>Registered in England No. 7741029</span>
+        </div>
+        <div id='right-footer'>
+          <a href='#' target='_blank'>Cookies and your Privacy</a>
+          <br /><br />
+          <img border="0" title="IPG logo" alt="Grosse Fugue" src="images/ipg.png">
+          <br />
+          <span>&copy; 2012 Alliance Publishing Press Ltd</span>
+        </div>
 
         <?php if (!$templateparams->get('html5', 0)): ?>
     			</div><!-- end footer -->
