@@ -14,6 +14,9 @@ $showRightColumn = ($this->countModules('middle-bottom') or $this->countModules(
 $showbottom = ($this->countModules('position-9') or $this->countModules('position-10') or $this->countModules('position-11'));
 $showleft = ($this->countModules('position-4') or $this->countModules('position-7') or $this->countModules('position-5'));
 $pageClass = strtolower(str_replace(" ","_",$this->title));
+if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy') {
+  $showleft = 0;
+}
 
 if ($pageClass == 'home'|| ($showRightColumn == 0 and $showleft == 0)) {
   $showno = 0;
@@ -150,7 +153,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
         <div id="<?php echo $showRightColumn ? 'contentarea2' : 'contentarea'; ?>" class = "<?php echo $pageClass ?> <?php if ($pageClass != 'home') {echo 'showcolumns';} ?>">
 
-          <?php if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people'):  ?>
+          <?php if ($showleft = 0):  ?>
             <?php if(!$this->params->get('html5', 0)): ?>
                 <div class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
             <?php else: ?>
@@ -188,7 +191,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
           </div><!-- end wrapper -->
 
-          <?php if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people'):  ?>
+          <?php if ($showleft = 0):  ?>
             <div class = 'main-left-bottom'>
               <jdoc:include type="modules" name="main-left-bottom" />
             </div>
@@ -272,9 +275,9 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
           <span>Registered in England No. 7741029</span>
         </div>
         <div id='right-footer'>
-          <a href='#' target='_blank'>Cookies and your Privacy</a>
+          <a href='privacy/'>Cookies and your Privacy</a>
           <br /><br />
-          <img border="0" title="IPG logo" alt="Grosse Fugue" src="images/ipg.png">
+          <img border="0" title="IPG logo" alt="Independent Publishers Guild logo" src="images/ipg.png">
           <br />
           <span>&copy; 2012 Alliance Publishing Press Ltd</span>
         </div>

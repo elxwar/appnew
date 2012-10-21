@@ -1352,6 +1352,7 @@ div.sample-module {
 
 }
 cite {
+  padding-right: 32px;
   color: #b03a32;
   font-style: normal;
   font-family: 'Conv_DakotaRegular',sans-serif;
@@ -1360,7 +1361,7 @@ cite {
 }
 
 .booksales {
-    margin-left: 15px;
+    margin-left: 52px;
     font-size: 0.93em;
 }
 .booksales a{
