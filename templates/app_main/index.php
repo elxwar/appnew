@@ -15,7 +15,7 @@ $showbottom = ($this->countModules('position-9') or $this->countModules('positio
 $showleft = ($this->countModules('position-4') or $this->countModules('position-7') or $this->countModules('position-5'));
 $pageClass = strtolower(str_replace(" ","_",$this->title));
 if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy') {
-  $showleft = 0;
+  $showleftCols = 0;
 }
 
 if ($pageClass == 'home'|| ($showRightColumn == 0 and $showleft == 0)) {
@@ -153,7 +153,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
         <div id="<?php echo $showRightColumn ? 'contentarea2' : 'contentarea'; ?>" class = "<?php echo $pageClass ?> <?php if ($pageClass != 'home') {echo 'showcolumns';} ?>">
 
-          <?php if ($showleft = 0):  ?>
+          <?php if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy'):  ?>
             <?php if(!$this->params->get('html5', 0)): ?>
                 <div class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
             <?php else: ?>
@@ -191,7 +191,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
           </div><!-- end wrapper -->
 
-          <?php if ($showleft = 0):  ?>
+          <?php if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy'):  ?>
             <div class = 'main-left-bottom'>
               <jdoc:include type="modules" name="main-left-bottom" />
             </div>
