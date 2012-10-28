@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: report.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: report.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 ?>
 
@@ -21,7 +21,7 @@ defined('_JEXEC') or die('Restricted access');
 		<span class="theComment"><?php echo nl2br($this->row->commentText); ?></span>
 		<span class="quoteIconRight">&rdquo;</span>
 	</blockquote>
-	<form action="<?php echo JRoute::_('index.php') ?>" name="k2ReportCommentForm" id="k2ReportCommentForm" method="post">
+	<form action="<?php echo JURI::root(true); ?>/index.php" name="k2ReportCommentForm" id="k2ReportCommentForm" method="post">
 		<label for="name"><?php echo JText::_('K2_YOUR_NAME'); ?></label>
 		<input type="text" id="name" name="name" value="" />
 

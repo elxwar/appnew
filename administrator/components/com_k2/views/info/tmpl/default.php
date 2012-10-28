@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: default.php 1496 2012-02-24 19:13:59Z joomlaworks@gmail.com $
+ * @version		$Id: default.php 1720 2012-10-08 15:03:26Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,11 +8,11 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 ?>
 <form action="index.php" method="post" name="adminForm">
-	<table cellpadding="0" cellspacing="0" border="0" style="width:100%" id="k2InfoPage">
+	<table cellpadding="0" cellspacing="0" border="0" style="width:100%" id="k2InfoPage" class="table">
 		<tr>
 			<td>
 				<fieldset class="adminform">
@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			  <fieldset class="adminform">
 					<legend><?php echo JText::_('K2_CREDITS'); ?></legend>
-					<table class="adminlist">
+					<table class="adminlist table table-striped">
 						<thead>
 			        <tr>
 			        	<th><?php echo JText::_('K2_PROVIDER'); ?></th>
@@ -75,19 +75,19 @@ defined('_JEXEC') or die('Restricted access');
 					    </tr>
 					    <tr>
 					      <td><a target="_blank" href="http://jquery.com">jQuery</a></td>
-					      <td>1.5.x - 1.7.x</td>
+					      <td>1.5.x - 1.8.x</td>
 					      <td><?php echo JText::_('K2_JS_LIB'); ?></td>
 					      <td><?php echo JText::_('K2_MIT'); ?></td>
 					    </tr>
 					    <tr>
 					      <td><a target="_blank" href="http://jqueryui.com/">jQuery UI</a></td>
-					      <td>1.8.16</td>
+					      <td>1.8.24</td>
 					      <td><?php echo JText::_('K2_JS_LIB'); ?></td>
 					      <td><?php echo JText::_('K2_MIT'); ?></td>
 					    </tr>
 					    <tr>
-					      <td><a target="_blank" href="http://elrte.org/elfinder">elFinder</a></td>
-					      <td>2.0 (beta)</td>
+					      <td><a target="_blank" href="http://elfinder.org/">elFinder</a></td>
+					      <td>2.0 (rc1)</td>
 					      <td><?php echo JText::_('K2_INFO_FILE_MANAGER'); ?></td>
 					      <td><?php echo JText::_('K2_BSD'); ?></td>
 					    </tr>
@@ -98,7 +98,7 @@ defined('_JEXEC') or die('Restricted access');
 			<td>
 			  <fieldset class="adminform">
 			    <legend><?php echo JText::_('K2_SYSTEM_INFORMATION'); ?></legend>
-			    <table class="adminlist">
+			    <table class="adminlist table table-striped">
 			      <thead>
 			        <tr>
 			          <th><?php echo JText::_('K2_CHECK'); ?></th>
@@ -149,7 +149,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			  <fieldset class="adminform">
 			    <legend><?php echo JText::_('K2_DIRECTORY_PERMISSIONS'); ?></legend>
-			    <table class="adminlist">
+			    <table class="adminlist table table-striped">
 			      <thead>
 			        <tr>
 			          <th><?php echo JText::_('K2_CHECK'); ?></th>
@@ -200,7 +200,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			  <fieldset class="adminform">
 			    <legend><?php echo JText::_('K2_MODULES'); ?></legend>
-			    <table class="adminlist">
+			    <table class="adminlist table table-striped">
 			      <thead>
 			        <tr>
 			          <th><?php echo JText::_('K2_CHECK'); ?></th>
@@ -220,10 +220,6 @@ defined('_JEXEC') or die('Restricted access');
 			        <tr>
 			          <td><strong>mod_k2_content</strong></td>
 			          <td><?php echo (is_null(JModuleHelper::getModule('mod_k2_content')))?JText::_('K2_NOT_INSTALLED'):JText::_('K2_INSTALLED'); ?></td>
-			        </tr>
-			        <tr>
-			          <td><strong>mod_k2_login</strong></td>
-			          <td><?php echo (is_null(JModuleHelper::getModule('mod_k2_login')))?JText::_('K2_NOT_INSTALLED'):JText::_('K2_INSTALLED'); ?></td>
 			        </tr>
 			        <tr>
 			          <td><strong>mod_k2_tools</strong></td>
@@ -251,7 +247,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			  <fieldset class="adminform">
 			    <legend><?php echo JText::_('K2_PLUGINS'); ?></legend>
-			    <table class="adminlist">
+			    <table class="adminlist table table-striped">
 			      <thead>
 			        <tr>
 			          <th><?php echo JText::_('K2_CHECK'); ?></th>
@@ -288,7 +284,7 @@ defined('_JEXEC') or die('Restricted access');
 
 			  <fieldset class="adminform">
 			    <legend><?php echo JText::_('K2_THIRDPARTY_PLUGIN_INFORMATION'); ?></legend>
-			    <table class="adminlist">
+			    <table class="adminlist table table-striped">
 			      <thead>
 			        <tr>
 			          <th><?php echo JText::_('K2_CHECK'); ?></th>

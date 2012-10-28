@@ -1,0 +1,31 @@
+2012-10-28 14:36:03 ---------------------------------------------------
+[Your Name:] eric
+[Your Email:] ericw@feel.com
+[Comments:] dasf  dfsa
+[Please keep me up to date with the latest news from APP] No
+
+
+Alliance Publishing Press - http://localhost/APP/index.php/contact-us
+Client: 127.0.0.1 - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/16.0
+
+2012-10-28 14:36:03 Error sending email. Could not instantiate mail function.
+2012-10-28 14:36:33 ---------------------------------------------------
+[Your Name:] eric
+[Your Email:] ericw@the-feel.co.uk
+[Comments:] dasf  dfsa
+[Please keep me up to date with the latest news from APP] No
+
+
+Alliance Publishing Press - http://localhost/APP/index.php/contact-us
+Client: 127.0.0.1 - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/16.0
+
+2012-10-28 14:36:33 Error sending email. Could not instantiate mail function.
+2012-10-28 14:39:02 ---------------------------------------------------
+[Your Name:] eric
+[Your Email:] ericw@the-feel.co.uk
+
+
+Alliance Publishing Press - http://localhost/APP/index.php/our-books
+Client: 127.0.0.1 - Mozilla/5.0 (Windows NT 6.1; WOW64; rv:16.0) Gecko/20100101 Firefox/16.0
+
+2012-10-28 14:39:02 Error sending email. Could not instantiate mail function.

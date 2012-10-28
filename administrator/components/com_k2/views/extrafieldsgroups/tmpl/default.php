@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: default.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: default.php 1642 2012-09-26 12:38:42Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,9 +8,9 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-$document = & JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	Joomla.submitbutton = function(pressbutton) {
 		if (pressbutton == 'remove') {
@@ -26,13 +26,13 @@ $document->addScriptDeclaration("
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-  <table class="adminlist">
+  <table class="adminlist table table-striped">
     <thead>
       <tr>
-        <th>#</th>
-        <th><input id="jToggler" type="checkbox" name="toggle" value="" /></th>
+        <th class="center hidden-phone">#</th>
+        <th class="center"><input id="jToggler" type="checkbox" name="toggle" value="" /></th>
         <th><?php echo JText::_('K2_GROUP_NAME'); ?></th>
-        <th><?php echo JText::_('K2_ASSIGNED_CATEGORIES'); ?></th>
+        <th class="hidden-phone"><?php echo JText::_('K2_ASSIGNED_CATEGORIES'); ?></th>
       </tr>
     </thead>
     <tfoot>
@@ -43,10 +43,10 @@ $document->addScriptDeclaration("
     <tbody>
     <?php foreach ($this->rows as $key=>$row): ?>
       <tr class="row<?php echo ($key%2); ?>">
-        <td align="center"><?php echo $key+1; ?></td>
-        <td align="center"><?php $row->checked_out = 0; echo JHTML::_('grid.checkedout', $row, $key ); ?></td>
+        <td class="k2Center center hidden-phone"><?php echo $key+1; ?></td>
+        <td class="k2Center center"><?php $row->checked_out = 0; echo JHTML::_('grid.checkedout', $row, $key ); ?></td>
         <td><a href="<?php echo JRoute::_('index.php?option=com_k2&view=extrafieldsgroup&cid='.$row->id); ?>"><?php echo $row->name; ?></a></td>
-        <td><?php echo $row->categories; ?></td>
+        <td class="hidden-phone"><?php echo $row->categories; ?></td>
       </tr>
       <?php endforeach; ?>
     </tbody>

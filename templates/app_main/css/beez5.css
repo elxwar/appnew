@@ -323,7 +323,7 @@ h3.js_heading a:focus {
 
 }
 
-#nav h3 {
+#nav h3, #in_touch h3 {
   font-family: Georgia,Utopia,Palatino,'Palatino Linotype',Times, "Times New Roman",serif;
 }
 
@@ -1359,6 +1359,16 @@ cite {
   font-size: 1em;
   line-height: 1.7em;
 }
+
+.white_script {
+  padding-right: 32px;
+  color: #ffffff;
+  font-style: normal;
+  font-family: 'Conv_DakotaRegular',sans-serif;
+  line-height: 1.7em;
+}
+
+#in_touch a {font-size: 0.9em;}
 
 .booksales {
     margin-left: 52px;

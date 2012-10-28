@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: default.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: default.php 1635 2012-09-25 12:29:13Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,9 +8,9 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-$document = & JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	Joomla.submitbutton = function(pressbutton){
 		if (pressbutton == 'cancel') {
@@ -28,11 +28,11 @@ $document->addScriptDeclaration("
 ?>
 
 <form action="index.php" enctype="multipart/form-data" method="post" name="adminForm" id="adminForm">
-	<table cellspacing="0" cellpadding="0" border="0" class="adminFormK2Container adminK2Category">
+	<table cellspacing="0" cellpadding="0" border="0" class="adminFormK2Container adminK2Category table">
 		<tbody>
 			<tr>
 				<td>
-					<table class="adminFormK2">
+					<table class="adminFormK2 table">
 						<tr>
 							<td class="adminK2LeftCol">
 								<label for="name"><?php echo JText::_('K2_TITLE'); ?></label>
@@ -119,7 +119,7 @@ $document->addScriptDeclaration("
 						
 						<!-- Tab image -->
 						<div class="simpleTabsContent" id="k2Tab2">
-							<table class="admintable">
+							<table class="admintable table">
 								<tr>
 									<td align="right" class="key">
 										<?php echo JText::_('K2_CATEGORY_IMAGE'); ?>
@@ -164,7 +164,7 @@ $document->addScriptDeclaration("
 					<div id="k2Accordion">
 						<h3><a href="#"><?php echo JText::_('K2_CATEGORY_ITEM_LAYOUT'); ?></a></h3>
 						<div>
-							<?php if(K2_JVERSION == '16'): ?>
+							<?php if(K2_JVERSION != '15'): ?>
 							<fieldset class="panelform">
 								<ul class="adminformlist">
 									<?php foreach ($this->form->getFieldset('category-item-layout') as $field): ?>
@@ -189,7 +189,7 @@ $document->addScriptDeclaration("
 						</div>
 						<h3><a href="#"><?php echo JText::_('K2_CATEGORY_VIEW_OPTIONS'); ?></a></h3>
 						<div>
-							<?php if(K2_JVERSION == '16'): ?>
+							<?php if(K2_JVERSION != '15'): ?>
 							<fieldset class="panelform">
 								<ul class="adminformlist">
 									<?php foreach ($this->form->getFieldset('category-view-options') as $field): ?>
@@ -214,7 +214,7 @@ $document->addScriptDeclaration("
 						</div>
 						<h3><a href="#"><?php echo JText::_('K2_ITEM_IMAGE_OPTIONS'); ?></a></h3>
 						<div>
-							<?php if(K2_JVERSION == '16'): ?>
+							<?php if(K2_JVERSION != '15'): ?>
 							<fieldset class="panelform">
 								<ul class="adminformlist">
 									<?php foreach ($this->form->getFieldset('item-image-options') as $field): ?>
@@ -239,7 +239,7 @@ $document->addScriptDeclaration("
 						</div>
 						<h3><a href="#"><?php echo JText::_('K2_ITEM_VIEW_OPTIONS_IN_CATEGORY_LISTINGS'); ?></a></h3>
 						<div>
-							<?php if(K2_JVERSION == '16'): ?>
+							<?php if(K2_JVERSION != '15'): ?>
 							<fieldset class="panelform">
 								<ul class="adminformlist">
 									<?php foreach ($this->form->getFieldset('item-view-options-listings') as $field): ?>
@@ -264,7 +264,7 @@ $document->addScriptDeclaration("
 						</div>
 						<h3><a href="#"><?php echo JText::_('K2_ITEM_VIEW_OPTIONS'); ?></a></h3>
 						<div>
-							<?php if(K2_JVERSION == '16'): ?>
+							<?php if(K2_JVERSION != '15'): ?>
 							<fieldset class="panelform">
 								<ul class="adminformlist">
 									<?php foreach ($this->form->getFieldset('item-view-options') as $field): ?>
@@ -289,7 +289,7 @@ $document->addScriptDeclaration("
 						</div>
 						<h3><a href="#"><?php echo JText::_('K2_METADATA_INFORMATION'); ?></a></h3>
 						<div>
-							<?php if(K2_JVERSION == '16'): ?>
+							<?php if(K2_JVERSION != '15'): ?>
 							<fieldset class="panelform">
 								<ul class="adminformlist">
 									<?php foreach ($this->form->getFieldset('category-metadata-information') as $field): ?>

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: element.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: element.php 1641 2012-09-26 11:42:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 ?>
 <form action="index.php" method="post" name="adminForm" id="adminForm">
 	<h1><?php echo JText::_('K2_SELECT_CATEGORIES'); ?></h1>
@@ -20,12 +20,12 @@ defined('_JEXEC') or die('Restricted access');
 				<button id="k2SubmitButton"><?php echo JText::_('K2_GO'); ?></button>
 				<button id="k2ResetButton"><?php echo JText::_('K2_RESET'); ?></button>
 			</td>
-			<td class="k2AdminTableFiltersSelects">
+			<td class="k2AdminTableFiltersSelects hidden-phone">
 				<?php echo $this->lists['state']; ?>
 			</td>
 		</tr>
 	</table>
-	<table class="adminlist">
+	<table class="adminlist table table-striped">
     	<thead>
 	      	<tr>
 		        <th>#</th>
@@ -42,8 +42,8 @@ defined('_JEXEC') or die('Restricted access');
         		<td><?php echo $key+1; ?></td>
         		<td><a class="k2ListItemDisabled" title="<?php echo JText::_('K2_CLICK_TO_ADD_THIS_ITEM'); ?>" onclick="window.parent.jSelectCategory('<?php echo $row->id; ?>', '<?php echo str_replace(array("'", "\""), array("\\'", ""),$row->name); ?>', 'id');"><?php echo $row->treename; ?></a></td>
         		<td class="k2Center"><?php echo $row->extra_fields_group; ?></td>
-        		<td class="k2Center"><?php echo strip_tags(JHTML::_('grid.access', $row, $key )); ?></td>
-        		<td class="k2Center"><?php echo strip_tags(JHTML::_('grid.published', $row, $key ), '<img>'); ?></td>
+        		<td class="k2Center"><?php echo $row->groupname; ?></td>
+        		<td class="k2Center"><?php echo $row->status; ?></td>
         		<td><?php echo $row->id; ?></td>
       		</tr>
       	<?php endforeach; ?>

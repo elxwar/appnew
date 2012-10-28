@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: default.php 1535 2012-03-30 11:13:02Z lefteris.kavadas $
+ * @version		$Id: default.php 1725 2012-10-08 17:22:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(pressbutton) {
@@ -67,7 +67,7 @@ defined('_JEXEC') or die('Restricted access');
 			<div class="clr"></div>
 			<hr class="sep" />
 			<?php endif; ?>
-			<table class="k2AdminTableFilters">
+			<table class="k2AdminTableFilters table">
 				<tr>
 					<td class="k2AdminTableFiltersSearch">
 						<?php echo JText::_('K2_FILTER'); ?>
@@ -75,7 +75,7 @@ defined('_JEXEC') or die('Restricted access');
 						<button id="k2SubmitButton"><?php echo JText::_('K2_GO'); ?></button>
 						<button id="k2ResetButton"><?php echo JText::_('K2_RESET'); ?></button>
 					</td>
-					<td class="k2AdminTableFiltersSelects">
+					<td class="k2AdminTableFiltersSelects hidden-phone">
 						<?php echo $this->lists['categories']; ?>
 						<?php if($this->mainframe->isAdmin()): ?>
 						<?php echo $this->lists['authors']; ?>
@@ -84,49 +84,49 @@ defined('_JEXEC') or die('Restricted access');
 					</td>
 				</tr>
 			</table>
-			<table class="adminlist">
+			<table class="adminlist table table-striped">
 				<thead>
 					<tr>
-						<th>
+						<th class="center hidden-phone">
 							#
 						</th>
-						<th>
+						<th class="center">
 							<input id="jToggler" type="checkbox" name="toggle" value="" />
 						</th>
 						<th>
 							<?php echo JHTML::_('grid.sort', 'K2_COMMENT', 'c.commentText', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
-						<th>
+						<th class="center">
 							<?php echo JHTML::_('grid.sort', 'K2_PUBLISHED', 'c.published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
-						<th>
+						<th class="hidden-phone">
 							<?php echo JHTML::_('grid.sort', 'K2_NAME', 'c.userName', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
 						<th>
 							<?php echo JHTML::_('grid.sort', 'K2_EMAIL', 'c.commentEmail', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
-						<th>
+						<th class="hidden-phone">
 							<?php echo JHTML::_('grid.sort', 'K2_URL', 'c.commentURL', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
-						<th>
+						<th class="center hidden-phone">
 							<?php echo JText::_('K2_LAST_RECORDED_IP'); ?>
 						</th>
-						<th>
+						<th class="center">
 							<?php echo JText::_('K2_FLAG_AS_SPAMMER'); ?>
 						</th>
-						<th>
+						<th class="hidden-phone">
 							<?php echo JHTML::_('grid.sort', 'K2_ITEM', 'i.title', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
-						<th>
+						<th class="hidden-phone">
 							<?php echo JHTML::_('grid.sort', 'K2_CATEGORY', 'cat.name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
-						<th>
+						<th class="hidden-phone">
 							<?php echo JText::_('K2_AUTHOR'); ?>
 						</th>
-						<th>
+						<th class="hidden-phone">
 							<?php echo JHTML::_('grid.sort', 'K2_DATE', 'c.commentDate', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
-						<th>
+						<th class="hidden-phone">
 							<?php echo JHTML::_('grid.sort', 'K2_ID', 'c.id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?>
 						</th>
 					</tr>
@@ -141,10 +141,10 @@ defined('_JEXEC') or die('Restricted access');
 				<tbody>
 					<?php foreach ($this->rows as $key=>$row): ?>
 					<tr class="row<?php echo ($key%2); ?>">
-						<td>
+						<td class="center hidden-phone">
 							<?php echo $key+1; ?>
 						</td>
-						<td>
+						<td class="center">
 							<?php $row->checked_out = 0; echo JHTML::_('grid.checkedout', $row, $key ); ?>
 						</td>
 						<td id="k2Comment<?php echo $row->id; ?>">
@@ -154,10 +154,10 @@ defined('_JEXEC') or die('Restricted access');
 							</div>
 							<input type="hidden" name="currentValue[]" value="<?php echo $row->commentText; ?>" />
 						</td>
-						<td class="k2Center">
-							<?php echo ($this->mainframe->isSite()) ? K2HelperHTML::stateToggler($row, $key) : JHTML::_('grid.published', $row, $key ); ?>
+						<td class="k2Center center">
+							<?php echo $row->status; ?>
 						</td>
-						<td>
+						<td class="hidden-phone">
 							<?php if($this->mainframe->isAdmin() && $row->userID): ?>
 							<a href="<?php echo $this->userEditLink.$row->userID;?>"><?php echo $row->userName; ?></a>
 							<?php else :?>
@@ -167,34 +167,34 @@ defined('_JEXEC') or die('Restricted access');
 						<td class="k2ForceWrap">
 							<?php echo $row->commentEmail; ?>
 						</td>
-						<td class="k2ForceWrap">
+						<td class="k2ForceWrap hidden-phone">
 							<a target="_blank" href="<?php echo JFilterOutput::cleanText($row->commentURL); ?>"><?php echo str_replace(array('http://www.','https://www.','http://','https://'),array('','','',''),$row->commentURL); ?></a>
 						</td>
-						<td class="k2Center">
+						<td class="k2Center center hidden-phone">
 							<?php if($row->commenterLastVisitIP): ?>
 							<a target="_blank" href="http://www.ipchecking.com/?ip=<?php echo $row->commenterLastVisitIP; ?>&check=Lookup">
 								<?php echo $row->commenterLastVisitIP; ?>
 							</a>
 							<?php endif; ?>
 						</td>
-		        <td class="k2Center">
+		        <td class="k2Center center">
 		        	<?php if($row->reportUserLink): ?>
 		        	<a class="k2ReportUserButton k2IsIcon" href="<?php echo $row->reportUserLink; ?>">&times;</a>
 		        	<?php endif; ?>
 		        </td>
-						<td>
+						<td class="hidden-phone">
 							<a class="modal" rel="{handler: 'iframe', size: {x: 1000, y: 600}}"	href="<?php echo JURI::root().K2HelperRoute::getItemRoute($row->itemID.':'.urlencode($row->itemAlias),$row->catid.':'.urlencode($row->catAlias)); ?>"><?php echo $row->title; ?></a>
 						</td>
-						<td>
+						<td class="hidden-phone">
 							<?php echo $row->catName; ?>
 						</td>
-						<td>
-							<?php $user = &JFactory::getUser($row->created_by); echo $user->name; ?> 
+						<td class="hidden-phone">
+							<?php $user = JFactory::getUser($row->created_by); echo $user->name; ?> 
 						</td>
-						<td class="k2Date">
+						<td class="k2Date hidden-phone">
 							<?php echo JHTML::_('date', $row->commentDate , $this->dateFormat); ?>
 						</td>
-						<td>
+						<td class="hidden-phone">
 							<?php echo $row->id; ?>
 						</td>
 					</tr>

@@ -22,7 +22,7 @@
 
 body
 {
-  font-size: 100.01%;
+  font-size: 90.01%;
   padding: 0px;
   text-align: center;
   position:relative;
@@ -99,7 +99,7 @@ body
   padding-top: 0;
 }
 
-.our_services #wrapper2, .app_people #wrapper2, .cookies_and_your_privacy #wrapper2
+.our_services #wrapper2, .app_people #wrapper2, .cookies_and_your_privacy #wrapper2, .news #wrapper2
 {
   float: left;
   width: 100%;

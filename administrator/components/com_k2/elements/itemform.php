@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: itemform.php 1575 2012-05-09 12:09:32Z lefteris.kavadas $
+ * @version		$Id: itemform.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,34 +8,16 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die ;
 
-if(K2_JVERSION=='16'){
-	jimport('joomla.form.formfield');
-	class JFormFieldItemForm extends JFormField {
+require_once (JPATH_ADMINISTRATOR.'/components/com_k2/elements/base.php');
 
-		var	$type = 'itemForm';
-
-		function getInput(){
-			return JElementItemForm::fetchElement($this->name, $this->value, $this->element, $this->options['control']);
-		}
-
-		function getLabel(){
-			return '';
-		}
-
-	}
-}
-
-jimport('joomla.html.parameter.element');
-
-class JElementItemForm extends JElement {
-
-	var	$_name = 'itemForm';
-
-	function fetchElement($name, $value, &$node, $control_name){
-		$document = & JFactory::getDocument();
-		$document->addScriptDeclaration("
+class K2ElementItemForm extends K2Element
+{
+    function fetchElement($name, $value, &$node, $control_name)
+    {
+        $document = JFactory::getDocument();
+        $document->addScriptDeclaration("
 			window.addEvent('domready', function() {
 				if($('request-options')) {
 					$$('.panel')[0].setStyle('display', 'none');
@@ -53,10 +35,22 @@ class JElementItemForm extends JElement {
 				}				
 			});
 		");
-		return '';
-	}
+        return '';
+    }
 
-	function fetchTooltip($label, $description, &$node, $control_name, $name){
-		return '';
-	}
+    function fetchTooltip($label, $description, &$node, $control_name, $name)
+    {
+        return '';
+    }
+
+}
+
+class JFormFielditemform extends K2ElementItemForm
+{
+    var $type = 'itemform';
+}
+
+class JElementitemform extends K2ElementItemForm
+{
+    var $_name = 'itemform';
 }

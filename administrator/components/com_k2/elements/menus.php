@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: menus.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: menus.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,41 +8,37 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die ;
 
-if(K2_JVERSION=='16'){
-	jimport('joomla.form.formfield');
-	class JFormFieldMenus extends JFormField {
+require_once (JPATH_ADMINISTRATOR.'/components/com_k2/elements/base.php');
 
-		var	$type = 'menus';
+class K2ElementMenus extends K2Element
+{
 
-		function getInput(){
-			return JElementMenus::fetchElement($this->name, $this->value, $this->element, $this->options['control']);
-		}
+    function fetchElement($name, $value, &$node, $control_name)
+    {
+        $fieldName = (K2_JVERSION != '15') ? $name : $control_name.'['.$name.']';
+        $db = JFactory::getDBO();
+        $query = "SELECT menutype, title FROM #__menu_types";
+        $db->setQuery($query);
+        $menus = $db->loadObjectList();
+        $options = array();
+        $options[] = JHTML::_('select.option', '', JText::_('K2_NONE_ONSELECTLISTS'));
+        foreach ($menus as $menu)
+        {
+            $options[] = JHTML::_('select.option', $menu->menutype, $menu->title);
+        }
+        return JHTML::_('select.genericlist', $options, $fieldName, 'class="inputbox"', 'value', 'text', $value);
+    }
 
-	}
 }
 
-jimport('joomla.html.parameter.element');
+class JFormFieldMenus extends K2ElementMenus
+{
+    var $type = 'menus';
+}
 
-class JElementMenus extends JElement {
-
-	var	$_name = 'menus';
-
-	function fetchElement($name, $value, &$node, $control_name){
-		$fieldName = (K2_JVERSION=='16')? $name : $control_name.'['.$name.']';
-		$db = &JFactory::getDBO();
-		$query = "SELECT menutype, title FROM #__menu_types";
-		$db->setQuery($query);
-		$menus = $db->loadObjectList();
-
-		$options = array();
-		$options[] = JHTML::_('select.option', '', JText::_('K2_NONE_ONSELECTLISTS'));
-
-		foreach ($menus as $menu) {
-			$options[]	= JHTML::_('select.option', $menu->menutype, $menu->title);
-		}
-		
-		return JHTML::_('select.genericlist',  $options, $fieldName, 'class="inputbox"', 'value', 'text', $value);
-	}
+class JElementMenus extends K2ElementMenus
+{
+    var $_name = 'menus';
 }

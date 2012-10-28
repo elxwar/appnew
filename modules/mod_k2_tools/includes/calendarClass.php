@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: calendarClass.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: calendarClass.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 // PHP Calendar Class Version 1.4 (5th March 2001)
 //  

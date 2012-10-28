@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: info.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: info.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,15 +8,17 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class K2ControllerInfo extends JController {
+class K2ControllerInfo extends K2Controller
+{
 
-	function display() {
-		JRequest::setVar('view', 'info');
-		parent::display();
-	}
+    public function display($cachable = false, $urlparams = array())
+    {
+        JRequest::setVar('view', 'info');
+        parent::display();
+    }
 
 }

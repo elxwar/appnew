@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: com_k2.php 1530 2012-03-20 10:13:38Z lefteris.kavadas $
+ * @version		$Id: com_k2.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 if (!function_exists('getCategoryPath'))
 {
@@ -25,15 +25,15 @@ if (!function_exists('getCategoryPath'))
 			$array = array();
 		}
 
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$aid = (int)$user->get('aid');
 		$catid = (int)$catid;
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$query = "SELECT * FROM #__k2_categories WHERE id={$catid} AND published=1";
 
 		if (version_compare(JVERSION, '1.6.0', 'ge'))
 		{
-			$query .= " AND access IN(".implode(',', $user->authorisedLevels()).") ";
+			$query .= " AND access IN(".implode(',', $user->getAuthorisedViewLevels()).") ";
 		}
 		else
 		{
@@ -96,7 +96,7 @@ if ($view == 'itemlist' && isset($moduleID))
 }
 
 // K2 parameters
-$params = &JComponentHelper::getParams('com_k2');
+$params = JComponentHelper::getParams('com_k2');
 $authorPrefix = $params->get('sh404SefLabelUser', 'blog');
 $itemlistPrefix = $params->get('sh404SefLabelCat', '');
 $itemPrefix = $params->get('sh404SefLabelItem', 2);
@@ -207,7 +207,7 @@ switch ($view)
 				break;
 
 			case 'user' :
-				$user = &JFactory::getUser($id);
+				$user = JFactory::getUser($id);
 				if (!empty($authorPrefix))
 				{
 					$title[] = $authorPrefix;

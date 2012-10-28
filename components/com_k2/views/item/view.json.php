@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     $Id: view.json.php 1578 2012-05-09 14:04:24Z lefteris.kavadas $
+ * @version     $Id: view.json.php 1727 2012-10-09 10:29:30Z lefteris.kavadas $
  * @package     K2
  * @author      JoomlaWorks http://www.joomlaworks.net
  * @copyright   Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,11 +8,11 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class K2ViewItem extends JView
+class K2ViewItem extends K2View
 {
 
     function display($tpl = null)
@@ -32,7 +32,7 @@ class K2ViewItem extends JView
 
         $db = JFactory::getDBO();
         $jnow = JFactory::getDate();
-        $now = $jnow->toMySQL();
+        $now =  K2_JVERSION == '15'?$jnow->toMySQL():$jnow->toSql();
         $nullDate = $db->getNullDate();
 
         // Get item
@@ -46,7 +46,7 @@ class K2ViewItem extends JView
         }
 
         // Override some params because we want to show all elements in JSON
-        $itemParams = new JParameter($item->params);
+        $itemParams = class_exists('JParameter') ? new JParameter($item->params) : new JRegistry($item->params);
         $itemParams->set('itemIntroText', true);
         $itemParams->set('itemFullText', true);
         $itemParams->set('itemTags', true);
@@ -65,11 +65,11 @@ class K2ViewItem extends JView
         $item = $model->execPlugins($item, $view, $task);
 
         // Access check
-        if (K2_JVERSION == '16')
+        if (K2_JVERSION != '15')
         {
-            if (!in_array($item->access, $user->authorisedLevels()) || !in_array($item->category->access, $user->authorisedLevels()))
+            if (!in_array($item->access, $user->getAuthorisedViewLevels()) || !in_array($item->category->access, $user->getAuthorisedViewLevels()))
             {
-                JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
+               JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
             }
         }
         else
@@ -109,16 +109,16 @@ class K2ViewItem extends JView
 
         // Output
         $response = new stdClass();
-        
+
         // Site
         $response->site = new stdClass();
         $uri = JURI::getInstance();
         $response->site->url = $uri->toString(array('scheme', 'host', 'port'));
         $config = JFactory::getConfig();
-        $response->site->name = $config->getValue('config.sitename');
-        
+        $response->site->name = K2_JVERSION == '30' ? $config->get('sitename') : $config->getValue('config.sitename');
+
         $response->item = $row;
-        
+
         $json = json_encode($response);
         $callback = JRequest::getCmd('callback');
         if ($callback)

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: mod_k2_quickicons.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: mod_k2_quickicons.php 1731 2012-10-10 23:02:03Z joomlaworks $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,12 +8,12 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-$user = &JFactory::getUser();
+$user = JFactory::getUser();
 
-if(K2_JVERSION == '16'){
-	$language = &JFactory::getLanguage();
+if(K2_JVERSION != '15'){
+	$language = JFactory::getLanguage();
 	$language->load('mod_k2.j16', JPATH_ADMINISTRATOR);
 	if($user->authorise('core.admin', 'com_k2')){
 		$user->gid = 1000;
@@ -29,9 +29,9 @@ $mod_copyrights_start 	= "\n\n<!-- JoomlaWorks \"K2 QuickIcons\" Module starts h
 $mod_copyrights_end 		= "\n<!-- JoomlaWorks \"K2 QuickIcons\" Module ends here -->\n\n";
 
 // API
-$mainframe	= &JFactory::getApplication();
-$document 	= &JFactory::getDocument();
-$user = &JFactory::getUser();
+$mainframe	= JFactory::getApplication();
+$document 	= JFactory::getDocument();
+$user = JFactory::getUser();
 
 // Module parameters
 $moduleclass_sfx 	= $params->get('moduleclass_sfx','');
@@ -39,7 +39,7 @@ $modCSSStyling		= (int) $params->get('modCSSStyling',1);
 $modLogo					= (int) $params->get('modLogo',1);
 
 // Component parameters
-$componentParams = &JComponentHelper::getParams('com_k2');
+$componentParams = JComponentHelper::getParams('com_k2');
 
 $onlineImageEditor = $componentParams->get('onlineImageEditor','splashup');
 
@@ -64,18 +64,8 @@ switch($onlineImageEditor){
 // Call the modal and add some needed JS
 JHTML::_('behavior.modal');
 
-$document->addScriptDeclaration("
-	window.addEvent('domready', function() {
-		$('k2OnlineImageEditor').addEvent('click', function(e){
-			e.preventDefault();
-			var w = 1040, h = 700, l = (document.documentElement.clientWidth-w)/2, t = (document.documentElement.clientHeight-h)/2;
-			window.open(this, 'splashupEditor', 'height='+h+', width='+w+', left='+l+', top ='+t+', toolbar=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=yes');
-		});
-	});
-");
-
 // Append CSS to the document's head
-if($modCSSStyling) $document->addStyleSheet(JURI::base(true).'/modules/'.$mod_name.'/tmpl/css/style.css');
+if($modCSSStyling) $document->addStyleSheet(JURI::base(true).'/modules/'.$mod_name.'/tmpl/css/style.css?v=2.6.1');
 
 // Output content with template
 echo $mod_copyrights_start;

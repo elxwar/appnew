@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: default.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: default.php 1725 2012-10-08 17:22:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,9 +8,9 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-$document = & JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	Joomla.submitbutton = function(pressbutton) {
 		if (pressbutton == 'remove') {
@@ -26,14 +26,14 @@ $document->addScriptDeclaration("
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-  <table class="adminlist">
+  <table class="adminlist table table-striped">
     <thead>
       <tr>
-        <th>#</th>
-        <th><input id="jToggler" type="checkbox" name="toggle" value="" /></th>
+        <th class="hidden-phone center">#</th>
+        <th class="center"><input id="jToggler" type="checkbox" name="toggle" value="" /></th>
         <th class="title"><?php echo JHTML::_('grid.sort', 'K2_NAME', 'name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
-        <th><?php echo JHTML::_('grid.sort', 'K2_USER_COUNT', 'numOfUsers', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
-        <th><?php echo JHTML::_('grid.sort', 'K2_ID', 'id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
+        <th class="center hidden-phone"><?php echo JHTML::_('grid.sort', 'K2_USER_COUNT', 'numOfUsers', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
+        <th class="center hidden-phone"><?php echo JHTML::_('grid.sort', 'K2_ID', 'id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
       </tr>
     </thead>
     <tfoot>
@@ -44,11 +44,11 @@ $document->addScriptDeclaration("
     <tbody>
       <?php foreach ($this->rows as $key => $row): ?>
       <tr class="row<?php echo ($key%2); ?>">
-        <td class="k2Center"><?php echo $key+1; ?></td>
-        <td class="k2Center"><?php $row->checked_out = 0; echo JHTML::_('grid.checkedout', $row, $key ); ?></td>
+        <td class="k2Center center hidden-phone"><?php echo $key+1; ?></td>
+        <td class="k2Center center"><?php $row->checked_out = 0; echo JHTML::_('grid.checkedout', $row, $key ); ?></td>
         <td><a href="<?php echo JRoute::_('index.php?option=com_k2&view=usergroup&cid='.$row->id); ?>"><?php echo $row->name; ?></a></td>
-        <td class="k2Center"><?php echo $row->numOfUsers; ?></td>
-        <td class="k2Center"><?php echo $row->id; ?></td>
+        <td class="k2Center center hidden-phone"><?php echo $row->numOfUsers; ?></td>
+        <td class="k2Center center hidden-phone"><?php echo $row->id; ?></td>
       </tr>
       <?php endforeach; ?>
     </tbody>

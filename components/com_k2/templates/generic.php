@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: generic.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: generic.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 ?>
 
@@ -40,17 +40,17 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="genericItemView">
 
 			<div class="genericItemHeader">
-				<?php if($item->params->get('genericItemDateCreated')): ?>
+				<?php if($this->params->get('genericItemDateCreated')): ?>
 				<!-- Date created -->
 				<span class="genericItemDateCreated">
 					<?php echo JHTML::_('date', $item->created , JText::_('K2_DATE_FORMAT_LC2')); ?>
 				</span>
 				<?php endif; ?>
 			
-			  <?php if($item->params->get('genericItemTitle')): ?>
+			  <?php if($this->params->get('genericItemTitle')): ?>
 			  <!-- Item title -->
 			  <h2 class="genericItemTitle">
-			  	<?php if ($item->params->get('genericItemTitleLinked')): ?>
+			  	<?php if ($this->params->get('genericItemTitleLinked')): ?>
 					<a href="<?php echo $item->link; ?>">
 			  		<?php echo $item->title; ?>
 			  	</a>
@@ -62,19 +62,19 @@ defined('_JEXEC') or die('Restricted access');
 		  </div>
 
 		  <div class="genericItemBody">
-			  <?php if($item->params->get('genericItemImage') && !empty($item->imageGeneric)): ?>
+			  <?php if($this->params->get('genericItemImage') && !empty($item->imageGeneric)): ?>
 			  <!-- Item Image -->
 			  <div class="genericItemImageBlock">
 				  <span class="genericItemImage">
 				    <a href="<?php echo $item->link; ?>" title="<?php if(!empty($item->image_caption)) echo K2HelperUtilities::cleanHtml($item->image_caption); else echo K2HelperUtilities::cleanHtml($item->title); ?>">
-				    	<img src="<?php echo $item->imageGeneric; ?>" alt="<?php if(!empty($item->image_caption)) echo K2HelperUtilities::cleanHtml($item->image_caption); else echo K2HelperUtilities::cleanHtml($item->title); ?>" style="width:<?php echo $item->params->get('itemImageGeneric'); ?>px; height:auto;" />
+				    	<img src="<?php echo $item->imageGeneric; ?>" alt="<?php if(!empty($item->image_caption)) echo K2HelperUtilities::cleanHtml($item->image_caption); else echo K2HelperUtilities::cleanHtml($item->title); ?>" style="width:<?php echo $this->params->get('itemImageGeneric'); ?>px; height:auto;" />
 				    </a>
 				  </span>
 				  <div class="clr"></div>
 			  </div>
 			  <?php endif; ?>
 			  
-			  <?php if($item->params->get('genericItemIntroText')): ?>
+			  <?php if($this->params->get('genericItemIntroText')): ?>
 			  <!-- Item introtext -->
 			  <div class="genericItemIntroText">
 			  	<?php echo $item->introtext; ?>
@@ -86,7 +86,7 @@ defined('_JEXEC') or die('Restricted access');
 		  
 		  <div class="clr"></div>
 		  
-		  <?php if($item->params->get('genericItemExtraFields') && count($item->extra_fields)): ?>
+		  <?php if($this->params->get('genericItemExtraFields') && count($item->extra_fields)): ?>
 		  <!-- Item extra fields -->  
 		  <div class="genericItemExtraFields">
 		  	<h4><?php echo JText::_('K2_ADDITIONAL_INFO'); ?></h4>
@@ -104,7 +104,7 @@ defined('_JEXEC') or die('Restricted access');
 		  </div>
 		  <?php endif; ?>
 		  
-			<?php if($item->params->get('genericItemCategory')): ?>
+			<?php if($this->params->get('genericItemCategory')): ?>
 			<!-- Item category name -->
 			<div class="genericItemCategory">
 				<span><?php echo JText::_('K2_PUBLISHED_IN'); ?></span>
@@ -112,7 +112,7 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 			<?php endif; ?>
 			
-			<?php if ($item->params->get('genericItemReadMore')): ?>
+			<?php if ($this->params->get('genericItemReadMore')): ?>
 			<!-- Item "read more..." link -->
 			<div class="genericItemReadMore">
 				<a class="k2ReadMore" href="<?php echo $item->link; ?>">

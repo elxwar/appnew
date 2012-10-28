@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: item_comments_form.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: item_comments_form.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 ?>
 
@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 </p>
 <?php endif; ?>
 
-<form action="<?php echo JRoute::_('index.php'); ?>" method="post" id="comment-form" class="form-validate">
+<form action="<?php echo JURI::root(true); ?>/index.php" method="post" id="comment-form" class="form-validate">
 	<label class="formComment" for="commentText"><?php echo JText::_('K2_MESSAGE'); ?> *</label>
 	<textarea rows="20" cols="10" class="inputbox" onblur="if(this.value=='') this.value='<?php echo JText::_('K2_ENTER_YOUR_MESSAGE_HERE'); ?>';" onfocus="if(this.value=='<?php echo JText::_('K2_ENTER_YOUR_MESSAGE_HERE'); ?>') this.value='';" name="commentText" id="commentText"><?php echo JText::_('K2_ENTER_YOUR_MESSAGE_HERE'); ?></textarea>
 

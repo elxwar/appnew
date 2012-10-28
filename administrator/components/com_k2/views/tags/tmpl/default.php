@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: default.php 1540 2012-04-06 16:04:55Z lefteris.kavadas $
+ * @version		$Id: default.php 1642 2012-09-26 12:38:42Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,9 +8,9 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-$document = & JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	Joomla.submitbutton = function(pressbutton) {
 		if (pressbutton == 'remove') {
@@ -26,7 +26,7 @@ $document->addScriptDeclaration("
 ?>
 
 <form action="index.php" method="post" name="adminForm" id="adminForm">
-  <table class="k2AdminTableFilters">
+  <table class="k2AdminTableFilters table">
     <tr>
       <td class="k2AdminTableFiltersSearch">
 		<?php echo JText::_('K2_FILTER'); ?>
@@ -34,20 +34,20 @@ $document->addScriptDeclaration("
 		<button id="k2SubmitButton"><?php echo JText::_('K2_GO'); ?></button>
 		<button id="k2ResetButton"><?php echo JText::_('K2_RESET'); ?></button>
       </td>
-      <td class="k2AdminTableFiltersSelects">
+      <td class="k2AdminTableFiltersSelects hidden-phone">
       	<?php echo $this->lists['state']; ?>
       </td>
     </tr>
   </table>
-  <table class="adminlist">
+  <table class="adminlist table table-striped">
     <thead>
       <tr>
-        <th>#</th>
-        <th><input id="jToggler" type="checkbox" name="toggle" value="" /></th>
+        <th class="center hidden-phone">#</th>
+        <th class="center"><input id="jToggler" type="checkbox" name="toggle" value="" /></th>
         <th><?php echo JHTML::_('grid.sort', 'K2_NAME', 'name', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
-        <th><?php echo JHTML::_('grid.sort', 'K2_PUBLISHED', 'published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
-        <th><?php echo JText::_('K2_ITEMS'); ?></th>
-        <th><?php echo JHTML::_('grid.sort', 'K2_ID', 'id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
+        <th class="center"><?php echo JHTML::_('grid.sort', 'K2_PUBLISHED', 'published', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
+        <th class="center hidden-phone"><?php echo JText::_('K2_ITEMS'); ?></th>
+        <th class="center hidden-phone"><?php echo JHTML::_('grid.sort', 'K2_ID', 'id', @$this->lists['order_Dir'], @$this->lists['order'] ); ?></th>
       </tr>
     </thead>
     <tfoot>
@@ -58,12 +58,12 @@ $document->addScriptDeclaration("
     <tbody>
       <?php foreach ($this->rows as $key => $row): ?>
       <tr class="row<?php echo ($key%2); ?>">
-        <td class="k2Center"><?php echo $key+1; ?></td>
-        <td class="k2Center"><?php $row->checked_out = 0; echo JHTML::_('grid.checkedout', $row, $key ); ?></td>
+        <td class="k2Center center hidden-phone"><?php echo $key+1; ?></td>
+        <td class="k2Center center"><?php $row->checked_out = 0; echo JHTML::_('grid.checkedout', $row, $key ); ?></td>
         <td><a href="<?php echo JRoute::_('index.php?option=com_k2&view=tag&cid='.$row->id); ?>"><?php echo $row->name; ?></a></td>
-        <td class="k2Center"><?php echo JHTML::_('grid.published', $row, $key ); ?></td>
-        <td class="k2Center"><?php echo $row->numOfItems; ?></td>
-        <td class="k2Center"><?php echo $row->id; ?></td>
+        <td class="k2Center center"><?php echo $row->status; ?></td>
+        <td class="k2Center center hidden-phone"><?php echo $row->numOfItems; ?></td>
+        <td class="k2Center center hidden-phone"><?php echo $row->id; ?></td>
       </tr>
       <?php endforeach; ?>
     </tbody>

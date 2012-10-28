@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: extrafield.php 1554 2012-04-19 12:22:40Z lefteris.kavadas $
+ * @version		$Id: extrafield.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,20 +8,20 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.model');
 
 JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 
-class K2ModelExtraField extends JModel
+class K2ModelExtraField extends K2Model
 {
 
 	function getData()
 	{
 
 		$cid = JRequest::getVar('cid');
-		$row = &JTable::getInstance('K2ExtraField', 'Table');
+		$row = JTable::getInstance('K2ExtraField', 'Table');
 		$row->load($cid);
 		return $row;
 	}
@@ -29,8 +29,8 @@ class K2ModelExtraField extends JModel
 	function save()
 	{
 
-		$mainframe = &JFactory::getApplication();
-		$row = &JTable::getInstance('K2ExtraField', 'Table');
+		$mainframe = JFactory::getApplication();
+		$row = JTable::getInstance('K2ExtraField', 'Table');
 		if (!$row->bind(JRequest::get('post')))
 		{
 			$mainframe->redirect('index.php?option=com_k2&view=extrafields', $row->getError(), 'error');
@@ -41,7 +41,7 @@ class K2ModelExtraField extends JModel
 		if ($isNewGroup)
 		{
 
-			$group = &JTable::getInstance('K2ExtraFieldsGroup', 'Table');
+			$group = JTable::getInstance('K2ExtraFieldsGroup', 'Table');
 			$group->set('name', JRequest::getVar('group'));
 			$group->store();
 			$row->group = $group->id;
@@ -132,11 +132,11 @@ class K2ModelExtraField extends JModel
 			$mainframe->redirect('index.php?option=com_k2&view=extrafields', $row->getError(), 'error');
 		}
 
-		$params = &JComponentHelper::getParams('com_k2');
+		$params = JComponentHelper::getParams('com_k2');
 		if (!$params->get('disableCompactOrdering'))
 			$row->reorder("`group` = {$row->group}");
 
-		$cache = &JFactory::getCache('com_k2');
+		$cache = JFactory::getCache('com_k2');
 		$cache->clean();
 
 		switch(JRequest::getCmd('task'))
@@ -158,7 +158,7 @@ class K2ModelExtraField extends JModel
 	function getExtraFieldsByGroup($group)
 	{
 
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$group = (int)$group;
 		$query = "SELECT * FROM #__k2_extra_fields WHERE `group`={$group} AND published=1 ORDER BY ordering";
 		$db->setQuery($query);
@@ -169,13 +169,13 @@ class K2ModelExtraField extends JModel
 	function renderExtraField($extraField, $itemID = NULL)
 	{
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'lib'.DS.'JSON.php');
 		$json = new Services_JSON;
 
 		if (!is_null($itemID))
 		{
-			$item = &JTable::getInstance('K2Item', 'Table');
+			$item = JTable::getInstance('K2Item', 'Table');
 			$item->load($itemID);
 		}
 
@@ -319,7 +319,7 @@ class K2ModelExtraField extends JModel
 	function getExtraFieldInfo($fieldID)
 	{
 
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$fieldID = (int)$fieldID;
 		$query = "SELECT * FROM #__k2_extra_fields WHERE published=1 AND id = ".$fieldID;
 		$db->setQuery($query, 0, 1);
@@ -330,7 +330,7 @@ class K2ModelExtraField extends JModel
 	function getSearchValue($id, $currentValue)
 	{
 
-		$row = &JTable::getInstance('K2ExtraField', 'Table');
+		$row = JTable::getInstance('K2ExtraField', 'Table');
 		$row->load($id);
 
 		require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'lib'.DS.'JSON.php');

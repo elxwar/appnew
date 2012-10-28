@@ -1,27 +1,27 @@
 <?php
 /**
- * @version		$Id: item.php 1562 2012-05-02 09:19:47Z lefteris.kavadas $
- * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.net
- * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
- * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ * @version     $Id: item.php 1727 2012-10-09 10:29:30Z lefteris.kavadas $
+ * @package     K2
+ * @author      JoomlaWorks http://www.joomlaworks.net
+ * @copyright   Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
+ * @license     GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die ;
 
 jimport('joomla.application.component.model');
 
 JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 
-class K2ModelItem extends JModel
+class K2ModelItem extends K2Model
 {
 
     function getData()
     {
 
         $cid = JRequest::getVar('cid');
-        $row = &JTable::getInstance('K2Item', 'Table');
+        $row = JTable::getInstance('K2Item', 'Table');
         $row->load($cid);
         return $row;
     }
@@ -29,15 +29,15 @@ class K2ModelItem extends JModel
     function save($front = false)
     {
 
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         jimport('joomla.filesystem.file');
         jimport('joomla.filesystem.folder');
         jimport('joomla.filesystem.archive');
         require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'lib'.DS.'class.upload.php');
-        $db = &JFactory::getDBO();
-        $user = &JFactory::getUser();
-        $row = &JTable::getInstance('K2Item', 'Table');
-        $params = &JComponentHelper::getParams('com_k2');
+        $db = JFactory::getDBO();
+        $user = JFactory::getUser();
+        $row = JTable::getInstance('K2Item', 'Table');
+        $params = JComponentHelper::getParams('com_k2');
         $nullDate = $db->getNullDate();
 
         if (!$row->bind(JRequest::get('post')))
@@ -88,8 +88,8 @@ class K2ModelItem extends JModel
 
         if ($row->id)
         {
-            $datenow = &JFactory::getDate();
-            $row->modified = $datenow->toMySQL();
+            $datenow = JFactory::getDate();
+            $row->modified = K2_JVERSION == '15' ? $datenow->toMySQL() : $datenow->toSql();
             $row->modified_by = $user->get('id');
         }
         else
@@ -103,7 +103,7 @@ class K2ModelItem extends JModel
 
         if ($front)
         {
-            $K2Permissions = &K2Permissions::getInstance();
+            $K2Permissions = K2Permissions::getInstance();
             if (!$K2Permissions->permissions->get('editAll'))
             {
                 $row->created_by = $user->get('id');
@@ -115,18 +115,18 @@ class K2ModelItem extends JModel
             $row->created .= ' 00:00:00';
         }
 
-        $config = &JFactory::getConfig();
-        $tzoffset = $config->getValue('config.offset');
-        $date = &JFactory::getDate($row->created, $tzoffset);
-        $row->created = $date->toMySQL();
+        $config = JFactory::getConfig();
+        $tzoffset = K2_JVERSION == '30' ? $config->get('offset') : $config->getValue('config.offset');
+        $date = JFactory::getDate($row->created, $tzoffset);
+        $row->created = K2_JVERSION == '15' ? $date->toMySQL() : $date->toSql();
 
         if (strlen(trim($row->publish_up)) <= 10)
         {
             $row->publish_up .= ' 00:00:00';
         }
 
-        $date = &JFactory::getDate($row->publish_up, $tzoffset);
-        $row->publish_up = $date->toMySQL();
+        $date = JFactory::getDate($row->publish_up, $tzoffset);
+        $row->publish_up = K2_JVERSION == '15' ? $date->toMySQL() : $date->toSql();
 
         if (trim($row->publish_down) == JText::_('K2_NEVER') || trim($row->publish_down) == '')
         {
@@ -138,8 +138,8 @@ class K2ModelItem extends JModel
             {
                 $row->publish_down .= ' 00:00:00';
             }
-            $date = &JFactory::getDate($row->publish_down, $tzoffset);
-            $row->publish_down = $date->toMySQL();
+            $date = JFactory::getDate($row->publish_down, $tzoffset);
+            $row->publish_down = K2_JVERSION == '15' ? $date->toMySQL() : $date->toSql();
         }
 
         $metadata = JRequest::getVar('meta', null, 'post', 'array');
@@ -169,7 +169,7 @@ class K2ModelItem extends JModel
             $mainframe->redirect('index.php?option=com_k2&view=item&cid='.$row->id, $row->getError(), 'error');
         }
 
-        $dispatcher = &JDispatcher::getInstance();
+        $dispatcher = JDispatcher::getInstance();
         JPluginHelper::importPlugin('k2');
         $result = $dispatcher->trigger('onBeforeK2Save', array(&$row, $isNew));
         if (in_array(false, $result, true))
@@ -271,9 +271,9 @@ class K2ModelItem extends JModel
             {
 
                 //Image params
-                $category = &JTable::getInstance('K2Category', 'Table');
+                $category = JTable::getInstance('K2Category', 'Table');
                 $category->load($row->catid);
-                $cparams = new JParameter($category->params);
+                $cparams = class_exists('JParameter') ? new JParameter($category->params) : new JRegistry($category->params);
 
                 if ($cparams->get('inheritFrom'))
                 {
@@ -281,7 +281,7 @@ class K2ModelItem extends JModel
                     $query = "SELECT * FROM #__k2_categories WHERE id=".(int)$masterCategoryID;
                     $db->setQuery($query, 0, 1);
                     $masterCategory = $db->loadObject();
-                    $cparams = new JParameter($masterCategory->params);
+                    $cparams = class_exists('JParameter') ? new JParameter($masterCategory->params) : new JRegistry($masterCategory->params);
                 }
 
                 $params->merge($cparams);
@@ -419,7 +419,7 @@ class K2ModelItem extends JModel
         if (JRequest::getBool('del_image'))
         {
 
-            $current = &JTable::getInstance('K2Item', 'Table');
+            $current = JTable::getInstance('K2Item', 'Table');
             $current->load($row->id);
             $filename = md5("Image".$current->id);
 
@@ -526,7 +526,7 @@ class K2ModelItem extends JModel
                             $handle->Clean();
                         }
 
-                        $attachment = &JTable::getInstance('K2Attachment', 'Table');
+                        $attachment = JTable::getInstance('K2Attachment', 'Table');
                         $attachment->itemID = $row->id;
                         $attachment->filename = $filename;
                         $attachment->title = ( empty($attachments_titles[$counter])) ? $filename : $attachments_titles[$counter];
@@ -590,7 +590,7 @@ class K2ModelItem extends JModel
         if (JRequest::getBool('del_gallery'))
         {
 
-            $current = &JTable::getInstance('K2Item', 'Table');
+            $current = JTable::getInstance('K2Item', 'Table');
             $current->load($row->id);
 
             if (JFolder::exists(JPATH_ROOT.DS.'media'.DS.'k2'.DS.'galleries'.DS.$current->id))
@@ -637,7 +637,7 @@ class K2ModelItem extends JModel
         else
         {
 
-            $current = &JTable::getInstance('K2Item', 'Table');
+            $current = JTable::getInstance('K2Item', 'Table');
             $current->load($row->id);
 
             preg_match_all("#^{(.*?)}(.*?){#", $current->video, $matches, PREG_PATTERN_ORDER);
@@ -663,14 +663,15 @@ class K2ModelItem extends JModel
 
         //Extra fields
         $objects = array();
-        $variables = JRequest::get('post', 4);
+        $variables = JRequest::get('post', 2);
         foreach ($variables as $key => $value)
         {
             if (( bool )JString::stristr($key, 'K2ExtraField_'))
             {
                 $object = new JObject;
                 $object->set('id', JString::substr($key, 13));
-                $object->set('value', $value);
+                $filteredValue = $this->cleanText($value);
+                $object->set('value', $filteredValue);
                 unset($object->_errors);
                 $objects[] = $object;
             }
@@ -712,8 +713,7 @@ class K2ModelItem extends JModel
         $json = new Services_JSON;
         $row->extra_fields = $json->encode($objects);
 
-        require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'extrafield.php');
-        $extraFieldModel = new K2ModelExtraField;
+        $extraFieldModel = K2Model::getInstance('ExtraField', 'K2Model');
         $row->extra_fields_search = '';
 
         foreach ($objects as $object)
@@ -725,7 +725,7 @@ class K2ModelItem extends JModel
         //Tags
         if ($user->gid < 24 && $params->get('lockTags'))
             $params->set('taggingSystem', 0);
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "DELETE FROM #__k2_tags_xref WHERE itemID={intval($row->id)}";
         $db->setQuery($query);
         $db->query();
@@ -754,7 +754,7 @@ class K2ModelItem extends JModel
                     }
                     else
                     {
-                        $K2Tag = &JTable::getInstance('K2Tag', 'Table');
+                        $K2Tag = JTable::getInstance('K2Tag', 'Table');
                         $K2Tag->name = $tag;
                         $K2Tag->published = 1;
                         $K2Tag->check();
@@ -792,8 +792,8 @@ class K2ModelItem extends JModel
         }
 
         $query = "UPDATE #__k2_items SET 
-		video_caption = ".$db->Quote($row->video_caption).", 
-		video_credits = ".$db->Quote($row->video_credits).", ";
+        video_caption = ".$db->Quote($row->video_caption).", 
+        video_credits = ".$db->Quote($row->video_credits).", ";
 
         if (!is_null($row->video))
         {
@@ -804,9 +804,9 @@ class K2ModelItem extends JModel
             $query .= " gallery = ".$db->Quote($row->gallery).", ";
         }
         $query .= " extra_fields = ".$db->Quote($row->extra_fields).", 
-		extra_fields_search = ".$db->Quote($row->extra_fields_search)." ,
-		published = ".$db->Quote($row->published)." 
-		WHERE id = ".$row->id;
+        extra_fields_search = ".$db->Quote($row->extra_fields_search)." ,
+        published = ".$db->Quote($row->published)." 
+        WHERE id = ".$row->id;
         $db->setQuery($query);
 
         if (!$db->query())
@@ -816,13 +816,14 @@ class K2ModelItem extends JModel
 
         $row->checkin();
 
-        $cache = &JFactory::getCache('com_k2');
+        $cache = JFactory::getCache('com_k2');
         $cache->clean();
 
         $dispatcher->trigger('onAfterK2Save', array(&$row, $isNew));
-        if (K2_JVERSION == '16')
+        JPluginHelper::importPlugin('content');
+        if (K2_JVERSION != '15')
         {
-            $dispatcher->trigger('onContentAfterSave', array(&$row, $isNew));
+            $dispatcher->trigger('onContentAfterSave', array('com_k2.item', &$row, $isNew));
         }
         else
         {
@@ -859,18 +860,23 @@ class K2ModelItem extends JModel
     function cancel()
     {
 
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         $cid = JRequest::getInt('id');
-        $row = &JTable::getInstance('K2Item', 'Table');
-        $row->load($cid);
-        $row->checkin();
+
+        if ($cid)
+        {
+            $row = JTable::getInstance('K2Item', 'Table');
+            $row->load($cid);
+            $row->checkin();
+        }
+
         $mainframe->redirect('index.php?option=com_k2&view=items');
     }
 
     function getVideoProviders()
     {
 
-        if (K2_JVERSION == '16')
+        if (K2_JVERSION != '15')
         {
             $file = JPATH_PLUGINS.DS.'content'.DS.'jw_allvideos'.DS.'jw_allvideos'.DS.'includes'.DS.'sources.php';
         }
@@ -915,15 +921,15 @@ class K2ModelItem extends JModel
     function download()
     {
 
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         jimport('joomla.filesystem.file');
-        $params = &JComponentHelper::getParams('com_k2');
+        $params = JComponentHelper::getParams('com_k2');
         $id = JRequest::getInt('id');
 
         JPluginHelper::importPlugin('k2');
-        $dispatcher = &JDispatcher::getInstance();
+        $dispatcher = JDispatcher::getInstance();
 
-        $attachment = &JTable::getInstance('K2Attachment', 'Table');
+        $attachment = JTable::getInstance('K2Attachment', 'Table');
         if ($mainframe->isSite())
         {
             $token = JRequest::getVar('id');
@@ -982,7 +988,7 @@ class K2ModelItem extends JModel
     function getAttachments($itemID)
     {
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "SELECT * FROM #__k2_attachments WHERE itemID=".(int)$itemID;
         $db->setQuery($query);
         $rows = $db->loadObjectList();
@@ -997,13 +1003,13 @@ class K2ModelItem extends JModel
     function deleteAttachment()
     {
 
-        $mainframe = &JFactory::getApplication();
-        $params = &JComponentHelper::getParams('com_k2');
+        $mainframe = JFactory::getApplication();
+        $params = JComponentHelper::getParams('com_k2');
         jimport('joomla.filesystem.file');
         $id = JRequest::getInt('id');
         $itemID = JRequest::getInt('cid');
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "SELECT COUNT(*) FROM #__k2_attachments WHERE itemID={$itemID} AND id={$id}";
         $db->setQuery($query);
         $result = $db->loadResult();
@@ -1013,7 +1019,7 @@ class K2ModelItem extends JModel
             $mainframe->close();
         }
 
-        $row = &JTable::getInstance('K2Attachment', 'Table');
+        $row = JTable::getInstance('K2Attachment', 'Table');
         $row->load($id);
 
         $path = $params->get('attachmentsFolder', NULL);
@@ -1038,7 +1044,7 @@ class K2ModelItem extends JModel
     function getAvailableTags($itemID = NULL)
     {
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "SELECT * FROM #__k2_tags as tags";
         if (!is_null($itemID))
             $query .= " WHERE tags.id NOT IN (SELECT tagID FROM #__k2_tags_xref WHERE itemID=".(int)$itemID.")";
@@ -1050,12 +1056,12 @@ class K2ModelItem extends JModel
     function getCurrentTags($itemID)
     {
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $itemID = (int)$itemID;
         $query = "SELECT tags.*
-		FROM #__k2_tags AS tags 
-		JOIN #__k2_tags_xref AS xref ON tags.id = xref.tagID 
-		WHERE xref.itemID = ".(int)$itemID." ORDER BY xref.id ASC";
+        FROM #__k2_tags AS tags 
+        JOIN #__k2_tags_xref AS xref ON tags.id = xref.tagID 
+        WHERE xref.itemID = ".(int)$itemID." ORDER BY xref.id ASC";
         $db->setQuery($query);
         $rows = $db->loadObjectList();
         return $rows;
@@ -1063,9 +1069,9 @@ class K2ModelItem extends JModel
 
     function resetHits()
     {
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         $id = JRequest::getInt('id');
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "UPDATE #__k2_items SET hits=0 WHERE id={$id}";
         $db->setQuery($query);
         $db->query();
@@ -1078,9 +1084,9 @@ class K2ModelItem extends JModel
 
     function resetRating()
     {
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         $id = JRequest::getInt('id');
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "DELETE FROM #__k2_rating WHERE itemID={$id}";
         $db->setQuery($query);
         $db->query();
@@ -1094,7 +1100,7 @@ class K2ModelItem extends JModel
     function getRating()
     {
         $id = JRequest::getInt('cid');
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "SELECT * FROM #__k2_rating WHERE itemID={$id}";
         $db->setQuery($query, 0, 1);
         $row = $db->loadObject();
@@ -1103,8 +1109,8 @@ class K2ModelItem extends JModel
 
     function checkSIG()
     {
-        $mainframe = &JFactory::getApplication();
-        if (K2_JVERSION == '16')
+        $mainframe = JFactory::getApplication();
+        if (K2_JVERSION != '15')
         {
             $check = JPATH_PLUGINS.DS.'content'.DS.'jw_sigpro'.DS.'jw_sigpro.php';
         }
@@ -1124,8 +1130,8 @@ class K2ModelItem extends JModel
 
     function checkAllVideos()
     {
-        $mainframe = &JFactory::getApplication();
-        if (K2_JVERSION == '16')
+        $mainframe = JFactory::getApplication();
+        if (K2_JVERSION != '15')
         {
             $check = JPATH_PLUGINS.DS.'content'.DS.'jw_allvideos'.DS.'jw_allvideos.php';
         }
@@ -1141,6 +1147,62 @@ class K2ModelItem extends JModel
         {
             return false;
         }
+    }
+
+    function cleanText($text)
+    {
+        if (version_compare(JVERSION, '2.5.0', 'ge'))
+        {
+            $text = JComponentHelper::filterText($text);
+        }
+        else if (version_compare(JVERSION, '2.5.0', 'lt') && version_compare(JVERSION, '1.6.0', 'ge'))
+        {
+            JLoader::register('ContentHelper', JPATH_ADMINISTRATOR.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'content.php');
+            $text = ContentHelper::filterText($text);
+        }
+        else
+        {
+            $config = JComponentHelper::getParams('com_content');
+            $user = JFactory::getUser();
+            $gid = $user->get('gid');
+            $filterGroups = $config->get('filter_groups');
+
+            // convert to array if one group selected
+            if ((!is_array($filterGroups) && (int)$filterGroups > 0))
+            {
+                $filterGroups = array($filterGroups);
+            }
+
+            if (is_array($filterGroups) && in_array($gid, $filterGroups))
+            {
+                $filterType = $config->get('filter_type');
+                $filterTags = preg_split('#[,\s]+#', trim($config->get('filter_tags')));
+                $filterAttrs = preg_split('#[,\s]+#', trim($config->get('filter_attritbutes')));
+                switch ($filterType)
+                {
+                    case 'NH' :
+                        $filter = new JFilterInput();
+                        break;
+                    case 'WL' :
+                        $filter = new JFilterInput($filterTags, $filterAttrs, 0, 0, 0);
+                        break;
+                    case 'BL' :
+                    default :
+                        $filter = new JFilterInput($filterTags, $filterAttrs, 1, 1);
+                        break;
+                }
+                $text = $filter->clean($text);
+            }
+            elseif (empty($filterGroups) && $gid != '25')
+            {
+                // no default filtering for super admin (gid=25)
+                $filter = new JFilterInput( array(), array(), 1, 1);
+                $text = $filter->clean($text);
+            }
+        }
+
+        return $text;
+
     }
 
 }

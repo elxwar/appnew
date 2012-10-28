@@ -1,5 +1,5 @@
 /**
- * @version		$Id: k2.frontend.css 1575 2012-05-09 12:09:32Z lefteris.kavadas $
+ * @version		$Id: k2.frontend.css 1643 2012-09-26 13:10:26Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -42,7 +42,7 @@ div#k2Frontend table.k2FrontendToolbar td.button {border:1px solid #ccc;backgrou
 div#k2Frontend table.k2FrontendToolbar td.button:hover {background:#fffff2;}
 
 #k2FrontendEditToolbar {text-align:left;padding:8px;}
-#k2FrontendEditToolbar h2 {width:auto;margin-top:0;line-height:40px;}
+#k2FrontendEditToolbar h2 {width:auto;margin-top:0;line-height:40px; min-height: 48px;}
 
 #k2FrontendPermissionsNotice {padding:0 8px 8px;margin:0 auto;text-align:center;}
 #k2FrontendPermissionsNotice p {color:red;font-weight:bold;font-size:13px;font-style:italic;font-family:monospace;}

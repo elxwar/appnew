@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 1561 2012-05-02 09:12:14Z lefteris.kavadas $
+ * @version		$Id: view.html.php 1653 2012-09-27 11:17:31Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,17 +8,17 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class K2ViewExtraField extends JView
+class K2ViewExtraField extends K2View
 {
 
     function display($tpl = null)
     {
         JRequest::setVar('hidemainmenu', 1);
-        $model = &$this->getModel();
+        $model = $this->getModel();
         $extraField = $model->getData();
         if (!$extraField->id)
         {
@@ -31,8 +31,7 @@ class K2ViewExtraField extends JView
 
         $groups[] = JHTML::_('select.option', 0, JText::_('K2_CREATE_NEW_GROUP'));
 
-        require_once (JPATH_COMPONENT.DS.'models'.DS.'extrafields.php');
-        $extraFieldModel = new K2ModelExtraFields;
+        $extraFieldModel = K2Model::getInstance('ExtraFields', 'K2Model');
         $uniqueGroups = $extraFieldModel->getGroups(true);
         foreach ($uniqueGroups as $group)
         {
@@ -61,7 +60,7 @@ class K2ViewExtraField extends JView
         JToolBarHelper::cancel();
         JHTML::_('behavior.calendar');
 
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
         $document->addScriptDeclaration('
 		var K2Language = [
 		"'.JText::_('K2_REMOVE', true).'", 

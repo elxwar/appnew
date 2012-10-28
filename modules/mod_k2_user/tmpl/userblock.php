@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: userblock.php 1575 2012-05-09 12:09:32Z lefteris.kavadas $
+ * @version		$Id: userblock.php 1721 2012-10-08 15:48:43Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 ?>
 
@@ -39,7 +39,7 @@ defined('_JEXEC') or die('Restricted access');
 			<a href="<?php echo JRoute::_(K2HelperRoute::getUserRoute($user->id)); ?>"><?php echo JText::_('K2_MY_PAGE'); ?></a>
 		</li>
 		<li>
-			<a href="<?php echo JRoute::_((K2_JVERSION=='16') ? 'index.php?option=com_users&view=profile&layout=edit' : 'index.php?option=com_user&view=user&task=edit'); ?>"><?php echo JText::_('K2_MY_ACCOUNT'); ?></a>
+			<a href="<?php echo $profileLink; ?>"><?php echo JText::_('K2_MY_ACCOUNT'); ?></a>
 		</li>
 		<li>
 			<a class="modal" rel="{handler:'iframe',size:{x:990,y:550}}" href="<?php echo JRoute::_('index.php?option=com_k2&view=comments&tmpl=component'); ?>"><?php echo JText::_('K2_MODERATE_COMMENTS_TO_MY_PUBLISHED_ITEMS'); ?></a>
@@ -71,10 +71,10 @@ defined('_JEXEC') or die('Restricted access');
 		<?php endforeach; ?>
   </ul>
 
-  <form action="index.php" method="post">
+  <form action="<?php echo JURI::root(true); ?>/index.php" method="post">
     <input type="submit" name="Submit" class="button ubLogout" value="<?php echo JText::_('K2_LOGOUT'); ?>" />
-    <input type="hidden" name="option" value="<?php echo (K2_JVERSION=='16')?'com_users':'com_user'?>" />
-    <input type="hidden" name="task" value="<?php echo (K2_JVERSION=='16')?'user.logout':'logout'?>" />
+    <input type="hidden" name="option" value="<?php echo $option; ?>" />
+    <input type="hidden" name="task" value="<?php echo $task; ?>" />
     <input type="hidden" name="return" value="<?php echo $return; ?>" />
     <?php echo JHTML::_( 'form.token' ); ?>
   </form>

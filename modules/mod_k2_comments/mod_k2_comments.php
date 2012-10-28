@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: mod_k2_comments.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: mod_k2_comments.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,50 +8,58 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die ;
 
-if(K2_JVERSION == '16'){
-	$language = &JFactory::getLanguage();
-	$language->load('mod_k2.j16', JPATH_ADMINISTRATOR, null, true);
+if (K2_JVERSION != '15')
+{
+    $language = JFactory::getLanguage();
+    $language->load('mod_k2.j16', JPATH_ADMINISTRATOR, null, true);
 }
 
-require_once (dirname( __FILE__ ).DS.'helper.php');
+require_once (dirname(__FILE__).DS.'helper.php');
 
 // Params
-$moduleclass_sfx = $params->get('moduleclass_sfx','');
-$module_usage = $params->get('module_usage','0');
+$moduleclass_sfx = $params->get('moduleclass_sfx', '');
+$module_usage = $params->get('module_usage', '0');
 
-$commentAvatarWidthSelect = $params->get('commentAvatarWidthSelect','custom');
-$commentAvatarWidth = $params->get('commentAvatarWidth',50);
+$commentAvatarWidthSelect = $params->get('commentAvatarWidthSelect', 'custom');
+$commentAvatarWidth = $params->get('commentAvatarWidth', 50);
 
-$commenterAvatarWidthSelect = $params->get('commenterAvatarWidthSelect','custom');
-$commenterAvatarWidth = $params->get('commenterAvatarWidth',50);
+$commenterAvatarWidthSelect = $params->get('commenterAvatarWidthSelect', 'custom');
+$commenterAvatarWidth = $params->get('commenterAvatarWidth', 50);
 
 // Get component params
-$componentParams = & JComponentHelper::getParams('com_k2');
+$componentParams = JComponentHelper::getParams('com_k2');
 
 // User avatar for latest comments
-if($commentAvatarWidthSelect=='inherit'){
-	$lcAvatarWidth = $componentParams->get('commenterImgWidth');
-} else {
-	$lcAvatarWidth = $commentAvatarWidth;
+if ($commentAvatarWidthSelect == 'inherit')
+{
+    $lcAvatarWidth = $componentParams->get('commenterImgWidth');
+}
+else
+{
+    $lcAvatarWidth = $commentAvatarWidth;
 }
 
 // User avatar for top commenters
-if($commenterAvatarWidthSelect=='inherit'){
-	$tcAvatarWidth = $componentParams->get('commenterImgWidth');
-} else {
-	$tcAvatarWidth = $commenterAvatarWidth;
+if ($commenterAvatarWidthSelect == 'inherit')
+{
+    $tcAvatarWidth = $componentParams->get('commenterImgWidth');
+}
+else
+{
+    $tcAvatarWidth = $commenterAvatarWidth;
 }
 
-switch($module_usage) {
-	case '0':
-	$comments = modK2CommentsHelper::getLatestComments($params);
-	require (JModuleHelper::getLayoutPath('mod_k2_comments', 'comments'));
-	break;
+switch($module_usage)
+{
+    case '0' :
+        $comments = modK2CommentsHelper::getLatestComments($params);
+        require (JModuleHelper::getLayoutPath('mod_k2_comments', 'comments'));
+        break;
 
-	case '1':
-	$commenters = modK2CommentsHelper::getTopCommenters($params);
-	require (JModuleHelper::getLayoutPath('mod_k2_comments', 'commenters'));
-	break;
+    case '1' :
+        $commenters = modK2CommentsHelper::getTopCommenters($params);
+        require (JModuleHelper::getLayoutPath('mod_k2_comments', 'commenters'));
+        break;
 }

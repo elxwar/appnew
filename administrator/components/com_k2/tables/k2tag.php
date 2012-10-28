@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: k2tag.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: k2tag.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,37 +8,43 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-class TableK2Tag extends JTable {
+class TableK2Tag extends K2Table
+{
 
-	var $id = null;
-	var $name = null;
-	var $published = null;
+    var $id = null;
+    var $name = null;
+    var $published = null;
 
-	function __construct( & $db) {
+    function __construct(&$db)
+    {
 
-		parent::__construct('#__k2_tags', 'id', $db);
-	}
+        parent::__construct('#__k2_tags', 'id', $db);
+    }
 
-	function check() {
+    function check()
+    {
 
-		if (trim($this->name) == '') {
-			$this->setError(JText::_('K2_TAG_CANNOT_BE_EMPTY'));
-			return false;
-		}
-		// Check if tag exists already for new tags
-		if(!$this->id) {
-			$this->_db->setQuery("SELECT id FROM #__k2_tags WHERE name = ".$this->_db->Quote($this->name));
-			if($this->_db->loadResult()) {
-				$this->setError(JText::_('K2_THIS_TAG_EXISTS_ALREADY'));
-				return false;	
-			}
-		}
-		$this->name = JString::trim($this->name);
-		$this->name = str_replace('-','',$this->name);
-		$this->name = str_replace('.','',$this->name);
-		return true;
-	}
+        if (JString::trim($this->name) == '')
+        {
+            $this->setError(JText::_('K2_TAG_CANNOT_BE_EMPTY'));
+            return false;
+        }
+        // Check if tag exists already for new tags
+        if (!$this->id)
+        {
+            $this->_db->setQuery("SELECT id FROM #__k2_tags WHERE name = ".$this->_db->Quote($this->name));
+            if ($this->_db->loadResult())
+            {
+                $this->setError(JText::_('K2_THIS_TAG_EXISTS_ALREADY'));
+                return false;
+            }
+        }
+        $this->name = JString::trim($this->name);
+        $this->name = str_replace('-', '', $this->name);
+        $this->name = str_replace('.', '', $this->name);
+        return true;
+    }
 
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: item.php 1577 2012-05-09 12:40:54Z lefteris.kavadas $
+ * @version		$Id: item.php 1727 2012-10-09 10:29:30Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,22 +8,22 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die ;
 
 jimport('joomla.application.component.model');
 
 JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
 
-class K2ModelItem extends JModel
+class K2ModelItem extends K2Model
 {
 
     function getData()
     {
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         $id = JRequest::getInt('id');
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "SELECT * FROM #__k2_items WHERE id={$id}";
-        if (K2_JVERSION == '16')
+        if (K2_JVERSION != '15')
         {
             $languageFilter = $mainframe->getLanguageFilter();
             if ($languageFilter)
@@ -43,17 +43,17 @@ class K2ModelItem extends JModel
         jimport('joomla.filesystem.file');
         JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
         $limitstart = JRequest::getInt('limitstart');
-
+        $application = JFactory::getApplication();
         //Initialize params
         if ($view != 'item')
         {
 
             $component = JComponentHelper::getComponent('com_k2');
-            $params = new JParameter($component->params);
+            $params = class_exists('JParameter') ? new JParameter($component->params) : new JRegistry($component->params);
             $itemid = JRequest::getInt('Itemid');
             if ($itemid)
             {
-                $menu = JSite::getMenu();
+                $menu = $application->getMenu();
                 $menuparams = $menu->getParams($itemid);
                 $params->merge($menuparams);
             }
@@ -61,12 +61,12 @@ class K2ModelItem extends JModel
         }
         else
         {
-            $params = &K2HelperUtilities::getParams('com_k2');
+            $params = K2HelperUtilities::getParams('com_k2');
         }
 
         //Category
-        $db = &JFactory::getDBO();
-        $category = &JTable::getInstance('K2Category', 'Table');
+        $db = JFactory::getDBO();
+        $category = JTable::getInstance('K2Category', 'Table');
         $category->load($item->catid);
 
         $item->category = $category;
@@ -80,15 +80,15 @@ class K2ModelItem extends JModel
         $item->printLink = urldecode(JRoute::_($link.'&tmpl=component&print=1'));
 
         //Params
-        $cparams = new JParameter($category->params);
-        $iparams = new JParameter($item->params);
+        $cparams = class_exists('JParameter') ? new JParameter($category->params) : new JRegistry($category->params);
+        $iparams = class_exists('JParameter') ? new JParameter($item->params) : new JRegistry($item->params);
         $item->params = $params;
         if ($cparams->get('inheritFrom'))
         {
             $masterCategoryID = $cparams->get('inheritFrom');
-            $masterCategory = &JTable::getInstance('K2Category', 'Table');
+            $masterCategory = JTable::getInstance('K2Category', 'Table');
             $masterCategory->load((int)$masterCategoryID);
-            $cparams = new JParameter($masterCategory->params);
+            $cparams = class_exists('JParameter') ? new JParameter($masterCategory->params) : new JRegistry($masterCategory->params);
         }
         $item->params->merge($cparams);
         $item->params->merge($iparams);
@@ -100,7 +100,7 @@ class K2ModelItem extends JModel
         //Tags
         if (($view == 'item' && ($item->params->get('itemTags') || $item->params->get('itemRelated'))) || ($view == 'itemlist' && ($task == '' || $task == 'category') && $item->params->get('catItemTags')) || ($view == 'itemlist' && $task == 'user' && $item->params->get('userItemTags')) || ($view == 'latest' && $params->get('latestItemTags')))
         {
-            $tags = K2ModelItem::getItemTags($item->id);
+            $tags = $this->getItemTags($item->id);
             for ($i = 0; $i < sizeof($tags); $i++)
             {
                 $tags[$i]->link = JRoute::_(K2HelperRoute::getTagRoute($tags[$i]->name));
@@ -115,7 +115,7 @@ class K2ModelItem extends JModel
         $item->imageLarge = '';
         $item->imageXLarge = '';
 
-        $date = &JFactory::getDate($item->modified);
+        $date = JFactory::getDate($item->modified);
         $timestamp = '?t='.$date->toUnix();
 
         if (JFile::exists(JPATH_SITE.DS.'media'.DS.'k2'.DS.'items'.DS.'cache'.DS.md5("Image".$item->id).'_XS.jpg'))
@@ -175,20 +175,20 @@ class K2ModelItem extends JModel
         //Extra fields
         if (($view == 'item' && $item->params->get('itemExtraFields')) || ($view == 'itemlist' && ($task == '' || $task == 'category') && $item->params->get('catItemExtraFields')) || ($view == 'itemlist' && $task == 'tag' && $item->params->get('tagItemExtraFields')) || ($view == 'itemlist' && ($task == 'search' || $task == 'date') && $item->params->get('genericItemExtraFields')))
         {
-            $item->extra_fields = K2ModelItem::getItemExtraFields($item->extra_fields);
+            $item->extra_fields = $this->getItemExtraFields($item->extra_fields);
         }
 
         //Attachments
         if (($view == 'item' && $item->params->get('itemAttachments')) || ($view == 'itemlist' && ($task == '' || $task == 'category') && $item->params->get('catItemAttachments')))
         {
-            $item->attachments = K2ModelItem::getItemAttachments($item->id);
+            $item->attachments = $this->getItemAttachments($item->id);
         }
 
         //Rating
         if (($view == 'item' && $item->params->get('itemRating')) || ($view == 'itemlist' && ($task == '' || $task == 'category') && $item->params->get('catItemRating')))
         {
-            $item->votingPercentage = K2ModelItem::getVotesPercentage($item->id);
-            $item->numOfvotes = K2ModelItem::getVotesNum($item->id);
+            $item->votingPercentage = $this->getVotesPercentage($item->id);
+            $item->numOfvotes = $this->getVotesNum($item->id);
 
         }
 
@@ -223,16 +223,17 @@ class K2ModelItem extends JModel
         {
             if (!empty($item->created_by_alias))
             {
+                $item->author = new stdClass;
                 $item->author->name = $item->created_by_alias;
                 $item->author->avatar = K2HelperUtilities::getAvatar('alias');
                 $item->author->link = JURI::root();
             }
             else
             {
-                $author = &JFactory::getUser($item->created_by);
+                $author = JFactory::getUser($item->created_by);
                 $item->author = $author;
                 $item->author->link = JRoute::_(K2HelperRoute::getUserRoute($item->created_by));
-                $item->author->profile = K2ModelItem::getUserProfile($item->created_by);
+                $item->author->profile = $this->getUserProfile($item->created_by);
                 $item->author->avatar = K2HelperUtilities::getAvatar($author->id, $author->email, $params->get('userImageWidth'));
             }
 
@@ -250,11 +251,11 @@ class K2ModelItem extends JModel
         $user = JFactory::getUser();
         if (!$user->guest && $user->id == $item->created_by && $params->get('inlineCommentsModeration'))
         {
-            $item->numOfComments = K2ModelItem::countItemComments($item->id, false);
+            $item->numOfComments = $this->countItemComments($item->id, false);
         }
         else
         {
-            $item->numOfComments = K2ModelItem::countItemComments($item->id);
+            $item->numOfComments = $this->countItemComments($item->id);
         }
         return $item;
     }
@@ -263,11 +264,11 @@ class K2ModelItem extends JModel
     {
 
         JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
-        $params = &K2HelperUtilities::getParams('com_k2');
+        $params = K2HelperUtilities::getParams('com_k2');
         $limitstart = 0;
-
+        $view = JRequest::getCmd('view');
         //Category
-        $category = &JTable::getInstance('K2Category', 'Table');
+        $category = JTable::getInstance('K2Category', 'Table');
         $category->load($item->catid);
         $item->category = $category;
 
@@ -297,7 +298,7 @@ class K2ModelItem extends JModel
         //Item image
         if ($params->get('feedItemImage') && JFile::exists(JPATH_SITE.DS.'media'.DS.'k2'.DS.'items'.DS.'cache'.DS.md5("Image".$item->id).'_'.$params->get('feedImgSize').'.jpg'))
         {
-            $item->description .= '<div class="K2FeedImage"><img src="'.JURI::base(true).'/media/k2/items/cache/'.md5('Image'.$item->id).'_'.$params->get('feedImgSize').'.jpg" alt="'.$item->title.'" /></div>';
+            $item->description .= '<div class="K2FeedImage"><img src="'.JURI::root().'media/k2/items/cache/'.md5('Image'.$item->id).'_'.$params->get('feedImgSize').'.jpg" alt="'.$item->title.'" /></div>';
         }
 
         //Item Introtext
@@ -320,7 +321,7 @@ class K2ModelItem extends JModel
         //Item Tags
         if ($params->get('feedItemTags'))
         {
-            $tags = K2ModelItem::getItemTags($item->id);
+            $tags = $this->getItemTags($item->id);
             if (count($tags))
             {
                 $item->description .= '<div class="K2FeedTags"><ul>';
@@ -349,11 +350,17 @@ class K2ModelItem extends JModel
                     if (!JString::strpos($matches[1], 'http://}'))
                         $item->video = str_replace($matches[1], JURI::root().$matches[1], $item->video);
                 }
-                $dispatcher = &JDispatcher::getInstance();
+                $dispatcher = JDispatcher::getInstance();
                 JPluginHelper::importPlugin('content');
                 $item->text = $item->video;
-                $dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
-                $item->description .= '<div class="K2FeedVideo">'.$item->text.'</div>';
+                if (K2_JVERSION == '15')
+                {
+                    $dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
+                }
+                else
+                {
+                    $dispatcher->trigger('onContentPrepare', array('com_k2.'.$view, &$item, &$params, $limitstart));
+                }                $item->description .= '<div class="K2FeedVideo">'.$item->text.'</div>';
             }
         }
 
@@ -362,17 +369,24 @@ class K2ModelItem extends JModel
         {
             $params->set('galleries_rootfolder', 'media/k2/galleries');
             $params->set('enabledownload', '0');
-            $dispatcher = &JDispatcher::getInstance();
+            $dispatcher = JDispatcher::getInstance();
             JPluginHelper::importPlugin('content');
             $item->text = $item->gallery;
-            $dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
+            if (K2_JVERSION == '15')
+            {
+                $dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
+            }
+            else
+            {
+                $dispatcher->trigger('onContentPrepare', array('com_k2.'.$view, &$item, &$params, $limitstart));
+            }
             $item->description .= '<div class="K2FeedGallery">'.$item->text.'</div>';
         }
 
         //Item attachments
         if ($params->get('feedItemAttachments'))
         {
-            $attachments = K2ModelItem::getItemAttachments($item->id);
+            $attachments = $this->getItemAttachments($item->id);
             if (count($attachments))
             {
                 $item->description .= '<div class="K2FeedAttachments"><ul>';
@@ -392,10 +406,10 @@ class K2ModelItem extends JModel
         }
         else
         {
-            $author = &JFactory::getUser($item->created_by);
+            $author = JFactory::getUser($item->created_by);
             $item->author = $author;
             $item->author->link = JRoute::_(K2HelperRoute::getUserRoute($item->created_by));
-            $item->author->profile = K2ModelItem::getUserProfile($item->created_by);
+            $item->author->profile = $this->getUserProfile($item->created_by);
         }
 
         return $item;
@@ -436,6 +450,7 @@ class K2ModelItem extends JModel
         $row->gallery = $item->gallery;
         $row->hits = $item->hits;
         //$row->plugins = $item->plugins;
+        $row->category = new stdClass;
         $row->category->id = $item->category->id;
         $row->category->name = $item->category->name;
         $row->category->alias = $item->category->alias;
@@ -450,12 +465,13 @@ class K2ModelItem extends JModel
         $row->numOfvotes = isset($item->numOfvotes) ? $item->numOfvotes : '';
         if (isset($item->author))
         {
+            $row->author = new stdClass;
             //$row->author->id = $item->author->id;
             $row->author->name = $item->author->name;
             //$row->author->username = $item->author->username;
             $row->author->link = $item->author->link;
             $row->author->avatar = $item->author->avatar;
-            if(isset($item->author->profile))
+            if (isset($item->author->profile))
             {
                 unset($item->author->profile->plugins);
             }
@@ -463,17 +479,18 @@ class K2ModelItem extends JModel
         }
         $row->numOfComments = $item->numOfComments;
         $row->events = $item->event;
+        $row->language = $item->language;
         return $row;
     }
 
     function execPlugins($item, $view, $task)
     {
 
-        $params = &K2HelperUtilities::getParams('com_k2');
+        $params = K2HelperUtilities::getParams('com_k2');
         $limitstart = JRequest::getInt('limitstart');
-
+        $view = JRequest::getCmd('view');
         //Import plugins
-        $dispatcher = &JDispatcher::getInstance();
+        $dispatcher = JDispatcher::getInstance();
         JPluginHelper::importPlugin('content');
 
         //Gallery
@@ -491,7 +508,14 @@ class K2ModelItem extends JModel
                 }
                 $params->set('galleries_rootfolder', 'media/k2/galleries');
                 $item->text = $item->gallery;
-                $dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
+                if (K2_JVERSION == '15')
+                {
+                    $dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
+                }
+                else
+                {
+                    $dispatcher->trigger('onContentPrepare', array('com_k2.'.$view, &$item, &$params, $limitstart));
+                }
                 $item->gallery = $item->text;
             }
         }
@@ -537,7 +561,14 @@ class K2ModelItem extends JModel
                 }
 
                 $item->text = $item->video;
-                $dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
+                if (K2_JVERSION == '15')
+                {
+                    $dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
+                }
+                else
+                {
+                    $dispatcher->trigger('onContentPrepare', array('com_k2.'.$view, &$item, &$params, $limitstart));
+                }
                 $item->video = $item->text;
             }
 
@@ -589,8 +620,8 @@ class K2ModelItem extends JModel
             }
 
         }
-
-        if (K2_JVERSION == '16')
+        $item->event = new stdClass;
+        if (K2_JVERSION != '15')
         {
 
             $item->event->BeforeDisplay = '';
@@ -671,7 +702,7 @@ class K2ModelItem extends JModel
         // Extra fields plugins
         if (($view == 'item' && $item->params->get('itemExtraFields')) || ($view == 'itemlist' && ($task == '' || $task == 'category') && $item->params->get('catItemExtraFields')))
         {
-            if (count($item->extra_fields))
+            if (count($item->extra_fields) && is_array($item->extra_fields))
             {
                 foreach ($item->extra_fields as $key => $extraField)
                 {
@@ -679,7 +710,7 @@ class K2ModelItem extends JModel
                     {
                         $tmp = new JObject();
                         $tmp->text = $extraField->value;
-                        if (K2_JVERSION == '16')
+                        if (K2_JVERSION != '15')
                         {
                             $dispatcher->trigger('onContentPrepare', array('com_k2.'.$view, &$tmp, &$params, $limitstart));
                         }
@@ -700,29 +731,29 @@ class K2ModelItem extends JModel
     function hit($id)
     {
 
-        $row = &JTable::getInstance('K2Item', 'Table');
+        $row = JTable::getInstance('K2Item', 'Table');
         $row->hit($id);
     }
 
     function vote()
     {
 
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
 
         //Get item
-        $item = &JTable::getInstance('K2Item', 'Table');
+        $item = JTable::getInstance('K2Item', 'Table');
         $item->load(JRequest::getInt('itemID'));
 
         //Get category
-        $category = &JTable::getInstance('K2Category', 'Table');
+        $category = JTable::getInstance('K2Category', 'Table');
         $category->load($item->catid);
 
         //Access check
         $user = JFactory::getUser();
-        if (K2_JVERSION == '16')
+        if (K2_JVERSION != '15')
         {
-            if (!in_array($item->access, $user->authorisedLevels()) || !in_array($category->access, $user->authorisedLevels()))
+            if (!in_array($item->access, $user->getAuthorisedViewLevels()) || !in_array($category->access, $user->getAuthorisedViewLevels()))
             {
                 JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
             }
@@ -749,7 +780,7 @@ class K2ModelItem extends JModel
 
         if ($rate >= 1 && $rate <= 5)
         {
-            $db = &JFactory::getDBO();
+            $db = JFactory::getDBO();
             $userIP = $_SERVER['REMOTE_ADDR'];
             $query = "SELECT * FROM #__k2_rating WHERE itemID =".(int)$item->id;
             $db->setQuery($query);
@@ -792,7 +823,7 @@ class K2ModelItem extends JModel
         {
             return $K2RatingsInstances[$id];
         }
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "SELECT * FROM #__k2_rating WHERE itemID = ".$id;
         $db->setQuery($query);
         $vote = $db->loadObject();
@@ -803,7 +834,7 @@ class K2ModelItem extends JModel
     function getVotesNum($itemID = NULL)
     {
 
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         $user = JFactory::getUser();
         $xhr = false;
         if (is_null($itemID))
@@ -812,7 +843,7 @@ class K2ModelItem extends JModel
             $xhr = true;
         }
 
-        $vote = K2ModelItem::getRating($itemID);
+        $vote = $this->getRating($itemID);
 
         if (!is_null($vote))
             $rating_count = intval($vote->rating_count);
@@ -839,9 +870,9 @@ class K2ModelItem extends JModel
     function getVotesPercentage($itemID = NULL)
     {
 
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         $user = JFactory::getUser();
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $xhr = false;
         $result = 0;
         if (is_null($itemID))
@@ -851,7 +882,7 @@ class K2ModelItem extends JModel
             $xhr = true;
         }
 
-        $vote = K2ModelItem::getRating($itemID);
+        $vote = $this->getRating($itemID);
 
         if (!is_null($vote) && $vote->rating_count != 0)
         {
@@ -869,29 +900,29 @@ class K2ModelItem extends JModel
     function comment()
     {
 
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         jimport('joomla.mail.helper');
         JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
-        $params = &K2HelperUtilities::getParams('com_k2');
+        $params = K2HelperUtilities::getParams('com_k2');
         $user = JFactory::getUser();
-        $config = &JFactory::getConfig();
+        $config = JFactory::getConfig();
 
         JLoader::register('Services_JSON', JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'JSON.php');
         $json = new Services_JSON;
         $response = new JObject();
 
         //Get item
-        $item = &JTable::getInstance('K2Item', 'Table');
+        $item = JTable::getInstance('K2Item', 'Table');
         $item->load(JRequest::getInt('itemID'));
 
         //Get category
-        $category = &JTable::getInstance('K2Category', 'Table');
+        $category = JTable::getInstance('K2Category', 'Table');
         $category->load($item->catid);
 
         //Access check
-        if (K2_JVERSION == '16')
+        if (K2_JVERSION != '15')
         {
-            if (!in_array($item->access, $user->authorisedLevels()) || !in_array($category->access, $user->authorisedLevels()))
+            if (!in_array($item->access, $user->getAuthorisedViewLevels()) || !in_array($category->access, $user->getAuthorisedViewLevels()))
             {
                 JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
             }
@@ -918,7 +949,7 @@ class K2ModelItem extends JModel
         if ((($params->get('comments') == '2') && ($user->id > 0) && K2HelperPermissions::canAddComment($item->catid)) || ($params->get('comments') == '1'))
         {
 
-            $row = &JTable::getInstance('K2Comment', 'Table');
+            $row = JTable::getInstance('K2Comment', 'Table');
 
             if (!$row->bind(JRequest::get('post')))
             {
@@ -936,7 +967,7 @@ class K2ModelItem extends JModel
             //$row->commentText = $filter->clean( $row->commentText );
 
             //Clean vars
-            $filter = &JFilterInput::getInstance();
+            $filter = JFilterInput::getInstance();
             $row->userName = $filter->clean($row->userName, 'username');
             if ($row->commentURL && preg_match('/^((http|https|ftp):\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}((:[0-9]{1,5})?\/.*)?$/i', $row->commentURL))
             {
@@ -954,8 +985,8 @@ class K2ModelItem extends JModel
                 $row->commentURL = '';
             }
 
-            $datenow = &JFactory::getDate();
-            $row->commentDate = $datenow->toMySQL();
+            $datenow = JFactory::getDate();
+            $row->commentDate = K2_JVERSION == '15' ? $datenow->toMySQL() : $datenow->toSql();
 
             if (!$user->guest)
             {
@@ -971,27 +1002,27 @@ class K2ModelItem extends JModel
 
             if (empty($userName) || $userName == JText::_('K2_ENTER_YOUR_NAME') || empty($commentText) || $commentText == JText::_('K2_ENTER_YOUR_MESSAGE_HERE') || empty($commentEmail) || $commentEmail == JText::_('K2_ENTER_YOUR_EMAIL_ADDRESS'))
             {
-                $response->message = JText::_('K2_YOU_NEED_TO_FILL_IN_ALL_REQUIRED_FIELDS', true);
+                $response->message = JText::_('K2_YOU_NEED_TO_FILL_IN_ALL_REQUIRED_FIELDS');
                 echo $json->encode($response);
                 $mainframe->close();
             }
 
             if (!JMailHelper::isEmailAddress($commentEmail))
             {
-                $response->message = JText::_('K2_INVALID_EMAIL_ADDRESS', true);
+                $response->message = JText::_('K2_INVALID_EMAIL_ADDRESS');
                 echo $json->encode($response);
                 $mainframe->close();
             }
 
             if ($user->guest)
             {
-                $db = &JFactory::getDBO();
+                $db = JFactory::getDBO();
                 $query = "SELECT COUNT(*) FROM #__users WHERE name=".$db->Quote($userName)." OR email=".$db->Quote($commentEmail);
                 $db->setQuery($query);
                 $result = $db->loadresult();
                 if ($result > 0)
                 {
-                    $response->message = JText::_('K2_THE_NAME_OR_EMAIL_ADDRESS_YOU_TYPED_IS_ALREADY_IN_USE', true);
+                    $response->message = JText::_('K2_THE_NAME_OR_EMAIL_ADDRESS_YOU_TYPED_IS_ALREADY_IN_USE');
                     echo $json->encode($response);
                     $mainframe->close();
                 }
@@ -1000,14 +1031,17 @@ class K2ModelItem extends JModel
 
             if ($params->get('recaptcha') && $user->guest)
             {
-                require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'recaptchalib.php');
+                if (!function_exists('_recaptcha_qsencode'))
+                {
+                    require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'recaptchalib.php');
+                }
                 $privatekey = $params->get('recaptcha_private_key');
                 $recaptcha_challenge_field = isset($_POST["recaptcha_challenge_field"]) ? $_POST["recaptcha_challenge_field"] : '';
                 $recaptcha_response_field = isset($_POST["recaptcha_response_field"]) ? $_POST["recaptcha_response_field"] : '';
                 $resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $recaptcha_challenge_field, $recaptcha_response_field);
                 if (!$resp->is_valid)
                 {
-                    $response->message = JText::_('K2_THE_WORDS_YOU_TYPED_DID_NOT_MATCH_THE_ONES_DISPLAYED_PLEASE_TRY_AGAIN', true);
+                    $response->message = JText::_('K2_THE_WORDS_YOU_TYPED_DID_NOT_MATCH_THE_ONES_DISPLAYED_PLEASE_TRY_AGAIN');
                     echo $json->encode($response);
                     $mainframe->close();
                 }
@@ -1033,7 +1067,7 @@ class K2ModelItem extends JModel
             {
                 $row->published = 0;
                 // Auto publish comments for users with administrative permissions
-                if (K2_JVERSION == '16')
+                if (K2_JVERSION != '15')
                 {
                     if ($user->authorise('core.admin'))
                     {
@@ -1058,14 +1092,15 @@ class K2ModelItem extends JModel
 
             if ($row->published)
             {
-                if ($config->getValue('config.caching') && $user->guest)
+                $caching = K2_JVERSION == '30' ? $config->get('caching') : $config->getValue('config.caching');
+                if ($caching && $user->guest)
                 {
-                    $response->message = JText::_('K2_THANK_YOU_YOUR_COMMENT_WILL_BE_PUBLISHED_SHORTLY', true);
+                    $response->message = JText::_('K2_THANK_YOU_YOUR_COMMENT_WILL_BE_PUBLISHED_SHORTLY');
                     echo $json->encode($response);
                 }
                 else
                 {
-                    $response->message = JText::_('K2_COMMENT_ADDED_REFRESHING_PAGE', true);
+                    $response->message = JText::_('K2_COMMENT_ADDED_REFRESHING_PAGE');
                     $response->refresh = 1;
                     echo $json->encode($response);
                 }
@@ -1073,7 +1108,7 @@ class K2ModelItem extends JModel
             }
             else
             {
-                $response->message = JText::_('K2_COMMENT_ADDED_AND_WAITING_FOR_APPROVAL', true);
+                $response->message = JText::_('K2_COMMENT_ADDED_AND_WAITING_FOR_APPROVAL');
                 echo $json->encode($response);
             }
 
@@ -1089,7 +1124,7 @@ class K2ModelItem extends JModel
         {
             return $K2ItemTagsInstances[$itemID];
         }
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $query = "SELECT tag.*
 		FROM #__k2_tags AS tag 
@@ -1113,12 +1148,12 @@ class K2ModelItem extends JModel
         }
 
         jimport('joomla.filesystem.file');
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'JSON.php');
         $json = new Services_JSON;
         $jsonObjects = $json->decode($itemExtraFields);
         $imgExtensions = array('jpg', 'jpeg', 'gif', 'png');
-        $params = &K2HelperUtilities::getParams('com_k2');
+        $params = K2HelperUtilities::getParams('com_k2');
 
         if (count($jsonObjects) < 1)
         {
@@ -1152,7 +1187,7 @@ class K2ModelItem extends JModel
                         $value = $object->value;
                         if ($rows[$i]->type == 'date' && $value)
                         {
-                            $offset = (K2_JVERSION == '16') ? null : 0;
+                            $offset = (K2_JVERSION != '15') ? null : 0;
                             $value = JHTML::_('date', $value, JText::_('K2_DATE_FORMAT_LC'), $offset);
                         }
 
@@ -1289,7 +1324,7 @@ class K2ModelItem extends JModel
             return $K2ItemAttachmentsInstances[$itemID];
         }
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "SELECT * FROM #__k2_attachments WHERE itemID=".$itemID;
         $db->setQuery($query);
         $rows = $db->loadObjectList();
@@ -1304,10 +1339,10 @@ class K2ModelItem extends JModel
     function getItemComments($itemID, $limitstart, $limit, $published = true)
     {
 
-        $params = &K2HelperUtilities::getParams('com_k2');
+        $params = K2HelperUtilities::getParams('com_k2');
         $order = $params->get('commentsOrdering', 'DESC');
         $ordering = ($order == 'DESC') ? 'DESC' : 'ASC';
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "SELECT * FROM #__k2_comments WHERE itemID=".(int)$itemID;
         if ($published)
         {
@@ -1330,7 +1365,7 @@ class K2ModelItem extends JModel
             return $K2ItemCommentsCountInstances[$index];
         }
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         $query = "SELECT COUNT(*) FROM #__k2_comments WHERE itemID=".$itemID;
         if ($published)
         {
@@ -1346,9 +1381,9 @@ class K2ModelItem extends JModel
     function checkin()
     {
 
-        $mainframe = &JFactory::getApplication();
+        $mainframe = JFactory::getApplication();
         $id = JRequest::getInt('cid');
-        $row = &JTable::getInstance('K2Item', 'Table');
+        $row = JTable::getInstance('K2Item', 'Table');
         $row->load($id);
         $row->checkin();
         $mainframe->close();
@@ -1357,28 +1392,29 @@ class K2ModelItem extends JModel
     function getPreviousItem($id, $catid, $ordering)
     {
 
-        $mainframe = &JFactory::getApplication();
-        $user = &JFactory::getUser();
+        $mainframe = JFactory::getApplication();
+        $user = JFactory::getUser();
         $id = (int)$id;
         $catid = (int)$catid;
         $ordering = (int)$ordering;
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
-        $jnow = &JFactory::getDate();
-        $now = $jnow->toMySQL();
+        $jnow = JFactory::getDate();
+        $now = K2_JVERSION == '15' ? $jnow->toMySQL() : $jnow->toSql();
         $nullDate = $db->getNullDate();
 
-        if (K2_JVERSION == '16')
+        if (K2_JVERSION != '15')
         {
-            $accessCondition = ' AND access IN('.implode(',', $user->authorisedLevels()).')';
+            $accessCondition = ' AND access IN('.implode(',', $user->getAuthorisedViewLevels()).')';
         }
         else
         {
-            $accessCondition = ' AND access <= '.$user->aid; ;
+            $accessCondition = ' AND access <= '.$user->aid;
+            ;
         }
 
         $languageCondition = '';
-        if (K2_JVERSION == '16')
+        if (K2_JVERSION != '15')
         {
             if ($mainframe->getLanguageFilter())
             {
@@ -1403,28 +1439,29 @@ class K2ModelItem extends JModel
     function getNextItem($id, $catid, $ordering)
     {
 
-        $mainframe = &JFactory::getApplication();
-        $user = &JFactory::getUser();
+        $mainframe = JFactory::getApplication();
+        $user = JFactory::getUser();
         $id = (int)$id;
         $catid = (int)$catid;
         $ordering = (int)$ordering;
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
 
-        $jnow = &JFactory::getDate();
-        $now = $jnow->toMySQL();
+        $jnow = JFactory::getDate();
+        $now = K2_JVERSION == '15' ? $jnow->toMySQL() : $jnow->toSql();
         $nullDate = $db->getNullDate();
 
-        if (K2_JVERSION == '16')
+        if (K2_JVERSION != '15')
         {
-            $accessCondition = ' AND access IN('.implode(',', $user->authorisedLevels()).')';
+            $accessCondition = ' AND access IN('.implode(',', $user->getAuthorisedViewLevels()).')';
         }
         else
         {
-            $accessCondition = ' AND access <= '.$user->aid; ;
+            $accessCondition = ' AND access <= '.$user->aid;
+            ;
         }
 
         $languageCondition = '';
-        if (K2_JVERSION == '16')
+        if (K2_JVERSION != '15')
         {
             if ($mainframe->getLanguageFilter())
             {
@@ -1448,7 +1485,7 @@ class K2ModelItem extends JModel
     function getUserProfile($id = NULL)
     {
 
-        $db = &JFactory::getDBO();
+        $db = JFactory::getDBO();
         if (is_null($id))
             $id = JRequest::getInt('id');
 

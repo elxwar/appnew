@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: default.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: default.php 1635 2012-09-25 12:29:13Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,9 +8,9 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-$document = & JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	Joomla.submitbutton = function(pressbutton) {
 		if (pressbutton == 'cancel') {
@@ -32,7 +32,7 @@ $document->addScriptDeclaration("
 ?>
 
 <form action="index.php" method="post" enctype="multipart/form-data" name="adminForm" id="adminForm">
-  <table class="admintable">
+  <table class="admintable table">
     <tr>
       <td class="key"><?php echo JText::_('K2_NAME'); ?></td>
       <td><input class="text_area k2TitleBox" type="text" name="name" id="name" value="<?php echo $this->row->name; ?>" size="50" maxlength="250" /></td>

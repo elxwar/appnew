@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: element.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: element.php 1641 2012-09-26 11:42:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,10 +8,10 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 ?>
 <form action="index.php" method="post" name="adminForm">
-  <table class="k2AdminTableFilters">
+  <table class="k2AdminTableFilters table">
     <tr>
       <td class="k2AdminTableFiltersSearch">
 		<?php echo JText::_('K2_FILTER'); ?>
@@ -19,12 +19,12 @@ defined('_JEXEC') or die('Restricted access');
 		<button id="k2SubmitButton"><?php echo JText::_('K2_GO'); ?></button>
 		<button id="k2ResetButton"><?php echo JText::_('K2_RESET'); ?></button>
       </td>
-      <td class="k2AdminTableFiltersSelects">
+      <td class="k2AdminTableFiltersSelects hidden-phone">
       	<?php echo $this->lists['state']; ?>
       </td>
     </tr>
   </table>
-  <table class="adminlist">
+  <table class="adminlist table table-striped">
     <thead>
       <tr>
         <th><?php echo JText::_('K2_NUM'); ?></th>
@@ -38,7 +38,7 @@ defined('_JEXEC') or die('Restricted access');
       <tr class="row<?php echo ($key%2); ?>">
         <td><?php echo $key+1; ?></td>
         <td><a style="cursor:pointer" onclick="window.parent.jSelectTag('<?php echo urlencode($row->name); ?>', '<?php echo str_replace(array("'", "\""), array("\\'", ""),$row->name); ?>', 'tag');"><?php echo $row->name; ?></a></td>
-        <td><?php echo JHTML::_('grid.published', $row, $key ); ?></td>
+        <td><?php echo $row->status; ?></td>
         <td class="k2Center"><?php echo $row->id; ?></td>
       </tr>
       <?php endforeach; ?>

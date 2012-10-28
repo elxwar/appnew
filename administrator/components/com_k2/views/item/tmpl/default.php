@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: default.php 1556 2012-04-19 17:34:51Z joomlaworks $
+ * @version		$Id: default.php 1730 2012-10-09 21:01:52Z juliopfneto@gmail.com $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,9 +8,9 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-$document = & JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	Joomla.submitbutton = function(pressbutton){
 		if (pressbutton == 'cancel') {
@@ -40,10 +40,10 @@ $document->addScriptDeclaration("
 			<table class="k2FrontendToolbar" cellpadding="2" cellspacing="4">
 				<tr>
 					<td id="toolbar-save" class="button">
-						<a class="toolbar" href="#" onclick="javascript: submitbutton('save'); return false;"> <span title="<?php echo JText::_('K2_SAVE'); ?>" class="icon-32-save"></span> <?php echo JText::_('K2_SAVE'); ?> </a>
+						<a class="toolbar" href="#" onclick="javascript: submitbutton('save'); return false;"> <span title="<?php echo JText::_('K2_SAVE'); ?>" class="icon-32-save icon-save"></span> <?php echo JText::_('K2_SAVE'); ?> </a>
 					</td>
 					<td id="toolbar-cancel" class="button">
-						<a class="toolbar" href="#"> <span title="<?php echo JText::_('K2_CANCEL'); ?>" class="icon-32-cancel"></span> <?php echo JText::_('K2_CLOSE'); ?> </a>
+						<a class="toolbar" href="#"> <span title="<?php echo JText::_('K2_CANCEL'); ?>" class="icon-32-cancel icon-cancel"></span> <?php echo JText::_('K2_CLOSE'); ?> </a>
 					</td>
 				</tr>
 			</table>
@@ -61,11 +61,11 @@ $document->addScriptDeclaration("
 			<?php endif; ?>
 			<?php endif; ?>
 			<div id="k2ToggleSidebarContainer"> <a href="#" id="k2ToggleSidebar"><?php echo JText::_('K2_TOGGLE_SIDEBAR'); ?></a> </div>
-			<table cellspacing="0" cellpadding="0" border="0" class="adminFormK2Container">
+			<table cellspacing="0" cellpadding="0" border="0" class="adminFormK2Container table">
 				<tbody>
 					<tr>
 						<td>
-							<table class="adminFormK2">
+							<table class="adminFormK2 table">
 								<tr>
 									<td class="adminK2LeftCol">
 										<label for="title"><?php echo JText::_('K2_TITLE'); ?></label>
@@ -221,7 +221,7 @@ $document->addScriptDeclaration("
 								<?php if ($this->params->get('showImageTab')): ?>
 								<!-- Tab image -->
 								<div class="simpleTabsContent" id="k2Tab2">
-									<table class="admintable">
+									<table class="admintable table">
 										<tr>
 											<td align="right" class="key">
 												<?php echo JText::_('K2_ITEM_IMAGE'); ?>
@@ -286,7 +286,7 @@ $document->addScriptDeclaration("
 								<!-- Tab image gallery -->
 								<div class="simpleTabsContent" id="k2Tab3">
 									<?php if ($this->lists['checkSIG']): ?>
-									<table class="admintable" id="item_gallery_content">
+									<table class="admintable table" id="item_gallery_content">
 										<tr>
 											<td align="right" valign="top" class="key">
 												<?php echo JText::_('K2_UPLOAD_A_ZIP_FILE_WITH_IMAGES'); ?>
@@ -295,6 +295,10 @@ $document->addScriptDeclaration("
 												<input type="file" name="gallery" class="fileUpload" />
 												<i>(<?php echo JText::_('K2_MAX_UPLOAD_SIZE'); ?>: <?php echo ini_get('upload_max_filesize'); ?>)</i>
 												<br />
+												<?php if($this->sigPro): ?>
+												<a class="modal" rel="{handler: 'iframe', size: {x: 940, y: 560}}" href="index.php?option=com_sigpro&view=galleries&task=create&newFolder=<?php echo $this->sigProFolder; ?>&type=k2&tmpl=component">SIGPRO</a>
+                                                <input name="sigProFolder" type="hidden" value="<?php echo $this->sigProFolder; ?>" />
+												<?php endif; ?>
 												<br />
 												<?php echo JText::_('K2_OR_ENTER_A_FLICKR_SET_URL'); ?>
 												<input type="text" name="flickrGallery" size="50" value="<?php echo ($this->row->galleryType == 'flickr') ? $this->row->galleryValue : ''; ?>" />
@@ -310,14 +314,25 @@ $document->addScriptDeclaration("
 										</tr>
 									</table>
 									<?php else: ?>
-									<dl id="system-message">
-										<dt class="notice"><?php echo JText::_('K2_NOTICE'); ?></dt>
-										<dd class="notice message fade">
-											<ul>
-												<li><?php echo JText::_('K2_NOTICE_PLEASE_INSTALL_JOOMLAWORKS_SIMPLE_IMAGE_GALLERY_PRO_PLUGIN_IF_YOU_WANT_TO_USE_THE_IMAGE_GALLERY_FEATURES_OF_K2'); ?></li>
-											</ul>
-										</dd>
-									</dl>
+										<?php if (K2_JVERSION == '15'): ?>
+										<dl id="system-message">
+											<dt class="notice"><?php echo JText::_('K2_NOTICE'); ?></dt>
+											<dd class="notice message fade">
+												<ul>
+													<li><?php echo JText::_('K2_NOTICE_PLEASE_INSTALL_JOOMLAWORKS_SIMPLE_IMAGE_GALLERY_PRO_PLUGIN_IF_YOU_WANT_TO_USE_THE_IMAGE_GALLERY_FEATURES_OF_K2'); ?></li>
+												</ul>
+											</dd>
+										</dl>
+										<?php else: ?>
+										<div id="system-message">
+											<div class="alert alert-message">
+												<h4 class="alert-heading"><?php echo JText::_('K2_NOTICE'); ?></h4>
+												<div>
+														<p><?php echo JText::_('K2_NOTICE_PLEASE_INSTALL_JOOMLAWORKS_SIMPLE_IMAGE_GALLERY_PRO_PLUGIN_IF_YOU_WANT_TO_USE_THE_IMAGE_GALLERY_FEATURES_OF_K2'); ?></p>
+												</div>
+											</div>
+										</div>
+										<?php endif; ?>
 									<?php endif; ?>
 									<?php if (count($this->K2PluginsItemGallery)): ?>
 									<div class="itemPlugins">
@@ -337,7 +352,7 @@ $document->addScriptDeclaration("
 								<!-- Tab video -->
 								<div class="simpleTabsContent" id="k2Tab4">
 									<?php if ($this->lists['checkAllVideos']): ?>
-									<table class="admintable" id="item_video_content">
+									<table class="admintable table" id="item_video_content">
 										<tr>
 											<td align="right" class="key">
 												<?php echo JText::_('K2_MEDIA_SOURCE'); ?>
@@ -410,15 +425,24 @@ $document->addScriptDeclaration("
 										<?php endif; ?>
 									</table>
 									<?php else: ?>
-									<dl id="system-message">
-										<dt class="notice"><?php echo JText::_('K2_NOTICE'); ?></dt>
-										<dd class="notice message fade">
-											<ul>
-												<li><?php echo JText::_('K2_NOTICE_PLEASE_INSTALL_JOOMLAWORKS_ALLVIDEOS_PLUGIN_IF_YOU_WANT_TO_USE_THE_FULL_VIDEO_FEATURES_OF_K2'); ?></li>
-											</ul>
-										</dd>
-									</dl>
-									<table class="admintable" id="item_video_content">
+										<?php if (K2_JVERSION == '15'): ?>
+										<dl id="system-message">
+											<dt class="notice"><?php echo JText::_('K2_NOTICE'); ?></dt>
+											<dd class="notice message fade">
+												<ul>
+													<li><?php echo JText::_('K2_NOTICE_PLEASE_INSTALL_JOOMLAWORKS_ALLVIDEOS_PLUGIN_IF_YOU_WANT_TO_USE_THE_FULL_VIDEO_FEATURES_OF_K2'); ?></li>
+												</ul>
+											</dd>
+										</dl>
+										<?php else: ?>
+										<div id="system-message" class="alert alert-message">
+											<h4 class="alert-heading"><?php echo JText::_('K2_NOTICE'); ?></h4>
+											<div>
+													<p><?php echo JText::_('K2_NOTICE_PLEASE_INSTALL_JOOMLAWORKS_ALLVIDEOS_PLUGIN_IF_YOU_WANT_TO_USE_THE_FULL_VIDEO_FEATURES_OF_K2'); ?></p>
+											</div>
+										</div>
+										<?php endif; ?>
+									<table class="admintable table" id="item_video_content">
 										<tr>
 											<td align="right" class="key">
 												<?php echo JText::_('K2_MEDIA_SOURCE'); ?>
@@ -488,7 +512,7 @@ $document->addScriptDeclaration("
 								<div class="simpleTabsContent" id="k2Tab5">
 									<div id="extraFieldsContainer">
 										<?php if (count($this->extraFields)): ?>
-										<table class="admintable" id="extraFields">
+										<table class="admintable table" id="extraFields">
 											<?php foreach($this->extraFields as $extraField): ?>
 											<tr>
 												<td align="right" class="key">
@@ -501,14 +525,23 @@ $document->addScriptDeclaration("
 											<?php endforeach; ?>
 										</table>
 										<?php else: ?>
-										<dl id="system-message">
-											<dt class="notice"><?php echo JText::_('K2_NOTICE'); ?></dt>
-											<dd class="notice message fade">
-												<ul>
-													<li><?php echo JText::_('K2_PLEASE_SELECT_A_CATEGORY_FIRST_TO_RETRIEVE_ITS_RELATED_EXTRA_FIELDS'); ?></li>
-												</ul>
-											</dd>
-										</dl>
+											<?php if (K2_JVERSION == '15'): ?>
+												<dl id="system-message">
+													<dt class="notice"><?php echo JText::_('K2_NOTICE'); ?></dt>
+													<dd class="notice message fade">
+														<ul>
+															<li><?php echo JText::_('K2_PLEASE_SELECT_A_CATEGORY_FIRST_TO_RETRIEVE_ITS_RELATED_EXTRA_FIELDS'); ?></li>
+														</ul>
+													</dd>
+												</dl>
+											<?php else: ?>
+											<div id="system-message" class="alert alert-message">
+												<h4 class="alert-heading"><?php echo JText::_('K2_NOTICE'); ?></h4>
+												<div>
+														<p><?php echo JText::_('K2_PLEASE_SELECT_A_CATEGORY_FIRST_TO_RETRIEVE_ITS_RELATED_EXTRA_FIELDS'); ?></p>
+												</div>
+											</div>
+											<?php endif; ?>
 										<?php endif; ?>
 									</div>
 									<?php if (count($this->K2PluginsItemExtraFields)): ?>
@@ -530,7 +563,7 @@ $document->addScriptDeclaration("
 								<div class="simpleTabsContent" id="k2Tab6">
 									<div class="itemAttachments">
 										<?php if (count($this->row->attachments)): ?>
-										<table class="adminlist">
+										<table class="adminlist table">
 											<tr>
 												<th>
 													<?php echo JText::_('K2_FILENAME'); ?>
@@ -619,7 +652,7 @@ $document->addScriptDeclaration("
 						</td>
 						<td id="adminFormK2Sidebar"<?php if($this->mainframe->isSite() && !$this->params->get('sideBarDisplayFrontend')): ?> style="display:none;"<?php endif; ?> class="xmlParamsFields">
 							<?php if($this->row->id): ?>
-							<table class="sidebarDetails">
+							<table class="sidebarDetails table">
 								<tr>
 									<td>
 										<strong><?php echo JText::_('K2_ITEM_ID'); ?></strong>
@@ -707,7 +740,7 @@ $document->addScriptDeclaration("
 							<div id="k2Accordion">
 								<h3><a href="#"><?php echo JText::_('K2_AUTHOR_PUBLISHING_STATUS'); ?></a></h3>
 								<div>
-									<table class="admintable">
+									<table class="admintable table">
 										<?php if(isset($this->lists['language'])): ?>
 										<tr>
 											<td align="right" class="key">
@@ -774,7 +807,7 @@ $document->addScriptDeclaration("
 								</div>
 								<h3><a href="#"><?php echo JText::_('K2_METADATA_INFORMATION'); ?></a></h3>
 								<div>
-									<table class="admintable">
+									<table class="admintable table">
 										<tr>
 											<td align="right" class="key">
 												<?php echo JText::_('K2_DESCRIPTION'); ?>

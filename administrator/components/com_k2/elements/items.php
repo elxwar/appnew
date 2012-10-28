@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: items.php 1549 2012-04-18 18:57:05Z joomlaworks $
+ * @version		$Id: items.php 1731 2012-10-10 23:02:03Z joomlaworks $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,64 +8,43 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die ;
 
-if(K2_JVERSION=='16'){
-	jimport('joomla.form.formfield');
-	class JFormFieldItems extends JFormField {
+require_once (JPATH_ADMINISTRATOR.'/components/com_k2/elements/base.php');
 
-		var	$type = 'items';
-
-		function getInput(){
-			return JElementItems::fetchElement($this->name, $this->value, $this->element, $this->options['control']);
-		}
-	}
-}
-
-jimport('joomla.html.parameter.element');
-
-class JElementItems extends JElement
+class K2ElementItems extends K2Element
 {
+    function fetchElement($name, $value, &$node, $control_name)
+    {
+        $params = JComponentHelper::getParams('com_k2');
+        $document = JFactory::getDocument();
+        if (version_compare(JVERSION, '1.6.0', 'ge'))
+        {
+            JHtml::_('behavior.framework');
+        }
+        else
+        {
+            JHTML::_('behavior.mootools');
+        }
+        K2HelperHTML::loadjQuery();
+        $mainframe = JFactory::getApplication();
+        if (K2_JVERSION != '15')
+        {
+            $fieldName = $name;
+            $attribute = K2_JVERSION == '25' ? $node->getAttribute('multiple') : $node->attributes()->multiple;
+            if (!$attribute)
+            {
+                $fieldName .= '[]';
+            }
+            $image = JURI::root(true).'/administrator/templates/'.$mainframe->getTemplate().'/images/admin/publish_x.png';
+        }
+        else
+        {
+            $fieldName = $control_name.'['.$name.'][]';
+            $image = JURI::root(true).'/administrator/images/publish_x.png';
+        }
 
-	var	$_name = 'items';
-
-	function fetchElement($name, $value, &$node, $control_name){
-
-		$params = &JComponentHelper::getParams('com_k2');
-		
-		$document = &JFactory::getDocument();
-		
-		if(version_compare(JVERSION,'1.6.0','ge')) {
-			JHtml::_('behavior.framework');
-		} else {
-			JHTML::_('behavior.mootools');
-		}
-
-		$backendJQueryHandling = $params->get('backendJQueryHandling','remote');
-		if($backendJQueryHandling=='remote'){
-			$document->addScript('http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js');
-			$document->addScript('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js');
-		} else {
-			$document->addScript(JURI::root(true).'/media/k2/assets/js/jquery-1.7.1.min.js');
-			$document->addScript(JURI::root(true).'/media/k2/assets/js/jquery-ui-1.8.16.custom.min.js');
-		}
-		
-		$mainframe = &JFactory::getApplication();
-		
-		if(K2_JVERSION=='16'){
-			$fieldName = $name;
-			if(!$node->getAttribute('multiple')){
-				$fieldName .= '[]';
-			}
-			$image = JURI::root(true).'/administrator/templates/'.$mainframe->getTemplate().'/images/admin/publish_x.png';
-		}
-		else {
-			$fieldName = $control_name.'['.$name.'][]';
-			$image = JURI::root(true).'/administrator/images/publish_x.png';
-		}
-		
-		$js = "
-		var \$K2 = jQuery.noConflict();
+        $js = "
 		function jSelectItem(id, title, object) {
 			var exists = false;
 			\$K2('#itemsList input').each(function(){
@@ -99,23 +78,26 @@ class JElementItems extends JElement
 		});
 		";
 
-		$document->addScriptDeclaration($js);
-		$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.modules.css?v=2.5.7');
+        $document->addScriptDeclaration($js);
+        $document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.modules.css?v=2.6.1');
 
-		$current = array();
-		if(is_string($value) && !empty($value)){
-			$current[]=$value;
-		}
-		if(is_array($value)){
-			$current=$value;
-		}
+        $current = array();
+        if (is_string($value) && !empty($value))
+        {
+            $current[] = $value;
+        }
+        if (is_array($value))
+        {
+            $current = $value;
+        }
 
-		JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'tables');
-		$output = '<div style="clear:both"></div><ul id="itemsList">';
-		foreach($current as $id){
-			$row = &JTable::getInstance('K2Item', 'Table');
-			$row->load($id);
-			$output .= '
+        JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'tables');
+        $output = '<div style="clear:both"></div><ul id="itemsList">';
+        foreach ($current as $id)
+        {
+            $row = JTable::getInstance('K2Item', 'Table');
+            $row->load($id);
+            $output .= '
 			<li>
 				<img class="remove" src="'.$image.'" alt="'.JText::_('K2_REMOVE_ENTRY_FROM_LIST').'" />
 				<span class="handle">'.$row->title.'</span>
@@ -123,8 +105,19 @@ class JElementItems extends JElement
 				<span style="clear:both;"></span>
 			</li>
 			';
-		}
-		$output .= '</ul>';
-		return $output;
-	}
+        }
+        $output .= '</ul>';
+        return $output;
+    }
+
+}
+
+class JFormFieldItems extends K2ElementItems
+{
+    var $type = 'items';
+}
+
+class JElementItems extends K2ElementItems
+{
+    var $_name = 'items';
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: comments.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: comments.php 1661 2012-09-27 16:38:39Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,20 +8,20 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.model');
 
 JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
 
-class K2ModelComments extends JModel {
+class K2ModelComments extends K2Model {
 
 	function getData() {
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		$view = JRequest::getCmd('view');
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = $mainframe->getUserStateFromRequest($option.$view.'.limitstart', 'limitstart', 0, 'int');
 		$filter_order = $mainframe->getUserStateFromRequest($option.$view.'filter_order', 'filter_order', 'c.id', 'cmd');
@@ -47,7 +47,8 @@ class K2ModelComments extends JModel {
 		}
 
 		if ($search) {
-			$query .= " AND LOWER( c.commentText ) LIKE ".$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+		    $escaped = K2_JVERSION == '15' ? $db->getEscaped($search, true) : $db->escape($search, true);
+			$query .= " AND LOWER( c.commentText ) LIKE ".$db->Quote('%'.$escaped.'%', false);
 		}
 
 		if (!$filter_order) {
@@ -62,10 +63,10 @@ class K2ModelComments extends JModel {
 
 	function getTotal() {
 
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		$view = JRequest::getCmd('view');
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 		$limitstart = $mainframe->getUserStateFromRequest($option.'.limitstart', 'limitstart', 0, 'int');
 		$filter_state = $mainframe->getUserStateFromRequest($option.$view.'filter_state', 'filter_state', 1, 'int');
@@ -89,7 +90,8 @@ class K2ModelComments extends JModel {
 		}
 
 		if ($search) {
-			$query .= " AND LOWER( c.commentText ) LIKE ".$db->Quote('%'.$db->getEscaped($search, true).'%', false);
+		    $escaped = K2_JVERSION == '15' ? $db->getEscaped($search, true) : $db->escape($search, true);
+			$query .= " AND LOWER( c.commentText ) LIKE ".$db->Quote('%'.$escaped.'%', false);
 		}
 
 		$db->setQuery($query);
@@ -99,14 +101,14 @@ class K2ModelComments extends JModel {
 
 	function publish() {
 
-		$mainframe = &JFactory::getApplication();
-		$user = &JFactory::getUser();
+		$mainframe = JFactory::getApplication();
+		$user = JFactory::getUser();
 		$cid = JRequest::getVar('cid');
 	    if(!count($cid)){
             $cid[]=JRequest::getInt('commentID');
         }
-		$row = &JTable::getInstance('K2Comment', 'Table');
-		$item = &JTable::getInstance('K2Item', 'Table');
+		$row = JTable::getInstance('K2Comment', 'Table');
+		$item = JTable::getInstance('K2Item', 'Table');
 		foreach ($cid as $id) {
 			$row->load($id);
 			if($mainframe->isSite()){
@@ -118,7 +120,7 @@ class K2ModelComments extends JModel {
 			}
 			$row->publish($id, 1);
 		}
-		$cache = &JFactory::getCache('com_k2');
+		$cache = JFactory::getCache('com_k2');
 		$cache->clean();
 		if(JRequest::getCmd('format')=='raw'){
 			echo 'true';
@@ -129,11 +131,11 @@ class K2ModelComments extends JModel {
 
 	function unpublish() {
 
-		$mainframe = &JFactory::getApplication();
-		$user = &JFactory::getUser();
+		$mainframe = JFactory::getApplication();
+		$user = JFactory::getUser();
 		$cid = JRequest::getVar('cid');
-		$row = &JTable::getInstance('K2Comment', 'Table');
-		$item = &JTable::getInstance('K2Item', 'Table');
+		$row = JTable::getInstance('K2Comment', 'Table');
+		$item = JTable::getInstance('K2Item', 'Table');
 		foreach ($cid as $id) {
 			$row->load($id);
 			if($mainframe->isSite()){
@@ -145,22 +147,22 @@ class K2ModelComments extends JModel {
 			}
 			$row->publish($id, 0);
 		}
-		$cache = &JFactory::getCache('com_k2');
+		$cache = JFactory::getCache('com_k2');
 		$cache->clean();
 		$mainframe->redirect('index.php?option=com_k2&view=comments');
 	}
 
 	function remove() {
 
-		$mainframe = &JFactory::getApplication();
-		$user = &JFactory::getUser();
-		$db = &JFactory::getDBO();
+		$mainframe = JFactory::getApplication();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 		$cid = JRequest::getVar('cid');
 	  	if(!count($cid)){
             $cid[]=JRequest::getInt('commentID');
         }
-		$row = &JTable::getInstance('K2Comment', 'Table');
-		$item = &JTable::getInstance('K2Item', 'Table');
+		$row = JTable::getInstance('K2Comment', 'Table');
+		$item = JTable::getInstance('K2Item', 'Table');
 		foreach ($cid as $id) {
 			$row->load($id);
 			if($mainframe->isSite()){
@@ -172,7 +174,7 @@ class K2ModelComments extends JModel {
 			}
 			$row->delete($id);
 		}
-		$cache = &JFactory::getCache('com_k2');
+		$cache = JFactory::getCache('com_k2');
 		$cache->clean();
 		if(JRequest::getCmd('format')=='raw'){
 			echo 'true';
@@ -183,16 +185,16 @@ class K2ModelComments extends JModel {
 
 	function deleteUnpublished() {
 
-		$mainframe = &JFactory::getApplication();
-		$db = &JFactory::getDBO();
-		$user = &JFactory::getUser();
+		$mainframe = JFactory::getApplication();
+		$db = JFactory::getDBO();
+		$user = JFactory::getUser();
 		$userID = $user->id;
 		if($mainframe->isSite()){
 			$query = "SELECT c.id FROM #__k2_comments AS c 
 			LEFT JOIN #__k2_items AS i ON c.itemID=i.id 
 			WHERE i.created_by = {$userID} AND c.published=0";
 			$db->setQuery($query);
-			$ids = $db->loadResultArray();
+			$ids = K2_JVERSION == '30' ? $db->loadColumn() : $db->loadResultArray();
 			if (count($ids)){
 				$query = "DELETE FROM #__k2_comments WHERE id IN(".implode(',', $ids).")";
 				$db->setQuery($query);
@@ -205,19 +207,19 @@ class K2ModelComments extends JModel {
 			$db->query();
 		}
 
-		$cache = &JFactory::getCache('com_k2');
+		$cache = JFactory::getCache('com_k2');
 		$cache->clean();
 		$mainframe->redirect('index.php?option=com_k2&view=comments', JText::_('K2_DELETE_COMPLETED'));
 	}
 
 	function save() {
 
-		$mainframe = &JFactory::getApplication();
-		$user = &JFactory::getUser();
-		$db = &JFactory::getDBO();
+		$mainframe = JFactory::getApplication();
+		$user = JFactory::getUser();
+		$db = JFactory::getDBO();
 		$id = JRequest::getInt('commentID');
-		$item = &JTable::getInstance('K2Item', 'Table');
-		$row = &JTable::getInstance('K2Comment', 'Table');
+		$item = JTable::getInstance('K2Item', 'Table');
+		$row = JTable::getInstance('K2Comment', 'Table');
 		$row->load($id);
 		if($mainframe->isSite()){
 			$item->load($row->itemID);
@@ -227,7 +229,7 @@ class K2ModelComments extends JModel {
 		}
 		$row->commentText = JRequest::getVar('commentText', '', 'default', 'string', 4);
 		$row->store();
-		$cache = &JFactory::getCache('com_k2');
+		$cache = JFactory::getCache('com_k2');
 		$cache->clean();
 		$response = new JObject;
 		$response->comment = $row->commentText;
@@ -244,8 +246,8 @@ class K2ModelComments extends JModel {
         $name = JString::trim($this->getState('name'));
         $reportReason = JString::trim($this->getState('reportReason'));
         $params = &K2HelperUtilities::getParams('com_k2');
-        $user = &JFactory::getUser();
-        $row = &JTable::getInstance('K2Comment', 'Table');
+        $user = JFactory::getUser();
+        $row = JTable::getInstance('K2Comment', 'Table');
         $row->load($id);
         if(!$row->published){
             $this->setError(JText::_('K2_COMMENT_NOT_FOUND'));
@@ -260,7 +262,10 @@ class K2ModelComments extends JModel {
             return false;
         }               
     	if ($params->get('recaptcha') && $user->guest) {
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'recaptchalib.php');
+    	    if(!function_exists('_recaptcha_qsencode'))
+            {
+                require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_k2'.DS.'lib'.DS.'recaptchalib.php');
+            }
 			$privatekey = $params->get('recaptcha_private_key');
 			$resp = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
 			if (!$resp->is_valid) {
@@ -269,8 +274,8 @@ class K2ModelComments extends JModel {
 			}
 		}
 		
-		$mainframe = &JFactory::getApplication();
-        $mail = &JFactory::getMailer();
+		$mainframe = JFactory::getApplication();
+        $mail = JFactory::getMailer();
         $senderEmail = $mainframe->getCfg('mailfrom');
         $senderName = $mainframe->getCfg('fromname');
         

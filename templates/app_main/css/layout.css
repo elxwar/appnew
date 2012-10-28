@@ -47,7 +47,7 @@ p
 /* ##########################  general  ########################### */
 #all
 {
-  font-size: 0.9em;
+  font-size: 0.8em;
   -moz-box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.1);;
   -webkit-box-shadow:  0px 4px 4px 4px rgba(0, 0, 0, 0.1);
   -o-box-shadow: 0px 4px 4px 4px rgba(0, 0, 0, 0.1);
@@ -297,7 +297,8 @@ p
 }
 
 #nav h3.js_heading,
-#right h3.js_heading
+#right h3.js_heading,
+#in_touch h3
 {
   position:relative;
   display:block;
@@ -333,9 +334,9 @@ h3.js_heading a
   font-size:1px;
 }
 
-#nav h3
+#nav h3, #in_touch h3
 {
-  padding-top: 1em;
+  padding-top: 27px;
   /*padding-left: 20px;*/
   padding-bottom: 0.7em;
   font-size: 1.9em;
@@ -343,7 +344,6 @@ h3.js_heading a
   letter-spacing: 0.06em;
   margin: 0;
 }
-
 
 #nav h3 span.backh3
 {
@@ -2458,3 +2458,20 @@ div.feed {
 .fox_messages {
   color: red;
 }
+
+.contact_us .foxform input[type="text"], .contact_us .foxtext {
+  margin-bottom: 18px;
+  margin-top: 13px;
+  padding: 4px;
+}
+
+.contact_us .foxcheckbox {
+  margin-bottom: 23px;
+  padding: 4px;
+}
+
+.contact_us .fox_captcha_img {
+  margin-bottom: -41px;
+}
+
+ 

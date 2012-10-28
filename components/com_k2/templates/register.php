@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: register.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: register.php 1721 2012-10-08 15:48:43Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,14 +8,14 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 ?>
 
 <!-- K2 user register form -->
 <?php if(isset($this->message)) $this->display('message'); ?>
 
-<form action="<?php echo JRoute::_('index.php'); ?>" enctype="multipart/form-data" method="post" id="josForm" name="josForm" class="form-validate">
+<form action="<?php echo JURI::root(true); ?>/index.php" enctype="multipart/form-data" method="post" id="josForm" name="josForm" class="form-validate">
 	<?php if($this->params->def('show_page_title',1)): ?>
 	<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
 		<?php echo $this->escape($this->params->get('page_title')); ?>
@@ -33,7 +33,7 @@ defined('_JEXEC') or die('Restricted access');
 					<label id="namemsg" for="name"><?php echo JText::_('K2_NAME'); ?></label>
 				</td>
 				<td>
-					<input type="text" name="<?php echo (K2_JVERSION=='16')?'jform[name]':'name'?>" id="name" size="40" value="<?php echo $this->escape($this->user->get( 'name' )); ?>" class="inputbox required" maxlength="50" />
+					<input type="text" name="<?php echo $this->nameFieldName; ?>" id="name" size="40" value="<?php echo $this->escape($this->user->get( 'name' )); ?>" class="inputbox required" maxlength="50" />
 					*
 				</td>
 			</tr>
@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 					<label id="usernamemsg" for="username"><?php echo JText::_('K2_USER_NAME'); ?></label>
 				</td>
 				<td>
-					<input type="text" id="username" name="<?php echo (K2_JVERSION=='16')?'jform[username]':'username'?>" size="40" value="<?php echo $this->escape($this->user->get( 'username' )); ?>" class="inputbox required validate-username" maxlength="25" />
+					<input type="text" id="username" name="<?php echo $this->usernameFieldName; ?>" size="40" value="<?php echo $this->escape($this->user->get( 'username' )); ?>" class="inputbox required validate-username" maxlength="25" />
 					*
 				</td>
 			</tr>
@@ -51,11 +51,11 @@ defined('_JEXEC') or die('Restricted access');
 					<label id="emailmsg" for="email"><?php echo JText::_('K2_EMAIL'); ?></label>
 				</td>
 				<td>
-					<input type="text" id="email" name="<?php echo (K2_JVERSION=='16')?'jform[email1]':'email'?>" size="40" value="<?php echo $this->escape($this->user->get( 'email' )); ?>" class="inputbox required validate-email" maxlength="100" />
+					<input type="text" id="email" name="<?php echo $this->emailFieldName; ?>" size="40" value="<?php echo $this->escape($this->user->get( 'email' )); ?>" class="inputbox required validate-email" maxlength="100" />
 					*
 				</td>
 			</tr>
-			<?php if(K2_JVERSION == '16'): ?>
+			<?php if(version_compare(JVERSION, '1.6', 'ge')): ?>
 			<tr>
 				<td class="key">
 					<label id="email2msg" for="email2"><?php echo JText::_('K2_CONFIRM_EMAIL'); ?></label>
@@ -71,7 +71,7 @@ defined('_JEXEC') or die('Restricted access');
 					<label id="pwmsg" for="password"><?php echo JText::_('K2_PASSWORD'); ?></label>
 				</td>
 				<td>
-					<input class="inputbox required validate-password" type="password" id="password" name="<?php echo (K2_JVERSION=='16')?'jform[password1]':'password'?>" size="40" value="" />
+					<input class="inputbox required validate-password" type="password" id="password" name="<?php echo $this->passwordFieldName; ?>" size="40" value="" />
 					*
 				</td>
 			</tr>
@@ -80,7 +80,7 @@ defined('_JEXEC') or die('Restricted access');
 					<label id="pw2msg" for="password2"><?php echo JText::_('K2_VERIFY_PASSWORD'); ?></label>
 				</td>
 				<td>
-					<input class="inputbox required validate-passverify" type="password" id="password2" name="<?php echo (K2_JVERSION=='16')?'jform[password2]':'password2'?>" size="40" value="" />
+					<input class="inputbox required validate-passverify" type="password" id="password2" name="<?php echo $this->passwordVerifyFieldName; ?>" size="40" value="" />
 					*
 				</td>
 			</tr>
@@ -146,7 +146,7 @@ defined('_JEXEC') or die('Restricted access');
 			<?php endif; ?>
 			
 			<!-- Joomla! 1.6+ JForm implementation -->
-			<?php if(K2_JVERSION == '16'): ?>
+			<?php if(isset($this->form)): ?>
 			<?php foreach ($this->form->getFieldsets() as $fieldset): // Iterate through the form fieldsets and display each one.?>
 				<?php if($fieldset->name != 'default'): ?>
 				<?php $fields = $this->form->getFieldset($fieldset->name);?>
@@ -192,8 +192,8 @@ defined('_JEXEC') or die('Restricted access');
 			</button>
 		</div>
 	</div>
-	<input type="hidden" name="option" value="<?php echo (K2_JVERSION=='16')?'com_users':'com_user'?>" />
-	<input type="hidden" name="task" value="<?php echo (K2_JVERSION=='16')?'registration.register':'register_save'?>" />
+	<input type="hidden" name="option" value="<?php echo $this->optionValue; ?>" />
+	<input type="hidden" name="task" value="<?php echo $this->taskValue; ?>" />
 	<input type="hidden" name="id" value="0" />
 	<input type="hidden" name="gid" value="0" />
 	<input type="hidden" name="K2UserForm" value="1" />

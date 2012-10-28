@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: default.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: default.php 1635 2012-09-25 12:29:13Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,19 +8,19 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 ?>
 
 <form action="index.php" enctype="multipart/form-data" method="post" name="adminForm" id="adminForm">
-  <table class="admintable">
+  <table class="admintable table">
     <tr>
       <td class="key"><?php	echo JText::_('K2_NAME'); ?></td>
       <td><?php echo $this->row->name; ?></td>
     </tr>
     <tr>
       <td class="key"><?php	echo JText::_('K2_GENDER'); ?></td>
-      <td><?php echo $this->lists['gender']; ?></td>
+      <td><fieldset class="k2RadioButtonContainer"><?php echo $this->lists['gender']; ?></fieldset></td>
     </tr>
     <tr>
       <td class="key"><?php	echo JText::_('K2_USER_GROUP'); ?></td>

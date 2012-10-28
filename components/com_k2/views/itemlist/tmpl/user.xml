@@ -40,7 +40,7 @@
 		</url>
 		<fields name="request" addfieldpath="/administrator/components/com_k2/elements">
 			<fieldset name="request">
-				<field name="id" type="user" default="" label="K2_SELECT_USER" description=""/>
+				<field name="id" type="k2user" default="" label="K2_SELECT_USER" description=""/>
 				<field name="task" type="hidden" default="user"/>
 			</fieldset>
 		</fields>

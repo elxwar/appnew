@@ -1,49 +1,47 @@
 <?php
 /**
- * @version		$Id: header.php 1549 2012-04-18 18:57:05Z joomlaworks $
- * @package		K2
- * @author		JoomlaWorks http://www.joomlaworks.net
- * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
- * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
+ * @version     $Id: header.php 1731 2012-10-10 23:02:03Z joomlaworks $
+ * @package     K2
+ * @author      JoomlaWorks http://www.joomlaworks.net
+ * @copyright   Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
+ * @license     GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 
-// no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die ;
 
-if(K2_JVERSION=='16'){
-	jimport('joomla.form.formfield');
-	class JFormFieldHeader extends JFormField {
+require_once (JPATH_ADMINISTRATOR.'/components/com_k2/elements/base.php');
 
-		var	$type = 'header';
+class K2ElementHeader extends K2Element
+{
+    public function fetchElement($name, $value, &$node, $control_name)
+    {
 
-		function getInput(){
-			return JElementHeader::fetchElement($this->name, $this->value, $this->element, $this->options['control']);
-		}
+        $document = JFactory::getDocument();
+        $document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.modules.css?v=2.6.1');
+        if (K2_JVERSION == '15')
+        {
+            return '<div class="paramHeaderContainer15"><div class="paramHeaderContent">'.JText::_($value).'</div><div class="k2clr"></div></div>';
+        }
+        else
+        {
+            return '<div class="paramHeaderContainer"><div class="paramHeaderContent">'.JText::_($value).'</div><div class="k2clr"></div></div>';
 
-		function getLabel(){
-			return '';
-		}
+        }
+    }
 
-	}
+    public function fetchTooltip($label, $description, &$node, $control_name, $name)
+    {
+        return NULL;
+    }
+
 }
 
-jimport('joomla.html.parameter.element');
+class JFormFieldHeader extends K2ElementHeader
+{
+    var $type = 'header';
+}
 
-class JElementHeader extends JElement {
-
-	var	$_name = 'header';
-
-	function fetchElement($name, $value, &$node, $control_name){
-		$document = & JFactory::getDocument();
-		$document->addStyleSheet(JURI::root(true).'/media/k2/assets/css/k2.modules.css?v=2.5.7');
-		if(K2_JVERSION=='16'){
-			return '<div class="paramHeaderContainer"><div class="paramHeaderContent">'.JText::_($value).'</div><div class="k2clr"></div></div>';
-		} else {
-			return '<div class="paramHeaderContainer15"><div class="paramHeaderContent">'.JText::_($value).'</div><div class="k2clr"></div></div>';
-		}
-	}
-
-	function fetchTooltip($label, $description, &$node, $control_name, $name){
-		return NULL;
-	}
+class JElementHeader extends K2ElementHeader
+{
+    var $_name = 'header';
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: helper.php 1514 2012-03-06 10:20:04Z lefteris.kavadas $
+ * @version		$Id: helper.php 1652 2012-09-27 11:12:15Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 require_once (JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'helpers'.DS.'route.php');
 require_once (JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'helpers'.DS.'utilities.php');
@@ -16,23 +16,23 @@ require_once (JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'helpers'.DS.'utilities.
 class modK2ContentHelper
 {
 
-	function getItems(&$params, $format = 'html')
+	public static function getItems(&$params, $format = 'html')
 	{
 
 		jimport('joomla.filesystem.file');
-		$mainframe = &JFactory::getApplication();
+		$mainframe = JFactory::getApplication();
 		$limit = $params->get('itemCount', 5);
 		$cid = $params->get('category_id', NULL);
 		$ordering = $params->get('itemsOrdering', '');
-		$componentParams = &JComponentHelper::getParams('com_k2');
+		$componentParams = JComponentHelper::getParams('com_k2');
 		$limitstart = JRequest::getInt('limitstart');
 
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$aid = $user->get('aid');
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 
-		$jnow = &JFactory::getDate();
-		$now = $jnow->toMySQL();
+		$jnow = JFactory::getDate();
+		$now =  K2_JVERSION == '15'?$jnow->toMySQL():$jnow->toSql();
 		$nullDate = $db->getNullDate();
 
 		if ($params->get('source') == 'specific')
@@ -54,18 +54,18 @@ class modK2ContentHelper
 				FROM #__k2_items as i 
 				LEFT JOIN #__k2_categories c ON c.id = i.catid 
 				WHERE i.published = 1 ";
-				if (K2_JVERSION == '16')
+				if (K2_JVERSION != '15')
 				{
-					$query .= " AND i.access IN(".implode(',', $user->authorisedLevels()).") ";
+					$query .= " AND i.access IN(".implode(',', $user->getAuthorisedViewLevels()).") ";
 				}
 				else
 				{
 					$query .= " AND i.access<={$aid} ";
 				}
 				$query .= " AND i.trash = 0 AND c.published = 1 ";
-				if (K2_JVERSION == '16')
+				if (K2_JVERSION != '15')
 				{
-					$query .= " AND c.access IN(".implode(',', $user->authorisedLevels()).") ";
+					$query .= " AND c.access IN(".implode(',', $user->getAuthorisedViewLevels()).") ";
 				}
 				else
 				{
@@ -75,7 +75,7 @@ class modK2ContentHelper
 				AND ( i.publish_up = ".$db->Quote($nullDate)." OR i.publish_up <= ".$db->Quote($now)." ) 
 				AND ( i.publish_down = ".$db->Quote($nullDate)." OR i.publish_down >= ".$db->Quote($now)." ) 
 				AND i.id={$id}";
-				if (K2_JVERSION == '16')
+				if (K2_JVERSION != '15')
 				{
 					if ($mainframe->getLanguageFilter())
 					{
@@ -109,9 +109,9 @@ class modK2ContentHelper
 			if ($ordering == 'comments')
 				$query .= " LEFT JOIN #__k2_comments comments ON comments.itemID = i.id";
 
-			if (K2_JVERSION == '16')
+			if (K2_JVERSION != '15')
 			{
-				$query .= " WHERE i.published = 1 AND i.access IN(".implode(',', $user->authorisedLevels()).") AND i.trash = 0 AND c.published = 1 AND c.access IN(".implode(',', $user->authorisedLevels()).")  AND c.trash = 0";
+				$query .= " WHERE i.published = 1 AND i.access IN(".implode(',', $user->getAuthorisedViewLevels()).") AND i.trash = 0 AND c.published = 1 AND c.access IN(".implode(',', $user->getAuthorisedViewLevels()).")  AND c.trash = 0";
 			}
 			else
 			{
@@ -129,8 +129,8 @@ class modK2ContentHelper
 					{
 						if ($params->get('getChildren'))
 						{
-							require_once (JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'models'.DS.'itemlist.php');
-							$categories = K2ModelItemlist::getCategoryTree($cid);
+							$itemListModel = K2Model::getInstance('Itemlist', 'K2Model');
+							$categories = $itemListModel->getCategoryTree($cid);
 							$sql = @implode(',', $categories);
 							$query .= " AND i.catid IN ({$sql})";
 
@@ -146,8 +146,8 @@ class modK2ContentHelper
 					{
 						if ($params->get('getChildren'))
 						{
-							require_once (JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'models'.DS.'itemlist.php');
-							$categories = K2ModelItemlist::getCategoryTree($cid);
+							$itemListModel = K2Model::getInstance('Itemlist', 'K2Model');
+							$categories = $itemListModel->getCategoryTree($cid);
 							$sql = @implode(',', $categories);
 							$query .= " AND i.catid IN ({$sql})";
 						}
@@ -172,7 +172,7 @@ class modK2ContentHelper
 			if ($ordering == 'comments')
 				$query .= " AND comments.published = 1";
 
-			if (K2_JVERSION == '16')
+			if (K2_JVERSION != '15')
 			{
 				if ($mainframe->getLanguageFilter())
 				{
@@ -217,8 +217,8 @@ class modK2ContentHelper
 				case 'hits' :
 					if ($params->get('popularityRange'))
 					{
-						$datenow = &JFactory::getDate();
-						$date = $datenow->toMySQL();
+						$datenow = JFactory::getDate();
+						$date =  K2_JVERSION == '15'?$datenow->toMySQL():$datenow->toSql();
 						$query .= " AND i.created > DATE_SUB('{$date}',INTERVAL ".$params->get('popularityRange')." DAY) ";
 					}
 					$orderby = 'i.hits DESC';
@@ -235,8 +235,8 @@ class modK2ContentHelper
 				case 'comments' :
 					if ($params->get('popularityRange'))
 					{
-						$datenow = &JFactory::getDate();
-						$date = $datenow->toMySQL();
+						$datenow = JFactory::getDate();
+						$date =  K2_JVERSION == '15'?$datenow->toMySQL():$datenow->toSql();
 						$query .= " AND i.created > DATE_SUB('{$date}',INTERVAL ".$params->get('popularityRange')." DAY) ";
 					}
 					$query .= " GROUP BY i.id ";
@@ -261,14 +261,14 @@ class modK2ContentHelper
 			$items = $db->loadObjectList();
 		}
 
-		require_once (JPATH_SITE.DS.'components'.DS.'com_k2'.DS.'models'.DS.'item.php');
-		$model = new K2ModelItem;
+		$model = K2Model::getInstance('Item', 'K2Model');
 
 		if (count($items))
 		{
 
 			foreach ($items as $item)
 			{
+			    $item->event = new stdClass;
 
 				//Clean title
 				$item->title = JFilterOutput::ampReplace($item->title);
@@ -277,7 +277,7 @@ class modK2ContentHelper
 				if ($params->get('itemImage'))
 				{
 
-					$date = &JFactory::getDate($item->modified);
+					$date = JFactory::getDate($item->modified);
 					$timestamp = '?t='.$date->toUnix();
 
 					if (JFile::exists(JPATH_SITE.DS.'media'.DS.'k2'.DS.'items'.DS.'cache'.DS.md5("Image".$item->id).'_XS.jpg'))
@@ -375,7 +375,7 @@ class modK2ContentHelper
 				//Import plugins
 				if ($format != 'feed')
 				{
-					$dispatcher = &JDispatcher::getInstance();
+					$dispatcher = JDispatcher::getInstance();
 					JPluginHelper::importPlugin('content');
 				}
 
@@ -385,7 +385,14 @@ class modK2ContentHelper
 					$params->set('vfolder', 'media/k2/videos');
 					$params->set('afolder', 'media/k2/audio');
 					$item->text = $item->video;
-					$dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
+					            if (K2_JVERSION == '15')
+            {
+                $dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
+            }
+            else
+            {
+                $dispatcher->trigger('onContentPrepare', array('mod_k2_content.', &$item, &$params, $limitstart));
+            }
 					$item->video = $item->text;
 				}
 
@@ -413,7 +420,7 @@ class modK2ContentHelper
 					if ($params->get('JPlugins', 1))
 					{
 						//Plugins
-						if (K2_JVERSION == '16')
+						if (K2_JVERSION != '15')
 						{
 
 							$item->event->BeforeDisplay = '';
@@ -449,7 +456,7 @@ class modK2ContentHelper
 
 							$dispatcher->trigger('onPrepareContent', array(&$item, &$params, $limitstart));
 						}
-						$item->introtext = $item->text;
+						
 					}
 					//Init K2 plugin events
 					$item->event->K2BeforeDisplay = '';
@@ -479,7 +486,6 @@ class modK2ContentHelper
 						$item->event->K2AfterDisplayContent = trim(implode("\n", $results));
 
 						$dispatcher->trigger('onK2PrepareContent', array(&$item, &$params, $limitstart));
-						$item->introtext = $item->text;
 
 						if ($params->get('itemCommentsCounter'))
 						{
@@ -490,6 +496,9 @@ class modK2ContentHelper
 					}
 
 				}
+
+                // Restore the intotext variable after plugins execution
+                $item->introtext = $item->text;
 
 				//Clean the plugin tags
 				$item->introtext = preg_replace("#{(.*?)}(.*?){/(.*?)}#s", '', $item->introtext);
@@ -508,7 +517,7 @@ class modK2ContentHelper
 					}
 					else
 					{
-						$author = &JFactory::getUser($item->created_by);
+						$author = JFactory::getUser($item->created_by);
 						$item->author = $author->name;
 
 						$query = "SELECT `description`, `gender` FROM #__k2_users WHERE userID=".(int)$author->id;
@@ -545,7 +554,7 @@ class modK2ContentHelper
 							$tmp->text = $extraField->value;
 							if ($params->get('JPlugins', 1))
 							{
-								if (K2_JVERSION == '16')
+								if (K2_JVERSION != '15')
 								{
 									$dispatcher->trigger('onContentPrepare', array('mod_k2_content', &$tmp, &$params, $limitstart));
 								}

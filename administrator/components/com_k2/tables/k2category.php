@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: k2category.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: k2category.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,149 +8,163 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-class TableK2Category extends JTable
+class TableK2Category extends K2Table
 {
 
-	var $id = null;
-	var $name = null;
-	var $alias = null;
-	var $description = null;
-	var $parent = null;
-	var $extraFieldsGroup = null;
-	var $published = null;
-	var $image = null;
-	var $access = null;
-	var $ordering = null;
-	var $params = null;
-	var $trash = null;
-	var $plugins = null;
-	var $language = null;
+    var $id = null;
+    var $name = null;
+    var $alias = null;
+    var $description = null;
+    var $parent = null;
+    var $extraFieldsGroup = null;
+    var $published = null;
+    var $image = null;
+    var $access = null;
+    var $ordering = null;
+    var $params = null;
+    var $trash = null;
+    var $plugins = null;
+    var $language = null;
 
-	function __construct( & $db) {
+    function __construct(&$db)
+    {
 
-		parent::__construct('#__k2_categories', 'id', $db);
-	}
-	
-	function load( $oid=null ) {
-	    
-	    static $K2CategoriesInstances = array();
-		if(isset($K2CategoriesInstances[$oid])){
+        parent::__construct('#__k2_categories', 'id', $db);
+    }
+
+    function load($oid = null, $reset = false)
+    {
+
+        static $K2CategoriesInstances = array();
+        if (isset($K2CategoriesInstances[$oid]))
+        {
             return $this->bind($K2CategoriesInstances[$oid]);
-		}
-	    
-		$k = $this->_tbl_key;
+        }
 
-		if ($oid !== null) {
-			$this->$k = $oid;
-		}
+        $k = $this->_tbl_key;
 
-		$oid = $this->$k;
+        if ($oid !== null)
+        {
+            $this->$k = $oid;
+        }
 
-		if ($oid === null) {
-			return false;
-		}
-		$this->reset();
+        $oid = $this->$k;
 
-		$db =& $this->getDBO();
+        if ($oid === null)
+        {
+            return false;
+        }
+        $this->reset();
 
-		$query = 'SELECT *'
-		. ' FROM '.$this->_tbl
-		. ' WHERE '.$this->_tbl_key.' = '.$db->Quote($oid);
-		$db->setQuery( $query );
+        $db = $this->getDBO();
+
+        $query = 'SELECT *'.' FROM '.$this->_tbl.' WHERE '.$this->_tbl_key.' = '.$db->Quote($oid);
+        $db->setQuery($query);
         $result = $db->loadAssoc();
-		if ($result) {
-		    $K2CategoriesInstances[$oid] = $result;
-			return $this->bind($K2CategoriesInstances[$oid]);
-		}
-		else
-		{
-			$this->setError( $db->getErrorMsg() );
-			return false;
-		}
-	}
+        if ($result)
+        {
+            $K2CategoriesInstances[$oid] = $result;
+            return $this->bind($K2CategoriesInstances[$oid]);
+        }
+        else
+        {
+            $this->setError($db->getErrorMsg());
+            return false;
+        }
+    }
 
-	function check() {
+    function check()
+    {
 
-		jimport('joomla.filter.output');
-		if (JString::trim($this->name) == '') {
-			$this->setError(JText::_('K2_CATEGORY_MUST_HAVE_A_NAME'));
-			return false;
-		}
-		if ( empty($this->alias)) {
-			$this->alias = $this->name;
-		}
+        jimport('joomla.filter.output');
+        if (JString::trim($this->name) == '')
+        {
+            $this->setError(JText::_('K2_CATEGORY_MUST_HAVE_A_NAME'));
+            return false;
+        }
+        if (empty($this->alias))
+        {
+            $this->alias = $this->name;
+        }
 
-		if(K2_JVERSION == '16' && JFactory::getConfig()->get('unicodeslugs') == 1) {
-			$this->alias = JApplication::stringURLSafe($this->alias);
-		}
-		else if(JPluginHelper::isEnabled('system', 'unicodeslug') || JPluginHelper::isEnabled('system', 'jw_unicodeSlugsExtended')) {
-			$this->alias = JFilterOutput::stringURLSafe($this->alias);
-		}
-		else {
-			mb_internal_encoding("UTF-8");
-			mb_regex_encoding("UTF-8");
-			$this->alias = trim(mb_strtolower($this->alias));
-			$this->alias = str_replace('-', ' ', $this->alias);
-			$this->alias = str_replace('/', '-', $this->alias);
-			$this->alias = mb_ereg_replace('[[:space:]]+', ' ', $this->alias);
-			$this->alias = trim(str_replace(' ', '-', $this->alias));
-			$this->alias = str_replace('.', '', $this->alias);
-			$this->alias = str_replace('"', '', $this->alias);
-			$this->alias = str_replace("'", '', $this->alias);
-			 
-			$stripthese = ',|~|!|@|%|^|(|)|<|>|:|;|{|}|[|]|&|`|â€ž|â€¹|â€™|â€˜|â€œ|â€�|â€¢|â€º|Â«|Â´|Â»|Â°|«|»|…';
-			$strips = explode('|', $stripthese);
-			foreach ($strips as $strip) {
-				$this->alias = str_replace($strip, '', $this->alias);
-			}
+        if (K2_JVERSION != '15' && JFactory::getConfig()->get('unicodeslugs') == 1)
+        {
+            $this->alias = JApplication::stringURLSafe($this->alias);
+        }
+        else if (JPluginHelper::isEnabled('system', 'unicodeslug') || JPluginHelper::isEnabled('system', 'jw_unicodeSlugsExtended'))
+        {
+            $this->alias = JFilterOutput::stringURLSafe($this->alias);
+        }
+        else
+        {
+            mb_internal_encoding("UTF-8");
+            mb_regex_encoding("UTF-8");
+            $this->alias = trim(mb_strtolower($this->alias));
+            $this->alias = str_replace('-', ' ', $this->alias);
+            $this->alias = str_replace('/', '-', $this->alias);
+            $this->alias = mb_ereg_replace('[[:space:]]+', ' ', $this->alias);
+            $this->alias = trim(str_replace(' ', '-', $this->alias));
+            $this->alias = str_replace('.', '', $this->alias);
+            $this->alias = str_replace('"', '', $this->alias);
+            $this->alias = str_replace("'", '', $this->alias);
 
+            $stripthese = ',|~|!|@|%|^|(|)|<|>|:|;|{|}|[|]|&|`|â€ž|â€¹|â€™|â€˜|â€œ|â€�|â€¢|â€º|Â«|Â´|Â»|Â°|«|»|…';
+            $strips = explode('|', $stripthese);
+            foreach ($strips as $strip)
+            {
+                $this->alias = str_replace($strip, '', $this->alias);
+            }
 
-			$params = &JComponentHelper::getParams('com_k2');
-			$SEFReplacements = array();
-			$items = explode(',', $params->get('SEFReplacements'));
-			foreach ($items as $item) {
-				if (! empty($item)) {
-					@list($src, $dst) = explode('|', trim($item));
-					$SEFReplacements[trim($src)] = trim($dst);
-				}
-			}
+            $params = JComponentHelper::getParams('com_k2');
+            $SEFReplacements = array();
+            $items = explode(',', $params->get('SEFReplacements'));
+            foreach ($items as $item)
+            {
+                if (!empty($item))
+                {
+                    @list($src, $dst) = explode('|', trim($item));
+                    $SEFReplacements[trim($src)] = trim($dst);
+                }
+            }
 
+            foreach ($SEFReplacements as $key => $value)
+            {
+                $this->alias = str_replace($key, $value, $this->alias);
+            }
 
-			foreach ($SEFReplacements as $key=>$value) {
-				$this->alias = str_replace($key, $value, $this->alias);
-			}
+            $this->alias = trim($this->alias, '-.');
 
-			$this->alias = trim($this->alias, '-.');
+            if (trim(str_replace('-', '', $this->alias)) == '')
+            {
+                $datenow = JFactory::getDate();
+                $this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
+            }
+        }
 
-			if (trim(str_replace('-', '', $this->alias)) == '') {
-				$datenow = &JFactory::getDate();
-				$this->alias = $datenow->toFormat("%Y-%m-%d-%H-%M-%S");
-			}
-		}
+        return true;
 
-		return true;
+    }
 
-	}
+    function bind($array, $ignore = '')
+    {
 
-	function bind($array, $ignore = '')	{
+        if (key_exists('params', $array) && is_array($array['params']))
+        {
+            $registry = new JRegistry();
+            $registry->loadArray($array['params']);
+            $array['params'] = $registry->toString();
+        }
 
-		if (key_exists('params', $array) && is_array($array['params']))
-		{
-			$registry = new JRegistry();
-			$registry->loadArray($array['params']);
-			$array['params'] = $registry->toString();
-		}
+        if (key_exists('plugins', $array) && is_array($array['plugins']))
+        {
+            $registry = new JRegistry();
+            $registry->loadArray($array['plugins']);
+            $array['plugins'] = $registry->toString();
+        }
 
-		if (key_exists('plugins', $array) && is_array($array['plugins']))
-		{
-			$registry = new JRegistry();
-			$registry->loadArray($array['plugins']);
-			$array['plugins'] = $registry->toString();
-		}
-
-		return parent::bind($array, $ignore);
-	}
+        return parent::bind($array, $ignore);
+    }
 
 }

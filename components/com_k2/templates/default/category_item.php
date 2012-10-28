@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: category_item.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: category_item.php 1689 2012-10-05 15:18:57Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 // Define default image size (do not change)
 K2HelperUtilities::setDefaultImage($this->item, 'itemlist', $this->params);
@@ -66,7 +66,12 @@ K2HelperUtilities::setDefaultImage($this->item, 'itemlist', $this->params);
 		<?php if($this->item->params->get('catItemAuthor')): ?>
 		<!-- Item Author -->
 		<span class="catItemAuthor">
-			<?php echo K2HelperUtilities::writtenBy($this->item->author->profile->gender); ?> <a rel="author" href="<?php echo $this->item->author->link; ?>"><?php echo $this->item->author->name; ?></a>
+			<?php echo K2HelperUtilities::writtenBy($this->item->author->profile->gender); ?> 
+			<?php if(isset($this->item->author->link) && $this->item->author->link): ?>
+			<a rel="author" href="<?php echo $this->item->author->link; ?>"><?php echo $this->item->author->name; ?></a>
+			<?php else: ?>
+			<?php echo $this->item->author->name; ?>
+			<?php endif; ?>
 		</span>
 		<?php endif; ?>
   </div>

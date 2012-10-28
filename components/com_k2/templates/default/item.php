@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: item.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: item.php 1709 2012-10-06 01:46:10Z joomlaworks $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,7 +8,7 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 ?>
 
@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 				</a>
 			</span>
 			<?php endif; ?>
-			
+
 	  	<?php echo $this->item->title; ?>
 
 	  	<?php if($this->item->params->get('itemFeaturedNotice') && $this->item->featured): ?>
@@ -302,10 +302,13 @@ defined('_JEXEC') or die('Restricted access');
 		<?php if($this->item->params->get('itemTwitterButton',1)): ?>
 		<!-- Twitter Button -->
 		<div class="itemTwitterButton">
-			<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal"<?php if($this->item->params->get('twitterUsername')): ?> data-via="<?php echo $this->item->params->get('twitterUsername'); ?>"<?php endif; ?>><?php echo JText::_('K2_TWEET'); ?></a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+			<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal"<?php if($this->item->params->get('twitterUsername')): ?> data-via="<?php echo $this->item->params->get('twitterUsername'); ?>"<?php endif; ?>>
+				<?php echo JText::_('K2_TWEET'); ?>
+			</a>
+			<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 		</div>
 		<?php endif; ?>
-		
+
 		<?php if($this->item->params->get('itemFacebookButton',1)): ?>
 		<!-- Facebook Button -->
 		<div class="itemFacebookButton">
@@ -313,9 +316,9 @@ defined('_JEXEC') or die('Restricted access');
 			<script type="text/javascript">
 				(function(d, s, id) {
 				  var js, fjs = d.getElementsByTagName(s)[0];
-				  if (d.getElementById(id)) {return;}
+				  if (d.getElementById(id)) return;
 				  js = d.createElement(s); js.id = id;
-				  js.src = "//connect.facebook.net/en_US/all.js#appId=177111755694317&xfbml=1";
+				  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
 				  fjs.parentNode.insertBefore(js, fjs);
 				}(document, 'script', 'facebook-jssdk'));
 			</script>
@@ -325,7 +328,7 @@ defined('_JEXEC') or die('Restricted access');
 
 		<?php if($this->item->params->get('itemGooglePlusOneButton',1)): ?>
 		<!-- Google +1 Button -->
-		<div class="itemGooglePlusOneButton">	
+		<div class="itemGooglePlusOneButton">
 			<g:plusone annotation="inline" width="120"></g:plusone>
 			<script type="text/javascript">
 			  (function() {
@@ -337,7 +340,7 @@ defined('_JEXEC') or die('Restricted access');
 			</script>
 		</div>
 		<?php endif; ?>
-		
+
 		<div class="clr"></div>
 	</div>
 	<?php endif; ?>
@@ -448,7 +451,7 @@ defined('_JEXEC') or die('Restricted access');
 	...then your Related Items will be transformed into a vertical-scrolling block, inside which, all items have the same height (equal column heights). This can be very useful if you want to show your related articles or products with title/author/category/image etc., which would take a significant amount of space in the classic list-style display.
 	*/
 	?>
-		
+
   <?php if($this->item->params->get('itemRelated') && isset($this->relatedItems)): ?>
   <!-- Related items by tag -->
 	<div class="itemRelated">
@@ -456,7 +459,7 @@ defined('_JEXEC') or die('Restricted access');
 		<ul>
 			<?php foreach($this->relatedItems as $key=>$item): ?>
 			<li class="<?php echo ($key%2) ? "odd" : "even"; ?>">
-			
+
 				<?php if($this->item->params->get('itemRelatedTitle', 1)): ?>
 				<a class="itemRelTitle" href="<?php echo $item->link ?>"><?php echo $item->title; ?></a>
 				<?php endif; ?>
@@ -464,19 +467,19 @@ defined('_JEXEC') or die('Restricted access');
 				<?php if($this->item->params->get('itemRelatedCategory')): ?>
 				<div class="itemRelCat"><?php echo JText::_("K2_IN"); ?> <a href="<?php echo $item->category->link ?>"><?php echo $item->category->name; ?></a></div>
 				<?php endif; ?>
-				
+
 				<?php if($this->item->params->get('itemRelatedAuthor')): ?>
 				<div class="itemRelAuthor"><?php echo JText::_("K2_BY"); ?> <a rel="author" href="<?php echo $item->author->link; ?>"><?php echo $item->author->name; ?></a></div>
 				<?php endif; ?>
-				
+
 				<?php if($this->item->params->get('itemRelatedImageSize')): ?>
 				<img style="width:<?php echo $item->imageWidth; ?>px;height:auto;" class="itemRelImg" src="<?php echo $item->image; ?>" alt="<?php K2HelperUtilities::cleanHtml($item->title); ?>" />
 				<?php endif; ?>
-				
+
 				<?php if($this->item->params->get('itemRelatedIntrotext')): ?>
 				<div class="itemRelIntrotext"><?php echo $item->introtext; ?></div>
 				<?php endif; ?>
-				
+
 				<?php if($this->item->params->get('itemRelatedFulltext')): ?>
 				<div class="itemRelFulltext"><?php echo $item->fulltext; ?></div>
 				<?php endif; ?>
@@ -488,7 +491,7 @@ defined('_JEXEC') or die('Restricted access');
 				<div class="itemRelMedia"><?php echo $item->video; ?></div>
 				<?php endif; ?>
 				<?php endif; ?>
-				
+
 				<?php if($this->item->params->get('itemRelatedImageGallery')): ?>
 				<div class="itemRelImageGallery"><?php echo $item->gallery; ?></div>
 				<?php endif; ?>
@@ -632,11 +635,11 @@ defined('_JEXEC') or die('Restricted access');
 					<?php if($comment->published && ($this->params->get('commentsReporting')=='1' || ($this->params->get('commentsReporting')=='2' && !$this->user->guest))): ?>
 					<a class="modal" rel="{handler:'iframe',size:{x:560,y:480}}" href="<?php echo JRoute::_('index.php?option=com_k2&view=comments&task=report&commentID='.$comment->id)?>"><?php echo JText::_('K2_REPORT')?></a>
 					<?php endif; ?>
-					
+
 					<?php if($comment->reportUserLink): ?>
 					<a class="k2ReportUserButton" href="<?php echo $comment->reportUserLink; ?>"><?php echo JText::_('K2_FLAG_AS_SPAMMER'); ?></a>
 					<?php endif; ?>
-					
+
 				</span>
 				<?php endif; ?>
 
@@ -658,7 +661,7 @@ defined('_JEXEC') or die('Restricted access');
 	  </div>
 	  <?php endif; ?>
 
-	  <?php $user = &JFactory::getUser(); if ($this->item->params->get('comments') == '2' && $user->guest): ?>
+	  <?php $user = JFactory::getUser(); if ($this->item->params->get('comments') == '2' && $user->guest): ?>
 	  		<div><?php echo JText::_('K2_LOGIN_TO_POST_COMMENTS'); ?></div>
 	  <?php endif; ?>
 

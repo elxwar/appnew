@@ -14,7 +14,7 @@ $showRightColumn = ($this->countModules('middle-bottom') or $this->countModules(
 $showbottom = ($this->countModules('position-9') or $this->countModules('position-10') or $this->countModules('position-11'));
 $showleft = ($this->countModules('position-4') or $this->countModules('position-7') or $this->countModules('position-5'));
 $pageClass = strtolower(str_replace(" ","_",$this->title));
-if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy') {
+if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy' && $pageClass != 'contact_us') {
   $showleftCols = 0;
 }
 
@@ -152,8 +152,26 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
 
         <div id="<?php echo $showRightColumn ? 'contentarea2' : 'contentarea'; ?>" class = "<?php echo $pageClass ?> <?php if ($pageClass != 'home') {echo 'showcolumns';} ?>">
+          <?php if ($pageClass == 'contact_us'): ?>
+            <div class="left1 leftbigger" id='in_touch'>
+              <div class="moduletable">
+                <h3>Getting in Touch...</h3>
+                <p class = 'white_script'> You can contact us by submitting the form on the right or by using the details below.</p>
+                </br>
+                <strong>Alliance Publishing Press Ltd</strong></br>
+                1 Golfside Close</br>
+                Whetstone</br>
+                London N20 0RD</br>
+                United Kingdom</br>
+                </br>
+                Phone: </br>+44 (0)20 8446 8070</br>
+                </br>
+                Email: <a href="mailto:enquiries@alliancepublishingpress.com?subject=Enquiry from website">enquiries@alliancepublishingpress.com</a>
+              </div>
+            </div>
+          <?php endif; ?>
 
-          <?php if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy'):  ?>
+          <?php if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy' && $pageClass != 'contact_us'):  ?>
             <?php if(!$this->params->get('html5', 0)): ?>
                 <div class="left1 <?php if ($showRightColumn==NULL){ echo 'leftbigger';} ?>" id="nav">
             <?php else: ?>
@@ -173,7 +191,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
 
           <div id="<?php echo $showRightColumn ? 'wrapper' : 'wrapper2'; ?>" <?php if (isset($showno)){echo 'class="shownocolumns"';}?>>
-
+            
             <div id="main">
 
               <?php if ($pageClass != 'home'):  ?>
@@ -191,7 +209,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
           </div><!-- end wrapper -->
 
-          <?php if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy'):  ?>
+          <?php if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy' && $pageClass != 'contact_us'):  ?>
             <div class = 'main-left-bottom'>
               <jdoc:include type="modules" name="main-left-bottom" />
             </div>

@@ -1,6 +1,6 @@
 <?php
 /**
-* @version		$Id: default.php 1507 2012-03-01 20:39:22Z joomlaworks $
+* @version		$Id: default.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
 * @package		K2
 * @author		JoomlaWorks http://www.joomlaworks.net
 * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,20 +8,19 @@
 */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-jimport('joomla.html.pane'); 
-
+jimport('joomla.html.pane');
 ?>
 
-<?php $pane =& JPane::getInstance('Tabs'); ?>
+<?php if(K2_JVERSION != '30') $pane = JPane::getInstance('Tabs'); ?>
 
 <div class="clr"></div>
 
-<?php echo $pane->startPane('myPane'); ?>
+<?php echo (K2_JVERSION == '30') ? JHtml::_('tabs.start') : $pane->startPane('myPane'); ?>
 
 <?php if($params->get('latestItems', 1)): ?>
-<?php echo $pane->startPanel(JText::_('K2_LATEST_ITEMS'), 'latestItemsTab'); ?>
+<?php echo (K2_JVERSION == '30') ? JHtml::_('tabs.panel', JText::_('K2_LATEST_ITEMS'), 'latestItemsTab') : $pane->startPanel(JText::_('K2_LATEST_ITEMS'), 'latestItemsTab'); ?>
 <!--[if lte IE 7]>
 <br class="ie7fix" />
 <![endif]-->
@@ -43,11 +42,11 @@ jimport('joomla.html.pane');
 		<?php endforeach; ?>
 	</tbody>
 </table>
-<?php echo $pane->endPanel(); ?>
+<?php if(K2_JVERSION != '30') echo $pane->endPanel(); ?>
 <?php endif; ?>
 
 <?php if($params->get('popularItems', 1)): ?>
-<?php echo $pane->startPanel(JText::_('K2_POPULAR_ITEMS'), 'popularItemsTab'); ?>
+<?php echo (K2_JVERSION == '30') ? JHtml::_('tabs.panel', JText::_('K2_POPULAR_ITEMS'), 'popularItemsTab') : $pane->startPanel(JText::_('K2_POPULAR_ITEMS'), 'popularItemsTab'); ?>
 <!--[if lte IE 7]>
 <br class="ie7fix" />
 <![endif]-->
@@ -71,11 +70,11 @@ jimport('joomla.html.pane');
 		<?php endforeach; ?>
 	</tbody>
 </table>
-<?php echo $pane->endPanel(); ?>
+<?php if(K2_JVERSION != '30') echo $pane->endPanel(); ?>
 <?php endif; ?>
 
 <?php if($params->get('mostCommentedItems', 1)): ?>
-<?php echo $pane->startPanel(JText::_('K2_MOST_COMMENTED_ITEMS'), 'mostCommentedItemsTab'); ?>
+<?php echo (K2_JVERSION == '30') ? JHtml::_('tabs.panel', JText::_('K2_MOST_COMMENTED_ITEMS'), 'mostCommentedItemsTab') : $pane->startPanel(JText::_('K2_MOST_COMMENTED_ITEMS'), 'mostCommentedItemsTab'); ?>
 <!--[if lte IE 7]>
 <br class="ie7fix" />
 <![endif]-->
@@ -99,11 +98,11 @@ jimport('joomla.html.pane');
 		<?php endforeach; ?>
 	</tbody>
 </table>
-<?php echo $pane->endPanel(); ?>
+<?php if(K2_JVERSION != '30') echo $pane->endPanel(); ?>
 <?php endif; ?>
 
 <?php if($params->get('latestComments', 1)): ?>
-<?php echo $pane->startPanel(JText::_('K2_LATEST_COMMENTS'), 'latestCommentsTab'); ?>
+<?php echo (K2_JVERSION == '30') ? JHtml::_('tabs.panel', JText::_('K2_LATEST_COMMENTS'), 'latestCommentsTab') : $pane->startPanel(JText::_('K2_LATEST_COMMENTS'), 'latestCommentsTab'); ?>
 <!--[if lte IE 7]>
 <br class="ie7fix" />
 <![endif]-->
@@ -125,11 +124,11 @@ jimport('joomla.html.pane');
 		<?php endforeach; ?>
 	</tbody>
 </table>
-<?php echo $pane->endPanel(); ?>
+<?php if(K2_JVERSION != '30') echo $pane->endPanel(); ?>
 <?php endif; ?>
 
 <?php if($params->get('statistics', 1)): ?>
-<?php echo $pane->startPanel(JText::_('K2_STATISTICS'), 'statsTab'); ?>
+<?php echo (K2_JVERSION == '30') ? JHtml::_('tabs.panel', JText::_('K2_STATISTICS'), 'statsTab') : $pane->startPanel(JText::_('K2_STATISTICS'), 'statsTab'); ?>
 <!--[if lte IE 7]>
 <br class="ie7fix" />
 <![endif]-->
@@ -167,7 +166,7 @@ jimport('joomla.html.pane');
 		</tr>
 	</tbody>
 </table>
-<?php echo $pane->endPanel(); ?>
+<?php if(K2_JVERSION != '30') echo $pane->endPanel(); ?>
 <?php endif; ?>
 
-<?php echo $pane->endPane(); ?>
+<?php echo K2_JVERSION != '30'? $pane->endPane() : JHtml::_('tabs.end'); ?>

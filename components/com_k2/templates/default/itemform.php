@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: itemform.php 1556 2012-04-19 17:34:51Z joomlaworks $
+ * @version		$Id: itemform.php 1643 2012-09-26 13:10:26Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,9 +8,9 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
-$document = & JFactory::getDocument();
+$document = JFactory::getDocument();
 $document->addScriptDeclaration("
 	Joomla.submitbutton = function(pressbutton){
 		if (pressbutton == 'cancel') {
@@ -33,17 +33,17 @@ $document->addScriptDeclaration("
 
 ?>
 
-<form action="index.php" enctype="multipart/form-data" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JURI::root(true); ?>/index.php" enctype="multipart/form-data" method="post" name="adminForm" id="adminForm">
 	<?php if($this->mainframe->isSite()): ?>
 	<div id="k2FrontendContainer">
 		<div id="k2Frontend">
 			<table class="k2FrontendToolbar" cellpadding="2" cellspacing="4">
 				<tr>
 					<td id="toolbar-save" class="button">
-						<a class="toolbar" href="#" onclick="javascript: submitbutton('save'); return false;"> <span title="<?php echo JText::_('K2_SAVE'); ?>" class="icon-32-save"></span> <?php echo JText::_('K2_SAVE'); ?> </a>
+						<a class="toolbar" href="#" onclick="javascript: submitbutton('save'); return false;"> <span title="<?php echo JText::_('K2_SAVE'); ?>" class="icon-32-save icon-save"></span> <?php echo JText::_('K2_SAVE'); ?> </a>
 					</td>
 					<td id="toolbar-cancel" class="button">
-						<a class="toolbar" href="#"> <span title="<?php echo JText::_('K2_CANCEL'); ?>" class="icon-32-cancel"></span> <?php echo JText::_('K2_CLOSE'); ?> </a>
+						<a class="toolbar" href="#"> <span title="<?php echo JText::_('K2_CANCEL'); ?>" class="icon-32-cancel icon-cancel"></span> <?php echo JText::_('K2_CLOSE'); ?> </a>
 					</td>
 				</tr>
 			</table>
@@ -61,7 +61,7 @@ $document->addScriptDeclaration("
 			<?php endif; ?>
 			<?php endif; ?>
 			<div id="k2ToggleSidebarContainer"> <a href="#" id="k2ToggleSidebar"><?php echo JText::_('K2_TOGGLE_SIDEBAR'); ?></a> </div>
-			<table cellspacing="0" cellpadding="0" border="0" class="adminFormK2Container">
+			<table cellspacing="0" cellpadding="0" border="0" class="adminFormK2Container table">
 				<tbody>
 					<tr>
 						<td>

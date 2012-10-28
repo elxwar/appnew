@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.html.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: view.html.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,11 +8,11 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class K2ViewComments extends JView {
+class K2ViewComments extends K2View {
 
 	function report($tpl = null) {
 		JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
@@ -22,7 +22,7 @@ class K2ViewComments extends JView {
 			 JError::raiseError(404, JText::_('K2_NOT_FOUND'));
 		}
 		$this->assignRef('row', $row);
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		$this->assignRef('user', $user);
 		$params = &K2HelperUtilities::getParams('com_k2');
 		if(!$params->get('comments') || !$params->get('commentsReporting') || ($params->get('commentsReporting')=='2' && $user->guest) ){
@@ -30,7 +30,7 @@ class K2ViewComments extends JView {
 		}
 		$this->assignRef('params', $params);
 		if($params->get('recaptcha') && $user->guest){
-		  $document = &JFactory::getDocument();
+		  $document = JFactory::getDocument();
 		  $document->addScript('http://api.recaptcha.net/js/recaptcha_ajax.js');
   		$js = '
 			function showRecaptcha(){

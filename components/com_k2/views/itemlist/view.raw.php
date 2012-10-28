@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: view.raw.php 1579 2012-05-09 14:19:31Z lefteris.kavadas $
+ * @version		$Id: view.raw.php 1728 2012-10-09 10:32:46Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,416 +8,498 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die ;
 
 jimport('joomla.application.component.view');
 
-class K2ViewItemlist extends JView {
+class K2ViewItemlist extends K2View
+{
 
-	function display($tpl = null) {
+    function display($tpl = null)
+    {
 
-		$mainframe = &JFactory::getApplication();
-		$params = &K2HelperUtilities::getParams('com_k2');
-		$model = &$this->getModel('itemlist');
-		$limitstart = JRequest::getInt('limitstart');
-		$view = JRequest::getWord('view');
-		$task = JRequest::getWord('task');
+        $mainframe = JFactory::getApplication();
+        $params = K2HelperUtilities::getParams('com_k2');
+        $model = $this->getModel('itemlist');
+        $limitstart = JRequest::getInt('limitstart');
+        $view = JRequest::getWord('view');
+        $task = JRequest::getWord('task');
 
-		//Add link
-		if (K2HelperPermissions::canAddItem())
-		$addLink = JRoute::_('index.php?option=com_k2&view=item&task=add&tmpl=component');
-		$this->assignRef('addLink', $addLink);
+        //Add link
+        if (K2HelperPermissions::canAddItem())
+            $addLink = JRoute::_('index.php?option=com_k2&view=item&task=add&tmpl=component');
+        $this->assignRef('addLink', $addLink);
 
-		//Get data depending on task
-		switch ($task) {
+        //Get data depending on task
+        switch ($task)
+        {
 
-			case 'category':
-				//Get category
-				$id = JRequest::getInt('id');
-				JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
-				$category = &JTable::getInstance('K2Category', 'Table');
-				$category->load($id);
-				
-				// State Check
-				if (!$category->published || $category->trash) {
-					JError::raiseError(404, JText::_('K2_CATEGORY_NOT_FOUND'));
-				}
+            case 'category' :
+                //Get category
+                $id = JRequest::getInt('id');
+                JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
+                $category = JTable::getInstance('K2Category', 'Table');
+                $category->load($id);
 
-				//Access check
-				$user = &JFactory::getUser();
-				if(K2_JVERSION=='16'){
-					if (!in_array($category->access, $user->authorisedLevels())) {
-						JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
-					}
-					$languageFilter = $mainframe->getLanguageFilter();
-					$languageTag = JFactory::getLanguage()->getTag();
-					if($languageFilter && $category->language!=$languageTag && $category->language!='*') {
-						return;
-					}
-				}
-				else {
-					if ($category->access > $user->get('aid', 0)) {
-						JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
-					}
-				}
-				
-				// Hide the add new item link if user cannot post in the specific category
-				if (!K2HelperPermissions::canAddItem($id)) {
-					unset($this->addLink);
-				}
-
-				//Merge params
-				$cparams = new JParameter($category->params);
-				if ($cparams->get('inheritFrom')) {
-					$masterCategory = &JTable::getInstance('K2Category', 'Table');
-					$masterCategory->load($cparams->get('inheritFrom'));
-					$cparams = new JParameter($masterCategory->params);
-				}
-				$params->merge($cparams);
-
-				//Category link
-				$category->link = urldecode(JRoute::_(K2HelperRoute::getCategoryRoute($category->id.':'.urlencode($category->alias))));
-
-				//Category image
-				$category->image = K2HelperUtilities::getCategoryImage($category->image, $params);
-
-				//Category plugins
-				$dispatcher = &JDispatcher::getInstance();
-				JPluginHelper::importPlugin('content');
-				$category->text = $category->description;
-				
-                if(K2_JVERSION=='16')
+                // State Check
+                if (!$category->published || $category->trash)
                 {
-                    $dispatcher->trigger('onContentPrepare', array ('com_k2.category', &$category, &$params, $limitstart));
-                }
-                else {
-                    $dispatcher->trigger('onPrepareContent', array ( & $category, &$params, $limitstart));
+                    JError::raiseError(404, JText::_('K2_CATEGORY_NOT_FOUND'));
                 }
 
-				$category->description = $category->text;
+                //Access check
+                $user = JFactory::getUser();
+                if (K2_JVERSION != '15')
+                {
+                    if (!in_array($category->access, $user->getAuthorisedViewLevels()))
+                    {
+                        if ($user->guest)
+                        {
+                            $uri = JFactory::getURI();
+                            $url = 'index.php?option=com_user&view=login&return='.base64_encode($uri->toString());
+                            $mainframe->redirect(JRoute::_($url, false), JText::_('K2_YOU_NEED_TO_LOGIN_FIRST'));
+                        }
+                        else
+                        {
+                            JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
+                            return;
+                        }
+                    }
+                    $languageFilter = $mainframe->getLanguageFilter();
+                    $languageTag = JFactory::getLanguage()->getTag();
+                    if ($languageFilter && $category->language != $languageTag && $category->language != '*')
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    if ($category->access > $user->get('aid', 0))
+                    {
+                        if ($user->guest)
+                        {
+                            $uri = JFactory::getURI();
+                            $url = 'index.php?option=com_user&view=login&return='.base64_encode($uri->toString());
+                            $mainframe->redirect(JRoute::_($url, false), JText::_('K2_YOU_NEED_TO_LOGIN_FIRST'));
+                        }
+                        else
+                        {
+                            JError::raiseError(403, JText::_('K2_ALERTNOTAUTH'));
+                            return;
+                        }
+                    }
+                }
 
-				//Category K2 plugins
-				$category->event->K2CategoryDisplay = '';
-				JPluginHelper::importPlugin('k2');
-				$results = $dispatcher->trigger('onK2CategoryDisplay', array(&$category, &$params, $limitstart));
-				$category->event->K2CategoryDisplay = trim(implode("\n", $results));
-				$category->text = $category->description;
-				$dispatcher->trigger('onK2PrepareContent', array ( & $category, &$params, $limitstart));
-				$category->description = $category->text;
+                // Hide the add new item link if user cannot post in the specific category
+                if (!K2HelperPermissions::canAddItem($id))
+                {
+                    unset($this->addLink);
+                }
 
-				$this->assignRef('category', $category);
-				$this->assignRef('user', $user);
+                //Merge params
+                $cparams = class_exists('JParameter') ? new JParameter($category->params) : new JRegistry($category->params);
+                if ($cparams->get('inheritFrom'))
+                {
+                    $masterCategory = JTable::getInstance('K2Category', 'Table');
+                    $masterCategory->load($cparams->get('inheritFrom'));
+                    $cparams = class_exists('JParameter') ? new JParameter($masterCategory->params) : new JRegistry($masterCategory->params);
+                }
+                $params->merge($cparams);
 
-				//Category children
-				$ordering = $params->get('subCatOrdering');
-				$children = $model->getCategoryFirstChildren($id, $ordering);
-				if (count($children)) {
-					foreach ($children as $child) {
-						if ($params->get('subCatTitleItemCounter')) {
-							$child->numOfItems = $model->countCategoryItems($child->id);
-						}
-						$child->image = K2HelperUtilities::getCategoryImage($child->image, $params);
-						$child->link = urldecode(JRoute::_(K2HelperRoute::getCategoryRoute($child->id.':'.urlencode($child->alias))));
-						$subCategories[] = $child;
-					}
-					$this->assignRef('subCategories', $subCategories);
-				}
+                //Category link
+                $category->link = urldecode(JRoute::_(K2HelperRoute::getCategoryRoute($category->id.':'.urlencode($category->alias))));
 
-				//Set limit
-				$limit = $params->get('num_leading_items') + $params->get('num_primary_items') + $params->get('num_secondary_items') + $params->get('num_links');
+                //Category image
+                $category->image = K2HelperUtilities::getCategoryImage($category->image, $params);
 
-				//Set featured flag
-				JRequest::setVar('featured', $params->get('catFeaturedItems'));
+                //Category plugins
+                $dispatcher = JDispatcher::getInstance();
+                JPluginHelper::importPlugin('content');
+                $category->text = $category->description;
 
-				//Set layout
-				$this->setLayout('category');
+                if (K2_JVERSION != '15')
+                {
+                    $dispatcher->trigger('onContentPrepare', array('com_k2.category', &$category, &$params, $limitstart));
+                }
+                else
+                {
+                    $dispatcher->trigger('onPrepareContent', array(&$category, &$params, $limitstart));
+                }
 
-				//Set title
-				$title = $category->name;
-				
-				// Set ordering
-				if($params->get('singleCatOrdering')) {
-					$ordering = $params->get('singleCatOrdering');
-				}
-				else {
-					$ordering = $params->get('catOrdering');
-				}
-				
-				break;
+                $category->description = $category->text;
 
-			case 'user':
-				//Get user
-				$id = JRequest::getInt('id');
-				$userObject = &JFactory::getUser($id);
+                //Category K2 plugins
+                $category->event->K2CategoryDisplay = '';
+                JPluginHelper::importPlugin('k2');
+                $results = $dispatcher->trigger('onK2CategoryDisplay', array(&$category, &$params, $limitstart));
+                $category->event->K2CategoryDisplay = trim(implode("\n", $results));
+                $category->text = $category->description;
+                $dispatcher->trigger('onK2PrepareContent', array(&$category, &$params, $limitstart));
+                $category->description = $category->text;
 
-				//Check user status
-				if ($userObject->block) {
-					JError::raiseError(404, JText::_('K2_USER_NOT_FOUND'));
-				}
+                $this->assignRef('category', $category);
+                $this->assignRef('user', $user);
 
-				//Get K2 user profile
-				$userObject->profile = $model->getUserProfile();
+                //Category children
+                $ordering = $params->get('subCatOrdering');
+                $children = $model->getCategoryFirstChildren($id, $ordering);
+                if (count($children))
+                {
+                    foreach ($children as $child)
+                    {
+                        if ($params->get('subCatTitleItemCounter'))
+                        {
+                            $child->numOfItems = $model->countCategoryItems($child->id);
+                        }
+                        $child->image = K2HelperUtilities::getCategoryImage($child->image, $params);
+                        $child->link = urldecode(JRoute::_(K2HelperRoute::getCategoryRoute($child->id.':'.urlencode($child->alias))));
+                        $subCategories[] = $child;
+                    }
+                    $this->assignRef('subCategories', $subCategories);
+                }
 
-				//User image
-				$userObject->avatar = K2HelperUtilities::getAvatar($userObject->id, $userObject->email, $params->get('userImageWidth'));
+                //Set limit
+                $limit = $params->get('num_leading_items') + $params->get('num_primary_items') + $params->get('num_secondary_items') + $params->get('num_links');
 
-				//User K2 plugins
-				$userObject->event->K2UserDisplay = '';
-				if (is_object($userObject->profile) && $userObject->profile->id > 0) {
+                //Set featured flag
+                JRequest::setVar('featured', $params->get('catFeaturedItems'));
 
-					$dispatcher = &JDispatcher::getInstance();
-					JPluginHelper::importPlugin('k2');
-					$results = $dispatcher->trigger('onK2UserDisplay', array(&$userObject->profile, &$params, $limitstart));
-					$userObject->event->K2UserDisplay = trim(implode("\n", $results));
+                //Set layout
+                $this->setLayout('category');
 
-				}
+                //Set title
+                $title = $category->name;
 
+                // Set ordering
+                if ($params->get('singleCatOrdering'))
+                {
+                    $ordering = $params->get('singleCatOrdering');
+                }
+                else
+                {
+                    $ordering = $params->get('catOrdering');
+                }
 
-				$this->assignRef('user', $userObject);
+                break;
 
-				//Set layout
-				$this->setLayout('user');
+            case 'user' :
+                //Get user
+                $id = JRequest::getInt('id');
+                $userObject = JFactory::getUser($id);
 
-				//Set limit
-				$limit = $params->get('userItemCount');
+                //Check user status
+                if ($userObject->block)
+                {
+                    JError::raiseError(404, JText::_('K2_USER_NOT_FOUND'));
+                }
 
-				//Set title
-				$title = $userObject->name;
-				
-				// Set ordering
-				$ordering = $params->get('userOrdering');
+                //Get K2 user profile
+                $userObject->profile = $model->getUserProfile();
 
-				break;
+                //User image
+                $userObject->avatar = K2HelperUtilities::getAvatar($userObject->id, $userObject->email, $params->get('userImageWidth'));
 
-			case 'tag':
-				//Set layout
-				$this->setLayout('tag');
+                //User K2 plugins
+                $userObject->event->K2UserDisplay = '';
+                if (is_object($userObject->profile) && $userObject->profile->id > 0)
+                {
 
-				//Set limit
-				$limit = $params->get('tagItemCount');
+                    $dispatcher = JDispatcher::getInstance();
+                    JPluginHelper::importPlugin('k2');
+                    $results = $dispatcher->trigger('onK2UserDisplay', array(&$userObject->profile, &$params, $limitstart));
+                    $userObject->event->K2UserDisplay = trim(implode("\n", $results));
 
-				//set title
-				$title = JText::_('K2_DISPLAYING_ITEMS_BY_TAG').' '.JRequest::getVar('tag');
-				
-				// Set ordering
-				$ordering = $params->get('tagOrdering');
-				break;
+                }
 
-			case 'search':
-				//Set layout
-				$this->setLayout('generic');
-				$tpl = JRequest::getCmd('tpl', null);
+                $this->assignRef('user', $userObject);
 
-				//Set limit
-				$limit = $params->get('genericItemCount');
+                //Set layout
+                $this->setLayout('user');
 
-				//Set title
-				$title = JText::_('K2_SEARCH_RESULTS_FOR').' '.JRequest::getVar('searchword');
-				break;
+                //Set limit
+                $limit = $params->get('userItemCount');
 
-			case 'date':
-				//Set layout
-				$this->setLayout('generic');
+                //Set title
+                $title = $userObject->name;
 
-				//Set limit
-				$limit = $params->get('genericItemCount');
+                // Set ordering
+                $ordering = $params->get('userOrdering');
 
-				// Set title
-				if (JRequest::getInt('day')) {
-					$date = strtotime(JRequest::getInt('year').'-'.JRequest::getInt('month').'-'.JRequest::getInt('day'));
-					$dateFormat = (K2_JVERSION == '15')? '%A, %d %B %Y': 'l, d F Y';
-					$title = JText::_('K2_ITEMS_FILTERED_BY_DATE').' '.JHTML::_('date', $date, $dateFormat);
-				} else {
-					$date = strtotime(JRequest::getInt('year').'-'.JRequest::getInt('month'));
-					$dateFormat = (K2_JVERSION == '15')? '%B %Y': 'F Y';
-					$title = JText::_('K2_ITEMS_FILTERED_BY_DATE').' '.JHTML::_('date', $date, $dateFormat);
-				}
-				// Set ordering
-				$ordering = 'rdate';
-				break;
+                break;
 
-			default:
-				//Set layout
-				$this->setLayout('category');
-				$user = &JFactory::getUser();
-				$this->assignRef('user', $user);
+            case 'tag' :
+                //Set layout
+                $this->setLayout('tag');
 
-				//Set limit
-				$limit = $params->get('num_leading_items') + $params->get('num_primary_items') + $params->get('num_secondary_items') + $params->get('num_links');
-				//Set featured flag
-				JRequest::setVar('featured', $params->get('catFeaturedItems'));
+                //Set limit
+                $limit = $params->get('tagItemCount');
 
-				//Set title
-				$title = $params->get('page_title');
-				
-				// Set ordering
-				$ordering = $params->get('catOrdering');
+                //set title
+                $title = JText::_('K2_DISPLAYING_ITEMS_BY_TAG').' '.JRequest::getVar('tag');
 
-				break;
+                // Set ordering
+                $ordering = $params->get('tagOrdering');
+                break;
 
-		}
+            case 'search' :
+                //Set layout
+                $this->setLayout('generic');
+                $tpl = JRequest::getCmd('tpl', null);
 
-		//Set limit for model
-		JRequest::setVar('limit', $limit);
+                //Set limit
+                $limit = $params->get('genericItemCount');
 
-		if(!isset($ordering)) {
-			$items = $model->getData();
-		}
-		else {
-			$items = $model->getData($ordering);
-		}
+                //Set title
+                $title = JText::_('K2_SEARCH_RESULTS_FOR').' '.JRequest::getVar('searchword');
+                break;
 
-		//Pagination
-		jimport('joomla.html.pagination');
-		$total = $model->getTotal();
-		$pagination = new JPagination($total, $limitstart, $limit);
+            case 'date' :
+                //Set layout
+                $this->setLayout('generic');
 
-		//Prepare items
-		$user = &JFactory::getUser();
-		$cache = &JFactory::getCache('com_k2_extended');
-		$model = &$this->getModel('item');
-		for ($i = 0; $i < sizeof($items); $i++) {
+                //Set limit
+                $limit = $params->get('genericItemCount');
 
-			//Item group
-			if ($task == "category" || $task == "") {
-				if ($i < ($params->get('num_links') + $params->get('num_leading_items') + $params->get('num_primary_items') + $params->get('num_secondary_items')))
-				$items[$i]->itemGroup = 'links';
-				if ($i < ($params->get('num_secondary_items') + $params->get('num_leading_items') + $params->get('num_primary_items')))
-				$items[$i]->itemGroup = 'secondary';
-				if ($i < ($params->get('num_primary_items') + $params->get('num_leading_items')))
-				$items[$i]->itemGroup = 'primary';
-				if ($i < $params->get('num_leading_items'))
-				$items[$i]->itemGroup = 'leading';
-			}
+                // Set title
+                if (JRequest::getInt('day'))
+                {
+                    $date = strtotime(JRequest::getInt('year').'-'.JRequest::getInt('month').'-'.JRequest::getInt('day'));
+                    $dateFormat = (K2_JVERSION == '15') ? '%A, %d %B %Y' : 'l, d F Y';
+                    $title = JText::_('K2_ITEMS_FILTERED_BY_DATE').' '.JHTML::_('date', $date, $dateFormat);
+                }
+                else
+                {
+                    $date = strtotime(JRequest::getInt('year').'-'.JRequest::getInt('month'));
+                    $dateFormat = (K2_JVERSION == '15') ? '%B %Y' : 'F Y';
+                    $title = JText::_('K2_ITEMS_FILTERED_BY_DATE').' '.JHTML::_('date', $date, $dateFormat);
+                }
+                // Set ordering
+                $ordering = 'rdate';
+                break;
 
-			//Check if model should use cache for preparing item even if user is logged in
-			if($user->guest || $task=='tag' || $task=='search' || $task=='date'){
-				$cacheFlag = true;
-			}
-			else {
-				$cacheFlag = true;
-				if(K2HelperPermissions::canEditItem($items[$i]->created_by, $items[$i]->catid)){
-					$cacheFlag = false;
-				}
-			}
+            default :
+                //Set layout
+                $this->setLayout('category');
+                $user = JFactory::getUser();
+                $this->assignRef('user', $user);
 
-			//Prepare item
-			if ($cacheFlag) {
-				$hits = $items[$i]->hits;
-				$items[$i]->hits = 0;
-				JTable::getInstance('K2Category', 'Table');
-				$items[$i] = $cache->call(array('K2ModelItem', 'prepareItem'), $items[$i], $view, $task);
-				$items[$i]->hits = $hits;
-			} else {
-				$items[$i] = $model->prepareItem($items[$i], $view, $task);
-			}
+                //Set limit
+                $limit = $params->get('num_leading_items') + $params->get('num_primary_items') + $params->get('num_secondary_items') + $params->get('num_links');
+                //Set featured flag
+                JRequest::setVar('featured', $params->get('catFeaturedItems'));
 
-			//Plugins
-			$items[$i] = $model->execPlugins($items[$i], $view, $task);
+                //Set title
+                $title = $params->get('page_title');
 
-			//Trigger comments counter event
-			$dispatcher = &JDispatcher::getInstance();
-			JPluginHelper::importPlugin ('k2');
-			$results = $dispatcher->trigger('onK2CommentsCounter', array ( & $items[$i], &$params, $limitstart));
-			$items[$i]->event->K2CommentsCounter = trim(implode("\n", $results));
+                // Set ordering
+                $ordering = $params->get('catOrdering');
 
+                break;
+        }
 
-		}
+        //Set limit for model
+        JRequest::setVar('limit', $limit);
 
-		//Pathway
-		$pathway = &$mainframe->getPathWay();
-		$pathway->addItem($title);
+        if (!isset($ordering))
+        {
+            $items = $model->getData();
+        }
+        else
+        {
+            $items = $model->getData($ordering);
+        }
 
-		//Feed link
-		$config =& JFactory::getConfig();
-		$menu = &JSite::getMenu();
-		$default = $menu->getDefault();
-		$active =  $menu->getActive();
-		if($task=='tag'){
-			$link = K2HelperRoute::getTagRoute(JRequest::getVar('tag'));
-		}
-		else {
-			$link='';
-		}
-		if (!is_null($active) && $active->id==$default->id && $config->getValue('config.sef')){
-			$link.= '&Itemid='.$active->id.'&format=feed&limitstart=';
-		}
-		else {
-			$link.= '&format=feed&limitstart=';
-		}
+        //Pagination
+        jimport('joomla.html.pagination');
+        $total = $model->getTotal();
+        $pagination = new JPagination($total, $limitstart, $limit);
 
-		$feed = JRoute::_($link);
-		$this->assignRef('feed', $feed);
+        //Prepare items
+        $user = JFactory::getUser();
+        $cache = JFactory::getCache('com_k2_extended');
+        $model = $this->getModel('item');
+        for ($i = 0; $i < sizeof($items); $i++)
+        {
 
+            //Item group
+            if ($task == "category" || $task == "")
+            {
+                if ($i < ($params->get('num_links') + $params->get('num_leading_items') + $params->get('num_primary_items') + $params->get('num_secondary_items')))
+                    $items[$i]->itemGroup = 'links';
+                if ($i < ($params->get('num_secondary_items') + $params->get('num_leading_items') + $params->get('num_primary_items')))
+                    $items[$i]->itemGroup = 'secondary';
+                if ($i < ($params->get('num_primary_items') + $params->get('num_leading_items')))
+                    $items[$i]->itemGroup = 'primary';
+                if ($i < $params->get('num_leading_items'))
+                    $items[$i]->itemGroup = 'leading';
+            }
 
-		//Assign data
-		if ($task == "category" || $task == "") {
-			$leading = @array_slice($items, 0, $params->get('num_leading_items'));
-			$primary = @array_slice($items, $params->get('num_leading_items'), $params->get('num_primary_items'));
-			$secondary = @array_slice($items, $params->get('num_leading_items') + $params->get('num_primary_items'), $params->get('num_secondary_items'));
-			$links = @array_slice($items, $params->get('num_leading_items') + $params->get('num_primary_items') + $params->get('num_secondary_items'), $params->get('num_links'));
-			$this->assignRef('leading', $leading);
-			$this->assignRef('primary', $primary);
-			$this->assignRef('secondary', $secondary);
-			$this->assignRef('links', $links);
-		} else {
-			$this->assignRef('items', $items);
-		}
+            //Check if model should use cache for preparing item even if user is logged in
+            if ($user->guest || $task == 'tag' || $task == 'search' || $task == 'date')
+            {
+                $cacheFlag = true;
+            }
+            else
+            {
+                $cacheFlag = true;
+                if (K2HelperPermissions::canEditItem($items[$i]->created_by, $items[$i]->catid))
+                {
+                    $cacheFlag = false;
+                }
+            }
 
-		//Set default values to avoid division by zero
-		if ($params->get('num_leading_columns') == 0)
-		$params->set('num_leading_columns', 1);
-		if ($params->get('num_primary_columns') == 0)
-		$params->set('num_primary_columns', 1);
-		if ($params->get('num_secondary_columns') == 0)
-		$params->set('num_secondary_columns', 1);
-		if ($params->get('num_links_columns') == 0)
-		$params->set('num_links_columns', 1);
+            //Prepare item
+            if ($cacheFlag)
+            {
+                $hits = $items[$i]->hits;
+                $items[$i]->hits = 0;
+                JTable::getInstance('K2Category', 'Table');
+                $items[$i] = $cache->call(array($model, 'prepareItem'), $items[$i], $view, $task);
+                $items[$i]->hits = $hits;
+            }
+            else
+            {
+                $items[$i] = $model->prepareItem($items[$i], $view, $task);
+            }
 
-		$this->assignRef('params', $params);
-		$this->assignRef('pagination', $pagination);
+            //Plugins
+            $items[$i] = $model->execPlugins($items[$i], $view, $task);
 
-		//Look for template files in component folders
-		$this->_addPath('template', JPATH_COMPONENT.DS.'templates');
-		$this->_addPath('template', JPATH_COMPONENT.DS.'templates'.DS.'default');
+            //Trigger comments counter event
+            $dispatcher = JDispatcher::getInstance();
+            JPluginHelper::importPlugin('k2');
+            $results = $dispatcher->trigger('onK2CommentsCounter', array(&$items[$i], &$params, $limitstart));
+            $items[$i]->event->K2CommentsCounter = trim(implode("\n", $results));
 
-		//Look for overrides in template folder (K2 template structure)
-		$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates');
-		$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates'.DS.'default');
+        }
 
-		//Look for overrides in template folder (Joomla! template structure)
-		$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'default');
-		$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2');
+        //Pathway
+        $pathway = $mainframe->getPathWay();
+        $pathway->addItem($title);
 
-		//Look for specific K2 theme files
-		if ($params->get('theme')) {
-			$this->_addPath('template', JPATH_COMPONENT.DS.'templates'.DS.$params->get('theme'));
-			$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates'.DS.$params->get('theme'));
-			$this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.$params->get('theme'));
-		}
-		
-		$db = &JFactory::getDBO();
-		$nullDate = $db->getNullDate();
-		$this->assignRef('nullDate', $nullDate);
+        //Feed link
+        $config = JFactory::getConfig();
+        $menu = $mainframe->getMenu();
+        $default = $menu->getDefault();
+        $active = $menu->getActive();
+        if ($task == 'tag')
+        {
+            $link = K2HelperRoute::getTagRoute(JRequest::getVar('tag'));
+        }
+        else
+        {
+            $link = '';
+        }
+        $sef = K2_JVERSION == '30' ? $config->get('sef') : $config->getValue('config.sef');
+        if (!is_null($active) && $active->id == $default->id && $sef)
+        {
+            $link .= '&Itemid='.$active->id.'&format=feed&limitstart=';
+        }
+        else
+        {
+            $link .= '&format=feed&limitstart=';
+        }
 
-		parent::display($tpl);
-	}
+        $feed = JRoute::_($link);
+        $this->assignRef('feed', $feed);
 
-	function module(){
-		jimport('joomla.application.module.helper');
-		$mainframe = &JFactory::getApplication();
-		$moduleID = JRequest::getInt('moduleID');
-		$model = &$this->getModel('itemlist');
-		if ($moduleID) {
-			$result = $model->getModuleItems($moduleID);
-			$items = $result->items;
-			$params = new JParameter($result->params);
-			if($params->get('getTemplate'))
-			require(JModuleHelper::getLayoutPath('mod_k2_content', $params->get('getTemplate').DS.'default'));
-			else
-			require(JModuleHelper::getLayoutPath($result->module, 'default'));
-		}
-		$mainframe->close();
-	}
+        //Assign data
+        if ($task == "category" || $task == "")
+        {
+            $leading = @array_slice($items, 0, $params->get('num_leading_items'));
+            $primary = @array_slice($items, $params->get('num_leading_items'), $params->get('num_primary_items'));
+            $secondary = @array_slice($items, $params->get('num_leading_items') + $params->get('num_primary_items'), $params->get('num_secondary_items'));
+            $links = @array_slice($items, $params->get('num_leading_items') + $params->get('num_primary_items') + $params->get('num_secondary_items'), $params->get('num_links'));
+            $this->assignRef('leading', $leading);
+            $this->assignRef('primary', $primary);
+            $this->assignRef('secondary', $secondary);
+            $this->assignRef('links', $links);
+        }
+        else
+        {
+            $this->assignRef('items', $items);
+        }
+
+        //Set default values to avoid division by zero
+        if ($params->get('num_leading_columns') == 0)
+            $params->set('num_leading_columns', 1);
+        if ($params->get('num_primary_columns') == 0)
+            $params->set('num_primary_columns', 1);
+        if ($params->get('num_secondary_columns') == 0)
+            $params->set('num_secondary_columns', 1);
+        if ($params->get('num_links_columns') == 0)
+            $params->set('num_links_columns', 1);
+
+        $this->assignRef('params', $params);
+        $this->assignRef('pagination', $pagination);
+
+        //Look for template files in component folders
+        $this->_addPath('template', JPATH_COMPONENT.DS.'templates');
+        $this->_addPath('template', JPATH_COMPONENT.DS.'templates'.DS.'default');
+
+        //Look for overrides in template folder (K2 template structure)
+        $this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates');
+        $this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates'.DS.'default');
+
+        //Look for overrides in template folder (Joomla! template structure)
+        $this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'default');
+        $this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2');
+
+        //Look for specific K2 theme files
+        if ($params->get('theme'))
+        {
+            $this->_addPath('template', JPATH_COMPONENT.DS.'templates'.DS.$params->get('theme'));
+            $this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.'templates'.DS.$params->get('theme'));
+            $this->_addPath('template', JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.'com_k2'.DS.$params->get('theme'));
+        }
+
+        $db = JFactory::getDBO();
+        $nullDate = $db->getNullDate();
+        $this->assignRef('nullDate', $nullDate);
+        
+        // Prevent spammers from using the tag view
+        if ($task == 'tag' && !count($this->items))
+        {
+            $tag = JRequest::getString('tag');
+            $db = JFactory::getDBO();
+            $db->setQuery('SELECT id FROM #__k2_tags WHERE name = '.$db->quote($tag));
+            $tagID = $db->loadResult();
+            if (!$tagID)
+            {
+                JError::raiseError(404, JText::_('K2_NOT_FOUND'));
+                return false;
+            }
+        }
+
+        parent::display($tpl);
+    }
+
+    function module()
+    {
+        jimport('joomla.application.module.helper');
+        $mainframe = JFactory::getApplication();
+        $moduleID = JRequest::getInt('moduleID');
+        $model = K2Model::getInstance('Itemlist', 'K2Model');
+        if ($moduleID)
+        {
+            $result = $model->getModuleItems($moduleID);
+            $items = $result->items;
+            $componentParams = JComponentHelper::getParams('com_k2');
+            if (is_string($result->params))
+            {
+                $params = class_exists('JParameter') ? new JParameter($result->params) : new JRegistry($result->params);
+            }
+            else
+            {
+                $params = $result->params;
+            }
+           
+            if ($params->get('getTemplate'))
+                require (JModuleHelper::getLayoutPath('mod_k2_content', $params->get('getTemplate').DS.'default'));
+            else
+                require (JModuleHelper::getLayoutPath($result->module, 'default'));
+        }
+        $mainframe->close();
+    }
 
 }

@@ -48,7 +48,7 @@
 		<fields name="params">
 			<fieldset name="basic" addfieldpath="/administrator/components/com_k2/elements">
 				<field name="theme" type="template" default="default" label="K2_SELECT_A_TEMPLATE"/>
-				<field name="categoriesFilter" type="category" default="" label="K2_FILTER_CATEGORIES" description=""/>
+				<field name="categoriesFilter" type="k2category" default="" label="K2_FILTER_CATEGORIES" description=""/>
 				<field name="tagOrdering" type="list" default="" label="K2_ITEM_ORDERING" description="">
 					<option value="">K2_INHERIT_FROM_PARAMS</option>
 					<option value="id">K2_DEFAULT</option>

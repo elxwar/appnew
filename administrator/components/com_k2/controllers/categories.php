@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: categories.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: categories.php 1638 2012-09-25 16:30:37Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,116 +8,144 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class K2ControllerCategories extends JController
+class K2ControllerCategories extends K2Controller
 {
 
-	function display() {
-		JRequest::setVar('view', 'categories');
-		parent::display();
-	}
+    public function display($cachable = false, $urlparams = array())
+    {
+        JRequest::setVar('view', 'categories');
+        parent::display();
+    }
 
-	function publish() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->publish();
-	}
+    function publish()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->publish();
+    }
 
-	function unpublish() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->unpublish();
-	}
+    function unpublish()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->unpublish();
+    }
 
-	function saveorder() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->saveorder();
-	}
+    function saveorder()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->saveorder();
+        $document = JFactory::getDocument();
+        if ($document->getType() == 'raw')
+        {
+            echo '1';
+            return $this;
+        }
+        else
+        {
+            $this->setRedirect('index.php?option=com_k2&view=categories', JText::_('K2_NEW_ORDERING_SAVED'));
+        }
+    }
 
-	function orderup() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->orderup();
-	}
+    function orderup()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->orderup();
+    }
 
-	function orderdown() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->orderdown();
-	}
+    function orderdown()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->orderdown();
+    }
 
-	function accessregistered() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->accessregistered();
-	}
+    function accessregistered()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->accessregistered();
+    }
 
-	function accessspecial() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->accessspecial();
-	}
+    function accessspecial()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->accessspecial();
+    }
 
-	function accesspublic() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->accesspublic();
-	}
+    function accesspublic()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->accesspublic();
+    }
 
-	function trash() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->trash();
-	}
+    function trash()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->trash();
+    }
 
-	function restore() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->restore();
-	}
+    function restore()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->restore();
+    }
 
-	function remove() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->remove();
-	}
+    function remove()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->remove();
+    }
 
-	function add() {
-		$mainframe = &JFactory::getApplication();
-		$mainframe->redirect('index.php?option=com_k2&view=category');
-	}
+    function add()
+    {
+        $mainframe = JFactory::getApplication();
+        $mainframe->redirect('index.php?option=com_k2&view=category');
+    }
 
-	function edit() {
-		$mainframe = &JFactory::getApplication();
-		$cid = JRequest::getVar('cid');
-		$mainframe->redirect('index.php?option=com_k2&view=category&cid='.$cid[0]);
-	}
+    function edit()
+    {
+        $mainframe = JFactory::getApplication();
+        $cid = JRequest::getVar('cid');
+        $mainframe->redirect('index.php?option=com_k2&view=category&cid='.$cid[0]);
+    }
 
-	function element() {
-		JRequest::setVar('view', 'categories');
-		JRequest::setVar('layout', 'element');
-		parent::display();
-	}
+    function element()
+    {
+        JRequest::setVar('view', 'categories');
+        JRequest::setVar('layout', 'element');
+        parent::display();
+    }
 
-	function move(){
-		$view = & $this->getView('categories', 'html');
-		$view->setLayout('move');
-		$view->move();
-	}
+    function move()
+    {
+        $view = $this->getView('categories', 'html');
+        $view->setLayout('move');
+        $view->move();
+    }
 
-	function saveMove(){
-		$model = & $this->getModel('categories');
-		$model->move();
-	}
-	
-	function copy() {
-		JRequest::checkToken() or jexit('Invalid Token');
-		$model = & $this->getModel('categories');
-		$model->copy();
-	}
+    function saveMove()
+    {
+        $model = $this->getModel('categories');
+        $model->move();
+    }
+
+    function copy()
+    {
+        JRequest::checkToken() or jexit('Invalid Token');
+        $model = $this->getModel('categories');
+        $model->copy();
+    }
 
 }

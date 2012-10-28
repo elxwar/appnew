@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: permissions.j16.php 1492 2012-02-22 17:40:09Z joomlaworks@gmail.com $
+ * @version		$Id: permissions.j16.php 1618 2012-09-21 11:23:08Z lefteris.kavadas $
  * @package		K2
  * @author		JoomlaWorks http://www.joomlaworks.net
  * @copyright	Copyright (c) 2006 - 2012 JoomlaWorks Ltd. All rights reserved.
@@ -8,70 +8,80 @@
  */
 
 // no direct access
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 jimport('joomla.html.parameter');
 
-class K2HelperPermissions {
+class K2HelperPermissions
+{
 
-	function checkPermissions() {
-		// Set some variables
-		$mainframe = &JFactory::getApplication();
-		$user = &JFactory::getUser();
-		$option = JRequest::getCmd('option');
-		$view = JRequest::getCmd('view');
-		$task = JRequest::getCmd('task');
-		$id = JRequest::getInt('cid');
+    public static function checkPermissions()
+    {
+        // Set some variables
+        $mainframe = JFactory::getApplication();
+        $user = JFactory::getUser();
+        $option = JRequest::getCmd('option');
+        $view = JRequest::getCmd('view');
+        $task = JRequest::getCmd('task');
+        $id = JRequest::getInt('cid');
 
-		//Generic manage check
-		if (!$user->authorise('core.manage', $option)) {
-			JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-			$mainframe->redirect('index.php');
-		}
+        //Generic manage check
+        if (!$user->authorise('core.manage', $option))
+        {
+            JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+            $mainframe->redirect('index.php');
+        }
 
-		// Determine action for rest checks
-		$action = false;
-		if($mainframe->isAdmin() && $view!='' && $view!='info'){
-			switch($task){
-				case '':
-				case 'save':
-				case 'apply':
-					if(!$id){
-						$action = 'core.create';
-					}
-					else {
-						$action = 'core.edit';
-					}
-					break;
-				case 'trash':
-				case 'remove':
-					$action = 'core.delete';
-					break;
-				case 'publish':
-				case 'unpublish':
-					$action = 'core.edit.state';
-			}
+        // Determine action for rest checks
+        $action = false;
+        if ($mainframe->isAdmin() && $view != '' && $view != 'info')
+        {
+            switch($task)
+            {
+                case '' :
+                case 'save' :
+                case 'apply' :
+                    if (!$id)
+                    {
+                        $action = 'core.create';
+                    }
+                    else
+                    {
+                        $action = 'core.edit';
+                    }
+                    break;
+                case 'trash' :
+                case 'remove' :
+                    $action = 'core.delete';
+                    break;
+                case 'publish' :
+                case 'unpublish' :
+                    $action = 'core.edit.state';
+            }
 
-			// Check the determined action
-			if($action){
-				if(!$user->authorize($action, $option)){
-					JError::raiseWarning(404, JText::_('K2_JERROR_ALERTNOAUTHOR'));
-					$mainframe->redirect('index.php?option=com_k2');
-				}
-			}
+            // Edit or Edit own action
+            if ($action == 'core.edit' && $view == 'item' && $id)
+            {
+                JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
+                $item = JTable::getInstance('K2Item', 'Table');
+                $item->load($id);
+                if ($item->created_by == $user->id)
+                {
+                    $action = 'core.edit.own';
+                }
+            }
 
-			// Finaly, check for the edit own function
-			if($view == 'item' && $id){
-				JTable::addIncludePath(JPATH_COMPONENT_ADMINISTRATOR.DS.'tables');
-				$item = &JTable::getInstance('K2Item', 'Table');
-				$item->load($id);
-				if($item->created_by == $user->id){
-					if(!$user->authorize('core.edit.own', $option)){
-						JError::raiseWarning(404, JText::_('K2_JERROR_ALERTNOAUTHOR'));
-						$mainframe->redirect('index.php?option=com_k2');
-					}
-				}
-			}
-		}
-	}
+            // Check the determined action
+            if ($action)
+            {
+                if (!$user->authorise($action, $option))
+                {
+                    JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+                    $mainframe->redirect('index.php?option=com_k2');
+                }
+            }
+
+        }
+    }
+
 }
