@@ -14,6 +14,7 @@ $showRightColumn = ($this->countModules('middle-bottom') or $this->countModules(
 $showbottom = ($this->countModules('position-9') or $this->countModules('position-10') or $this->countModules('position-11'));
 $showleft = ($this->countModules('position-4') or $this->countModules('position-7') or $this->countModules('position-5'));
 $pageClass = strtolower(str_replace(" ","_",$this->title));
+$this->setTitle('Alliance Publishing Press - the independent publisher for the new publishing era');
 if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy' && $pageClass != 'contact_us') {
   $showleftCols = 0;
 }
@@ -108,6 +109,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
       var resetTitle = '<?php echo JText::_('TPL_BEEZ5_REVERT_STYLES_TO_DEFAULT', true); ?>';
       var smallerTitle = '<?php echo JText::_('TPL_BEEZ5_DECREASE_SIZE', true); ?>';
     </script>
+    <?php $this->setTitle('Alliance Publishing Press - the independent publisher for the new publishing era'); ?>
 
   </head>
 
@@ -320,7 +322,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
 
 
 
-<!--   <?php if ($this->title != 'home'):  ?>
+  <!-- <?php if ($this->title != 'home'):  ?>
     <?php echo $this->title; ?> <br />
   <?php endif; ?>
   Page class: <?php echo $pageClass; ?>

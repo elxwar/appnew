@@ -42,14 +42,14 @@ class JConfig {
 	public $caching = '0';
 	public $cache_handler = 'file';
 	public $cachetime = '15';
-	public $MetaDesc = 'Alliance Publishing Press provides the complete publishing service from editing, cover design, layout and typography right through to printing and promotion.';
-	public $MetaKeys = 'publishing, e-book, business, british publisher, fiction, publish own book, publish on demand, non-fiction, ebook publisher uk, joint venture, self-publishing, personal publishing, promotion, corporate, kindle, Janet Weitz';
+	public $MetaDesc = '';
+	public $MetaKeys = '';
 	public $MetaTitle = '1';
 	public $MetaAuthor = '1';
 	public $MetaVersion = '0';
 	public $robots = '';
 	public $sef = '1';
-	public $sef_rewrite = '1';
+	public $sef_rewrite = '0';
 	public $sef_suffix = '0';
 	public $unicodeslugs = '0';
 	public $feed_limit = '10';
@@ -58,7 +58,7 @@ class JConfig {
 	public $lifetime = '60';
 	public $session_handler = 'database';
 	public $MetaRights = '';
-	public $sitename_pagetitles = '1';
+	public $sitename_pagetitles = '0';
 	public $force_ssl = '0';
 	public $feed_email = 'author';
 	public $cookie_domain = '';
