@@ -14,7 +14,7 @@ $showRightColumn = ($this->countModules('middle-bottom') or $this->countModules(
 $showbottom = ($this->countModules('position-9') or $this->countModules('position-10') or $this->countModules('position-11'));
 $showleft = ($this->countModules('position-4') or $this->countModules('position-7') or $this->countModules('position-5'));
 $pageClass = strtolower(str_replace(" ","_",$this->title));
-$this->setTitle('Alliance Publishing Press - the independent publisher for the new publishing era');
+$this->setTitle('Alliance Publishing Press');
 if ($pageClass != 'home' && $pageClass != 'our_services' && $pageClass != 'app_people' && $pageClass != 'cookies_and_your_privacy' && $pageClass != 'contact_us') {
   $showleftCols = 0;
 }
@@ -34,7 +34,22 @@ $app = JFactory::getApplication();
 $doc = JFactory::getDocument();
 $templateparams = $app->getTemplate(true)->params;
 
-$doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/md_stylechanger.js', 'text/javascript', true);
+$option = JRequest::getCmd('option');
+$view = JRequest::getCmd('view');
+if ($option=="com_k2" && $view=="item") {
+    $ids = explode(':',JRequest::getInt('id'));
+    $article_id = $ids[0];
+    $article =& JTable::getInstance('k2item', 'Table');
+    $article->load($article_id);
+    $mySEOtitle = $article->get("title");
+    $this->setTitle($app->getCfg('sitename').' - '.$mySEOtitle );
+} else {
+    $mySEOtitle = 'the independent publisher for the new publishing era';
+    $this->setTitle($app->getCfg('sitename').' - '.$mySEOtitle );
+}
+
+
+
 ?>
 <?php if (!$templateparams->get('html5', 0)): ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -58,6 +73,7 @@ $doc->addScript($this->baseurl . '/templates/' . $this->template . '/javascript/
           type="text/css"/>
     <link rel="stylesheet" media="only screen and (max-width: 1023px)" href="<?php echo $this->baseurl ?>/templates/<?php echo $this->template; ?>/css/max1100.css"
           type="text/css"/>
+    <title><?php echo $this->title; ?></title>
 
 <!-- other sizes: 1200, 1023, 900, @media handheld, only screen and (max-width: 767px) iphone: @media only screen and (-webkit-min-device-pixel-ratio: 2) -->
 
